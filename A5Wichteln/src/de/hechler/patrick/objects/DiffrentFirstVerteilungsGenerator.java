@@ -17,6 +17,7 @@ public abstract class DiffrentFirstVerteilungsGenerator extends VerteilungsGener
 	 * Gibt die beste {@link Verteilung} des {@link VerteilungsGenerator}s oder die erste, falls diese gültig und besser ist zurück.
 	 * 
 	 * @return Die beste {@link Verteilung} oder die erste, falls diese gültig und besser ist.
+	 * @override {@link VerteilungsGenerator#besteVerbleibende()}
 	 */
 	@Override
 	public Verteilung besteVerbleibende() {

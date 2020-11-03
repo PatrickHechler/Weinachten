@@ -11,12 +11,30 @@ import de.hechler.patrick.objects.generatorenimpl.BruthForceVerteilungsGenerator
 
 public abstract class VerteilungsGenerator implements Iterator <Verteilung> {
 	
+	/**
+	 * Debugzwecke in {@link #besteVerbleibende()}
+	 */
 	private List <Verteilung> alle;
+	
+	
+	/**
+	 * speichert die aktuelle {@link Verteilung}
+	 */
 	protected Verteilung verteilung;
+	/**
+	 * speichert die {@link Klasse}, welche zu diesem {@link VerteilungsGenerator} gehört
+	 */
 	protected Klasse klasse;
 	
 	
 	
+	/**
+	 * erstellt einen neuen {@link VerteilungsGenerator} von der {@link Klasse} {@code klasse}. {@code richtigeStartVerteilung} wird dabei an den Konstruktor
+	 * {@link Verteilung#Verteilung(int, boolean)} weitergereicht.
+	 * 
+	 * @param klasse die {@link Klasse}, zu welcher dieser {@link VerteilungsGenerator} {@link Verteilung}en generiert. 
+	 * @param richtigeStartVerteilung wird weitergereicht an {@link Verteilung#Verteilung(int, boolean)}.
+	 */
 	protected VerteilungsGenerator(Klasse klasse, boolean richtigeStartVerteilung) {
 		verteilung = new Verteilung(klasse.size(), richtigeStartVerteilung);
 		this.klasse = klasse;

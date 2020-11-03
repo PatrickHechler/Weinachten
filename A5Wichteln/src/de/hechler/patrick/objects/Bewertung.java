@@ -3,24 +3,40 @@ package de.hechler.patrick.objects;
 
 public class Bewertung implements Comparable <Bewertung> {
 	
+	/**
+	 * speichert die anzahl an erfüllten Erst-/Zweit-Drittwünschen. <br>
+	 * Erstwünsche: {@code [0]} | Zweitwünsche: {@code [1]} | Drittwünsche: {@code [2]}
+	 */
 	private int[] richtigePlatzierungen;
 	
 	
 	
+	/**
+	 * erstellt eine neue {@link Bewertung}, bei welcher noch kein Wunsch erfüllt ist.
+	 */
 	public Bewertung() {
 		richtigePlatzierungen = new int[3];
 	}
 	
 	
 	
+	/**
+	 * erhöht die Anzahl der erfüllten Erstwünsche um 1
+	 */
 	public void incRichtigeErste() {
 		richtigePlatzierungen[0] ++ ;
 	}
 	
+	/**
+	 * erhöht die Anzahl der erfüllten Zweitwünsche um 1
+	 */
 	public void incRichtigeZweite() {
 		richtigePlatzierungen[1] ++ ;
 	}
 	
+	/**
+	 * erhöht die Anzahl der erfüllten Drittwünsche um 1
+	 */
 	public void incRichtigeDritte() {
 		richtigePlatzierungen[2] ++ ;
 	}

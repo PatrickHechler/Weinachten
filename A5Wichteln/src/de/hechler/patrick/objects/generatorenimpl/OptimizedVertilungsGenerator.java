@@ -40,6 +40,8 @@ public class OptimizedVertilungsGenerator extends VerteilungsGenerator {
 					wunsch -- ;
 				} else {
 					
+					
+					
 				}
 			}
 			deep ++ ;
