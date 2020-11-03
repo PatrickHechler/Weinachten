@@ -2,7 +2,6 @@ package de.hechler.patrick.objects;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -209,6 +208,13 @@ public class Klasse {
 		return ergebnis;
 	}
 	
+	/**
+	 * Gibt alle {@link Teilnehmer} zurück, die {@code gegenstand} als erstWunsch haben
+	 * 
+	 * @param gegenstand
+	 *            Das, was man sich als {@link Teilnehmer} erstWunsch wünschen muss, um hier zurückgegeben zu werden.
+	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als erstWunsch haben
+	 */
 	public List <Teilnehmer> habenErstWunsch(int gegenstand) {
 		List <Teilnehmer> ergebnis;
 		ergebnis = new ArrayList <Teilnehmer>();
@@ -218,9 +224,15 @@ public class Klasse {
 			}
 		}
 		return ergebnis;
-		
 	}
 	
+	/**
+	 * Gibt alle {@link Teilnehmer} zurück, die {@code gegenstand} als zweitWunsch haben
+	 * 
+	 * @param gegenstand
+	 *            Das, was man sich als {@link Teilnehmer} als zweitWunsch wünschen muss, um hier zurückgegeben zu werden.
+	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als zweitWunsch haben
+	 */
 	public List <Teilnehmer> habenZweitWunsch(int gegenstand) {
 		List <Teilnehmer> ergebnis;
 		ergebnis = new ArrayList <Teilnehmer>();
@@ -230,9 +242,15 @@ public class Klasse {
 			}
 		}
 		return ergebnis;
-		
 	}
 	
+	/**
+	 * Gibt alle {@link Teilnehmer} zurück, die {@code gegenstand} als drittWunsch haben
+	 * 
+	 * @param gegenstand
+	 *            Das, was man sich als {@link Teilnehmer} als drittWunsch wünschen muss, um hier zurückgegeben zu werden.
+	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als drittWunsch haben
+	 */
 	public List <Teilnehmer> habenDrittWunsch(int gegenstand) {
 		List <Teilnehmer> ergebnis;
 		ergebnis = new ArrayList <Teilnehmer>();
@@ -245,6 +263,13 @@ public class Klasse {
 		
 	}
 	
+	/**
+	 * Bewertet, wie gut die {@link Verteilung} zu dieser {@link Klasse} passt und gibt das Ergebnis dann als {@link Bewertung} zurück.
+	 * 
+	 * @param verteilung
+	 *            Die zu bewertende {@link Verteilung}
+	 * @return Das Ergebnis der {@link Bewertung}
+	 */
 	public Bewertung bewerte(Verteilung verteilung) {
 		Bewertung ergebnis;
 		ergebnis = new Bewertung();
@@ -254,12 +279,18 @@ public class Klasse {
 		return ergebnis;
 	}
 	
-
+	/**
+	 * Gibt die {@link Klasse} genau so zurück, wie sie Standardweise gespeichert wird: <br>
+	 * 1. Zeile: size <br>
+	 * 2-n+1. Zeile: {@link Teilnehmer}[n]
+	 * 
+	 * @return Die {@link Klasse} als {@link String}
+	 */
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 		result.append(Integer.toString(size())).append("\n");
-		for (int i=1; i<=size(); i++) {
+		for (int i = 1; i <= size(); i ++ ) {
 			Teilnehmer t = teilnehmer(i);
 			result.append(Integer.toString(t.erstWunsch())).append(" ");
 			result.append(Integer.toString(t.zweitWunsch())).append(" ");

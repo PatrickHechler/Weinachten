@@ -1,9 +1,6 @@
 package de.hechler.patrick.objects;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.NoSuchElementException;
@@ -93,10 +90,10 @@ class KlasseTest {
 	@Test
 	void testEinzelnErstWunsch() {
 		Set<Integer> erstWuensche = klasse.einzelnErstWunsch();
-		assertEquals(3, erstWuensche);
-		assertTrue(erstWuensche.contains(1));
+		assertEquals(1, erstWuensche.size());
+		assertFalse(erstWuensche.contains(1));
 		assertTrue(erstWuensche.contains(2));
-		assertTrue(erstWuensche.contains(5));
+		assertFalse(erstWuensche.contains(5));
 	}
 
 	@Test
