@@ -7,10 +7,24 @@ import java.util.Set;
 
 public class Verteilung {
 	
+	/**
+	 * speichert die {@link Verteilung} der Geschenke an die {@link Teilnehmer} einer {@link Klasse}.
+	 */
 	private int[] geschenke;
 	
 	
 	
+	/**
+	 * Erstellt eine neue {@link Verteilung} der Größe {@code size}. <br>
+	 * falls {@code richtig} = {@code true}: werden die einzelnen Elemente von {@link #geschenke} fortlaufend generiert (von 1 bis size) <br>
+	 * falls {@code richtig} = {@code false}: werden alle {@link #geschenke} mit 0 (ungültige Zahl) initialisiert.
+	 * 
+	 * @param size
+	 *            Die anzahl an {@link Teilnehmer} der zugehörigen {@link Klasse}
+	 * @param richtig
+	 *            falls {@code richtig} = {@code true}, werden die einzelnen Elemente von {@link #geschenke} fortlaufend generiert (von 1 bis size) falls {@code richtig} =
+	 *            {@code false}: werden alle {@link #geschenke} mit 0 (ungültige Zahl) initialisiert.
+	 */
 	public Verteilung(int size, boolean richtig) {
 		geschenke = new int[size];
 		if (richtig) {
@@ -21,20 +35,45 @@ public class Verteilung {
 		}
 	}
 	
+	/**
+	 * Erstellt eine {@link Verteilung} und stellt @{@code this.}{@link #geschenke} auf {@code geschenke}
+	 * 
+	 * @param geschenke
+	 *            Der zukünftige Wert von {@link #geschenke}
+	 */
 	public Verteilung(int[] geschenke) {
 		this.geschenke = geschenke;
 	}
 	
 	
 	
+	/**
+	 * Weist dem {@link Teilnehmer} mit der nummer {@code teilnehmerNummer} das Geschenk mit der nummer {@code geschenkNummer} zu.
+	 * 
+	 * @param teilnehmerNummer
+	 *            Der {@link Teilnehmer} dem ein Geschenk zugewiesen werden soll.
+	 * @param geschenkNummer
+	 *            Die nummer des Geschenks das dem {@link Teilnehmer} zugewiesen werden soll.
+	 */
 	public void set(int teilnehmerNummer, int geschenkNummer) {
 		geschenke[teilnehmerNummer - 1] = geschenkNummer;
 	}
 	
+	/**
+	 * Gibt das Geschenk, welches zu dem {@link Teilnehmer} mit der nummer {@code teilnehmerNummer} gehört, zurück.
+	 * 
+	 * @param teilnehmerNummer
+	 *            Die nummer des {@link Teilnehmer}, dessen GeschenkNummer abgefragt wird.
+	 * @return Das Geschenk, welches zu dem {@link Teilnehmer} mit der nummer {@code teilnehmerNummer} gehört.
+	 */
 	public int get(int teilnehmerNummer) {
 		return geschenke[teilnehmerNummer - 1];
 	}
 	
+	/**
+	 * Klont diese {@link Verteilung} Ding und gibt eine {@link Verteilung} zurück, welche unabhängig von dieser ist, aber Inhalt hat, wie diese {@link Verteilung} aktuell hat.
+	 * @return die geklonte {@link Verteilung}
+	 */
 	@Override
 	public Verteilung clone() {
 		Verteilung ergebnis;
@@ -47,6 +86,10 @@ public class Verteilung {
 		return ergebnis;
 	}
 	
+	/**
+	 * prüft, ob diese {@link Verteilung} gültig ist.
+	 * @return <code>true</code>, falls diese {@link Verteilung} gültig ist, ansonsten <code>false</code>
+	 */
 	public boolean isValid() {
 		Set <Integer> tester;
 		tester = new HashSet <Integer>(geschenke.length);
@@ -56,6 +99,14 @@ public class Verteilung {
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * TODO hier weitermachen
+	 * @param teilnehmerNummerEnde
+	 */
+	public void sortTo(int teilnehmerNummerEnde) {
+		Arrays.sort(geschenke, 0, teilnehmerNummerEnde);
 	}
 	
 	public void sortFromTo(int teilnehmerNummerStart, int teilnehmerNummerEnde) {
