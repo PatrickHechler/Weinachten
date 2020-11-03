@@ -46,4 +46,8 @@ public class Teilnehmer {
 		return nummer;
 	}
 	
+	@Override
+	public String toString() {
+		return "T[#"+nummer+":"+erstWunsch()+","+zweitWunsch()+","+drittWunsch()+"]";
+	}
 }

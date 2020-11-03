@@ -161,4 +161,17 @@ public class Klasse {
 		return ergebnis;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append(Integer.toString(size())).append("\n");
+		for (int i=1; i<=size(); i++) {
+			Teilnehmer t = teilnehmer(i);
+			result.append(Integer.toString(t.erstWunsch())).append(" ");
+			result.append(Integer.toString(t.zweitWunsch())).append(" ");
+			result.append(Integer.toString(t.drittWunsch())).append("\n");
+		}
+		return result.toString();
+	}
+	
 }
