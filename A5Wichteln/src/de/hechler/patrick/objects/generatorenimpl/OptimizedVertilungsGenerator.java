@@ -33,16 +33,8 @@ public class OptimizedVertilungsGenerator extends VerteilungsGenerator {
 				verteilung.set(festlegen, klasse.teilnehmer(festlegen).erstWunsch());
 				fest.set(festlegen, klasse.teilnehmer(festlegen).erstWunsch());
 			}
-			for (int teilnmr = 0, wunsch = 0; teilnmr < klasse.size(); teilnmr ++ , wunsch ++ ) {
-				if (einzelnErstWunsch.contains(wunsch)) {
-					teilnmr -- ;
-				} else if (fest.get(teilnmr) <= 0) {
-					wunsch -- ;
-				} else {
-					
-					
-					
-				}
+			for (int i = 1; i <= klasse.size(); i ++ ) {
+				
 			}
 			deep ++ ;
 			break;
