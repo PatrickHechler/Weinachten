@@ -4,6 +4,12 @@ import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.VerteilungsGenerator;
 
+/**
+ * iterates to all {@link Verteilung} and returns it in the {@link #next()} method, when returns true by calling {@link Verteilung#isValid()}
+ * 
+ * @author Patrick
+ *
+ */
 public class AbsoluterBruthForceVerteilungsGenerator extends VerteilungsGenerator {
 	
 	private boolean puffer;
@@ -55,8 +61,8 @@ public class AbsoluterBruthForceVerteilungsGenerator extends VerteilungsGenerato
 		Klasse klasse = Klasse.lade(System.in);
 		System.out.println("Fertig geladen");
 		VerteilungsGenerator generator;
-//		generator = new AbsoluterBruthForceVerteilungsGenerator(klasse);
-		generator = new OptimizedVertilungsGenerator(klasse);
+		generator = new AbsoluterBruthForceVerteilungsGenerator(klasse);
+//		generator = new OptimizedVertilungsGenerator(klasse);
 		System.out.println("Suche nun nach der besten Möglichkeit");
 		Verteilung verteilung = generator.besteVerbleibende();
 		System.out.println("Hier ist sie: (OVG)");

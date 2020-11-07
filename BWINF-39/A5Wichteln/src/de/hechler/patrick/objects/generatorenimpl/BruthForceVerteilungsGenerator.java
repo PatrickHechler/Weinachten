@@ -4,6 +4,12 @@ import de.hechler.patrick.objects.DiffrentFirstVerteilungsGenerator;
 import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.Verteilung;
 
+/**
+ * iterates to all validate {@link Verteilung} (a {@link Verteilung} is valid, when {@link Verteilung#isValid()} returns <code>true</code>)
+ * 
+ * @author Patrick
+ *
+ */
 public class BruthForceVerteilungsGenerator extends DiffrentFirstVerteilungsGenerator {
 	
 	private int highPos;
@@ -50,17 +56,5 @@ public class BruthForceVerteilungsGenerator extends DiffrentFirstVerteilungsGene
 			}
 		}
 	}
-	/*
-	public static void main(String[] args) {
-		System.out.println("lade die Klasse");
-		Klasse klasse = Klasse.lade(System.in);
-		System.out.println("Fertig geladen");
-		VerteilungsGenerator generator = new BruthForceVerteilungsGenerator(klasse);
-		System.out.println("Suche nun nach der besten Möglichkeit");
-		Verteilung verteilung = generator.besteVerbleibende();
-		System.out.println("BEWERTUNG:" + klasse.bewerte(verteilung));
-		System.out.println("Hier ist sie: (BFVG)");
-		verteilung.print();
-	}
-	*/
+	
 }
