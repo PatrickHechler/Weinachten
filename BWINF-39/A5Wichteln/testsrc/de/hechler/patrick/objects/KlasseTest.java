@@ -3,6 +3,8 @@ package de.hechler.patrick.objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
+import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -13,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class KlasseTest {
 
 	private Klasse klasse;
-	
+
 	private final static String fuenferKlasse = 
 			  "5\n"
 			+ "1 2 3\n"
@@ -21,6 +23,22 @@ class KlasseTest {
 			+ "1 4 2\n"
 			+ "5 3 2\n"
 			+ "5 2 1\n";
+	
+	private final static String viererKlasse = 
+			  "4\n"
+			+ "1 2 3\n"
+			+ "1 2 3\n"
+			+ "1 2 3\n"
+			+ "1 2 3\n";
+
+	private final static String sechserKlasse = 
+			  "6\n"
+			+ "1 2 3\n"
+			+ "2 3 4\n"
+			+ "3 4 5\n"
+			+ "4 5 6\n"
+			+ "5 6 1\n"
+			+ "6 1 2\n";
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -91,49 +109,102 @@ class KlasseTest {
 	void testEinzelnErstWunsch() {
 		Set<Integer> erstWuensche = klasse.einzelnErstWunsch();
 		assertEquals(1, erstWuensche.size());
-		assertFalse(erstWuensche.contains(1));
 		assertTrue(erstWuensche.contains(2));
-		assertFalse(erstWuensche.contains(5));
+		
+		klasse = Klasse.lade(new ByteArrayInputStream(sechserKlasse.getBytes()));
+		erstWuensche = klasse.einzelnErstWunsch();
+		assertEquals(6, erstWuensche.size());
+
+		klasse = Klasse.lade(new ByteArrayInputStream(viererKlasse.getBytes()));
+		erstWuensche = klasse.einzelnErstWunsch();
+		assertEquals(0, erstWuensche.size());
 	}
 
 	@Test
 	void testEinzelnZweitWunsch() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testEinzelnZweitWunschSetOfTeilnehmer() {
-		fail("Not yet implemented");
+		Set<Integer> zweitWuensche = klasse.einzelnZweitWunsch();
+		assertEquals(1, zweitWuensche.size());
+		assertTrue(zweitWuensche.contains(3));
+		
+		klasse = Klasse.lade(new ByteArrayInputStream(sechserKlasse.getBytes()));
+		zweitWuensche = klasse.einzelnZweitWunsch();
+		assertEquals(6, zweitWuensche.size());
+		
+		klasse = Klasse.lade(new ByteArrayInputStream(viererKlasse.getBytes()));
+		zweitWuensche = klasse.einzelnZweitWunsch();
+		assertEquals(0, zweitWuensche.size());
 	}
 
 	@Test
 	void testEinzelnDrittWunsch() {
-		fail("Not yet implemented");
+		Set<Integer> drittWuensche = klasse.einzelnDrittWunsch();
+		assertEquals(1, drittWuensche.size());
+		assertTrue(drittWuensche.contains(1));
+
+		klasse = Klasse.lade(new ByteArrayInputStream(sechserKlasse.getBytes()));
+		drittWuensche = klasse.einzelnDrittWunsch();
+		assertEquals(6, drittWuensche.size());
+
+		klasse = Klasse.lade(new ByteArrayInputStream(viererKlasse.getBytes()));
+		drittWuensche = klasse.einzelnDrittWunsch();
+		assertEquals(0, drittWuensche.size());
 	}
 
-	@Test
-	void testEinzelnDrittWunschSetOfTeilnehmerSetOfTeilnehmer() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	void testHabenErstWunsch() {
-		fail("Not yet implemented");
+		List<Teilnehmer> ersteEinser = klasse.habenErstWunsch(1);
+		assertEquals(2, ersteEinser.size());
+		List<Teilnehmer> ersteZweier = klasse.habenErstWunsch(2);
+		assertEquals(1, ersteZweier.size());
+		List<Teilnehmer> ersteDreier = klasse.habenErstWunsch(3);
+		assertEquals(0, ersteDreier.size());
+		List<Teilnehmer> ersteVierer = klasse.habenErstWunsch(4);
+		assertEquals(0, ersteVierer.size());
+		List<Teilnehmer> ersteFuenfer = klasse.habenErstWunsch(5);
+		assertEquals(2, ersteFuenfer.size());
 	}
 
 	@Test
 	void testHabenZweitWunsch() {
-		fail("Not yet implemented");
+		List<Teilnehmer> zweiteEinser = klasse.habenZweitWunsch(1);
+		assertEquals(0, zweiteEinser.size());
+		List<Teilnehmer> zweiteZweier = klasse.habenZweitWunsch(2);
+		assertEquals(2, zweiteZweier.size());
+		List<Teilnehmer> zweiteDreier = klasse.habenZweitWunsch(3);
+		assertEquals(1, zweiteDreier.size());
+		List<Teilnehmer> zweiteVierer = klasse.habenZweitWunsch(4);
+		assertEquals(2, zweiteVierer.size());
+		List<Teilnehmer> zweiteFuenfer = klasse.habenZweitWunsch(5);
+		assertEquals(0, zweiteFuenfer.size());
 	}
 
 	@Test
 	void testHabenDrittWunsch() {
-		fail("Not yet implemented");
+		List<Teilnehmer> dritteEinser = klasse.habenDrittWunsch(1);
+		assertEquals(1, dritteEinser.size());
+		List<Teilnehmer> dritteZweier = klasse.habenDrittWunsch(2);
+		assertEquals(2, dritteZweier.size());
+		List<Teilnehmer> dritteDreier = klasse.habenDrittWunsch(3);
+		assertEquals(2, dritteDreier.size());
+		List<Teilnehmer> dritteVierer = klasse.habenDrittWunsch(4);
+		assertEquals(0, dritteVierer.size());
+		List<Teilnehmer> dritteFuenfer = klasse.habenDrittWunsch(5);
+		assertEquals(0, dritteFuenfer.size());
+	}
+
+	
+	
+	@Test
+	void testEinzelnZweitWunschSetOfTeilnehmer() {
+	}
+
+	@Test
+	void testEinzelnDrittWunschSetOfTeilnehmerSetOfTeilnehmer() {
 	}
 
 	@Test
 	void testBewerte() {
-		fail("Not yet implemented");
 	}
 
 }
