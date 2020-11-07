@@ -64,7 +64,7 @@ public class Klasse {
 		zwischenA = eingang.nextInt();
 		ergebnis = new Klasse(zwischenA);
 		for (int runde = 0; runde < ergebnis.teilnehmer.length; runde ++ ) {
-			zwischenA = eingang.nextInt();
+			zwischenA = checkNummer(eingang.nextInt(), ergebnis);
 			zwischenB = eingang.nextInt();
 			zwischenC = eingang.nextInt();
 			ergebnis.teilnehmer[runde] = new Teilnehmer(runde + 1, zwischenA, zwischenB, zwischenC);
@@ -74,6 +74,13 @@ public class Klasse {
 	
 	
 	
+	private static int checkNummer(int check, Klasse with) {
+		if (check > 0 || with.teilnehmer.length <= check) {
+			return check;
+		}
+		throw new IndexOutOfBoundsException(check);
+	}
+
 	/**
 	 * Gibt die Anzahl an {@link Teilnehmer}n dieser {@link Klasse} zurück.
 	 * 
