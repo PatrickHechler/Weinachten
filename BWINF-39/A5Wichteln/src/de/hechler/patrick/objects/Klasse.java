@@ -217,9 +217,9 @@ public class Klasse {
 	 *            Das, was man sich als {@link Teilnehmer} erstWunsch wünschen muss, um hier zurückgegeben zu werden.
 	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als erstWunsch haben , sortiert nach der {@link Teilnehmer#nummer()} der {@link Teilnehmer}.
 	 */
-	public Set <Teilnehmer> habenErstWunsch(int gegenstand) {
-		Set <Teilnehmer> ergebnis;
-		ergebnis = new LinkedHashSet <Teilnehmer>();
+	public List <Teilnehmer> habenErstWunsch(int gegenstand) {
+		List <Teilnehmer> ergebnis;
+		ergebnis = new ArrayList <Teilnehmer>();
 		for (int i = 0; i < teilnehmer.length; i ++ ) {
 			if (gegenstand == teilnehmer[i].erstWunsch()) {
 				ergebnis.add(teilnehmer[i]);
@@ -236,9 +236,9 @@ public class Klasse {
 	 *            Das, was man sich als {@link Teilnehmer} als zweitWunsch wünschen muss, um hier zurückgegeben zu werden.
 	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als zweitWunsch haben, sortiert nach der {@link Teilnehmer#nummer()} der {@link Teilnehmer}.
 	 */
-	public Set <Teilnehmer> habenZweitWunsch(int gegenstand) {
-		Set <Teilnehmer> ergebnis;
-		ergebnis = new LinkedHashSet <Teilnehmer>();
+	public List <Teilnehmer> habenZweitWunsch(int gegenstand) {
+		List <Teilnehmer> ergebnis;
+		ergebnis = new ArrayList <Teilnehmer>();
 		for (Teilnehmer teste : teilnehmer) {
 			if (gegenstand == teste.zweitWunsch()) {
 				ergebnis.add(teste);
@@ -255,9 +255,9 @@ public class Klasse {
 	 *            Das, was man sich als {@link Teilnehmer} als zweitWunsch wünschen muss, um hier zurückgegeben zu werden.
 	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als zweitWunsch haben, sortiert nach der {@link Teilnehmer#nummer()} der {@link Teilnehmer}.
 	 */
-	public Set <Teilnehmer> habenZweitWunsch(int gegenstand, Set <Integer> ignore) {
-		Set <Teilnehmer> ergebnis;
-		ergebnis = new LinkedHashSet <Teilnehmer>();
+	public List <Teilnehmer> habenZweitWunsch(int gegenstand, Set <Integer> ignore) {
+		List <Teilnehmer> ergebnis;
+		ergebnis = new ArrayList <Teilnehmer>();
 		for (Teilnehmer teste : teilnehmer) {
 			if ( !ignore.contains(teste.drittWunsch()) && gegenstand == teste.zweitWunsch()) {
 				ergebnis.add(teste);
@@ -273,9 +273,9 @@ public class Klasse {
 	 *            Das, was man sich als {@link Teilnehmer} als drittWunsch wünschen muss, um hier zurückgegeben zu werden.
 	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als drittWunsch haben, sortiert nach der {@link Teilnehmer#nummer()} der {@link Teilnehmer}.
 	 */
-	public Set <Teilnehmer> habenDrittWunsch(int gegenstand) {
-		Set <Teilnehmer> ergebnis;
-		ergebnis = new LinkedHashSet <Teilnehmer>();
+	public List <Teilnehmer> habenDrittWunsch(int gegenstand) {
+		List <Teilnehmer> ergebnis;
+		ergebnis = new ArrayList <Teilnehmer>();
 		for (Teilnehmer teste : teilnehmer) {
 			if (gegenstand == teste.drittWunsch()) {
 				ergebnis.add(teste);
@@ -293,9 +293,9 @@ public class Klasse {
 	 *            Das, was man sich als {@link Teilnehmer} als drittWunsch wünschen muss, um hier zurückgegeben zu werden.
 	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als drittWunsch haben, sortiert nach der {@link Teilnehmer#nummer()} der {@link Teilnehmer}.
 	 */
-	public Set <Teilnehmer> habenDrittWunsch(int gegenstand, Set <Integer> ignore1, Set <Integer> ignore2) {
-		Set <Teilnehmer> ergebnis;
-		ergebnis = new LinkedHashSet <Teilnehmer>();
+	public List <Teilnehmer> habenDrittWunsch(int gegenstand, Set <Integer> ignore1, Set <Integer> ignore2) {
+		List <Teilnehmer> ergebnis;
+		ergebnis = new ArrayList <Teilnehmer>();
 		for (Teilnehmer teste : ergebnis) {
 			if ( !ignore1.contains(teste.drittWunsch()) && !ignore2.contains(teste.drittWunsch()) && gegenstand == teste.drittWunsch()) {
 				ergebnis.add(teste);
