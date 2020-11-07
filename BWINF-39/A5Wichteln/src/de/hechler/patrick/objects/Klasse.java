@@ -237,7 +237,7 @@ public class Klasse {
 	public List <Teilnehmer> habenZweitWunsch(int gegenstand) {
 		List <Teilnehmer> ergebnis;
 		ergebnis = new ArrayList <Teilnehmer>();
-		for (Teilnehmer teste : ergebnis) {
+		for (Teilnehmer teste : teilnehmer) {
 			if (gegenstand == teste.zweitWunsch()) {
 				ergebnis.add(teste);
 			}
@@ -256,7 +256,7 @@ public class Klasse {
 	public List <Teilnehmer> habenZweitWunsch(int gegenstand, Set <Integer> ignore) {
 		List <Teilnehmer> ergebnis;
 		ergebnis = new ArrayList <Teilnehmer>();
-		for (Teilnehmer teste : ergebnis) {
+		for (Teilnehmer teste : teilnehmer) {
 			if ( !ignore.contains(teste.drittWunsch()) && gegenstand == teste.zweitWunsch()) {
 				ergebnis.add(teste);
 			}
@@ -274,7 +274,7 @@ public class Klasse {
 	public List <Teilnehmer> habenDrittWunsch(int gegenstand) {
 		List <Teilnehmer> ergebnis;
 		ergebnis = new ArrayList <Teilnehmer>();
-		for (Teilnehmer teste : ergebnis) {
+		for (Teilnehmer teste : teilnehmer) {
 			if (gegenstand == teste.drittWunsch()) {
 				ergebnis.add(teste);
 			}
