@@ -11,11 +11,17 @@ import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.VerteilungsGenerator;
 
 
+/**
+ * Optimizes the {@link BruthForceVerteilungsGenerator} and iterates only to the {@link Verteilung}, which can be the best
+ * 
+ * @author Patrick
+ *
+ */
 public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 	
 	private int deep;
 	private int cnt;
-	private int index;
+	private int highPos;
 	private Verteilung fest;
 	private Set <Integer> erst;
 	private Set <Integer> zweit;
@@ -28,7 +34,7 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 	protected OptimizedVertilungsGenerator(Klasse klasse) {
 		super(klasse, false);
 		this.fest = new Verteilung(klasse.size(), false);
-		this.cnt = -1;
+		this.cnt = 0;
 	}
 	
 	
@@ -67,6 +73,25 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 		}
 		verteilung.fillRest();
 		deep = 3;
+		for (int i = klasse.size(); i > 0; i -- ) {
+			if (dritt.contains(i)) {
+				highPos = i;
+			}
+		}
+		if (highPos == 0) {
+			for (int i = klasse.size(); i > 0; i -- ) {
+				if (zweit.contains(i)) {
+					highPos = i;
+				}
+			}
+		}
+		if (highPos == 0) {
+			for (int i = klasse.size(); i > 0; i -- ) {
+				if (erst.contains(i)) {
+					highPos = i;
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -74,8 +99,57 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 		return puffer = (next() != null);
 	}
 	
+	
 	@Override
 	public Verteilung next() {
+		if (checkPuffer()) {
+			return verteilung;
+		}
+		Set <Integer> allowed;
+		int neu;
+		int alt;
+		switch (deep) {
+		case 1:
+			allowed = erst;
+			// TODO init highPos
+			
+			break;
+		case 2:
+			allowed = zweit;
+			// TODO init highPos
+			
+			break;
+		case 3:
+			allowed = dritt;
+			// TODO init highPos
+			
+			break;
+		default:
+			throw new RuntimeException("unknown deep! (pherhaps the load method has not been called)");
+		}
+		neu = alt = verteilung.get(highPos);
+		while (true) {
+			if (neu >= klasse.size()) {
+				verteilung.set(highPos, alt);
+				// TODO low highPos
+				neu = alt = verteilung.get(highPos);
+			}
+			// TODO high neu
+			verteilung.set(highPos, neu);
+			// TODO rebuild
+		}
+	}
+	
+	
+	private boolean checkPuffer() {
+		if (puffer) {
+			return puffer = false;
+		}
+		return false;
+	}
+	
+	@Deprecated
+	public Verteilung nextOld() {
 		if (puffer) {
 			puffer = false;
 			return verteilung;
@@ -101,7 +175,7 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 				}
 			}
 			alteNummer = verteilung.get(nummer);
-			verteilung.set(nummer, alteNummer + klasse.habenErstWunsch(nummer).get(index).nummer());
+			verteilung.set(nummer, alteNummer + klasse.habenErstWunsch(nummer).get(highPos).nummer());
 			rebuild(nummer, alteNummer);
 			break;
 		case 2:
@@ -123,7 +197,7 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 				}
 			}
 			alteNummer = verteilung.get(nummer);
-			verteilung.set(nummer, alteNummer + klasse.habenZweitWunsch(nummer, erst).get(index).nummer());
+			verteilung.set(nummer, alteNummer + klasse.habenZweitWunsch(nummer, erst).get(highPos).nummer());
 			rebuild(nummer, alteNummer);
 			break;
 		case 3:
@@ -145,7 +219,7 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 				}
 			}
 			alteNummer = verteilung.get(nummer);
-			verteilung.set(nummer, alteNummer + klasse.habenDrittWunsch(nummer, erst, zweit).get(index).nummer());
+			verteilung.set(nummer, alteNummer + klasse.habenDrittWunsch(nummer, erst, zweit).get(highPos).nummer());
 			rebuild(nummer, alteNummer);
 			break;
 		default:
