@@ -1,16 +1,12 @@
 package de.hechler.patrick.objects.generatorenimpl;
 
-import java.lang.RuntimeException;
 import java.util.HashSet;
-import java.util.TreeSet;
 import java.util.NavigableSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.LoadableVerteilungsGenerator;
-import de.hechler.patrick.objects.Teilnehmer;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.VerteilungsGenerator;
 

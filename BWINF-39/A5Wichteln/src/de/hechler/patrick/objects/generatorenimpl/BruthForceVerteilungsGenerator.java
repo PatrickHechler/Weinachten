@@ -3,7 +3,6 @@ package de.hechler.patrick.objects.generatorenimpl;
 import de.hechler.patrick.objects.DiffrentFirstVerteilungsGenerator;
 import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.Verteilung;
-import de.hechler.patrick.objects.VerteilungsGenerator;
 
 public class BruthForceVerteilungsGenerator extends DiffrentFirstVerteilungsGenerator {
 	
