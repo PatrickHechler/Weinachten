@@ -14,7 +14,7 @@ import de.hechler.patrick.objects.Teilnehmer;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.VerteilungsGenerator;
 
-	
+
 public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 	
 	private int deep;
@@ -43,9 +43,9 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 		zweit = new HashSet <Integer>();
 		dritt = new HashSet <Integer>();
 		Set <Integer> einzelnErstWunsch = klasse.einzelnErstWunsch();
-		frei = new HashSet<Integer>();
-		for(int i = 1; i <= klasse.size();i++){
-			frei.add(i);	
+		frei = new HashSet <Integer>();
+		for (int i = 1; i <= klasse.size(); i ++ ) {
+			frei.add(i);
 		}
 		for (Integer festlegen : einzelnErstWunsch) {
 			verteilung.set(festlegen, klasse.teilnehmer(festlegen).erstWunsch());
@@ -80,28 +80,28 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 	
 	@Override
 	public Verteilung next() {
-		if (puffer){
+		if (puffer) {
 			puffer = false;
 			return verteilung;
 		}
 		int alteNummer;
 		int nummer;
-		switch(deep){
+		switch (deep) {
 		case 1:
-			while(true){
+			while (true) {
 				int cnt = 0;
-				this.cnt ++;
-				for (nummer = 1; nummer <= klasse.size(); nummer ++) {
-					if (klasse.habenErstWunsch(nummer).size() > 1){
-						cnt ++;
-						if (cnt == this.cnt){
+				this.cnt ++ ;
+				for (nummer = 1; nummer <= klasse.size(); nummer ++ ) {
+					if (klasse.habenErstWunsch(nummer).size() > 1) {
+						cnt ++ ;
+						if (cnt == this.cnt) {
 							break;
 						}
 					}
 				}
-				if (cnt == this.cnt)break;
-				else if(cnt > this.cnt){
-					return null;//gibt keine weitere Verteilung mehr
+				if (cnt == this.cnt) break;
+				else if (cnt > this.cnt) {
+					return null;// gibt keine weitere Verteilung mehr
 				}
 			}
 			alteNummer = verteilung.get(nummer);
@@ -109,41 +109,41 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 			rebuild(nummer, alteNummer);
 			break;
 		case 2:
-			while(true){
+			while (true) {
 				int cnt = 0;
-				this.cnt ++;
-				for (nummer = 1; nummer <= klasse.size(); nummer ++) {
-					if (klasse.habenZweitWunsch(nummer,erst).size() > 1){
-						cnt ++;
-						if (cnt == this.cnt){
+				this.cnt ++ ;
+				for (nummer = 1; nummer <= klasse.size(); nummer ++ ) {
+					if (klasse.habenZweitWunsch(nummer, erst).size() > 1) {
+						cnt ++ ;
+						if (cnt == this.cnt) {
 							break;
 						}
 					}
 				}
 				if (cnt == this.cnt) break;
-				else if(cnt > this.cnt){
+				else if (cnt > this.cnt) {
 					deep = 1;
 					return next();
 				}
 			}
 			alteNummer = verteilung.get(nummer);
-			verteilung.set(nummer, alteNummer + klasse.habenZweitWunsch(nummer,erst).get(index).nummer());
+			verteilung.set(nummer, alteNummer + klasse.habenZweitWunsch(nummer, erst).get(index).nummer());
 			rebuild(nummer, alteNummer);
 			break;
 		case 3:
-			while(true){
+			while (true) {
 				int cnt = 0;
-				this.cnt ++;
-				for (nummer = 1; nummer <= klasse.size(); nummer ++) {
-					if (klasse.habenDrittWunsch(nummer, erst, zweit).size() > 1){
-						cnt ++;
-						if (cnt == this.cnt){
+				this.cnt ++ ;
+				for (nummer = 1; nummer <= klasse.size(); nummer ++ ) {
+					if (klasse.habenDrittWunsch(nummer, erst, zweit).size() > 1) {
+						cnt ++ ;
+						if (cnt == this.cnt) {
 							break;
 						}
 					}
 				}
 				if (cnt == this.cnt) break;
-				else if(cnt > this.cnt){
+				else if (cnt > this.cnt) {
 					deep = 2;
 					return next();
 				}
@@ -158,98 +158,39 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 		return verteilung;
 	}
 	
-	private void rebuild(int startNummer, int alteWunschNummer) {
-		while (true){
-			NavigableSet<Integer> benutzbar = new TreeSet<Integer>();
-			Set<Integer> tester;
-			switch (deep){
-				case 1:
-					tester = erst;
-					break;
-				case 2:
-					tester = zweit;
-					break;
-				case 3:
-					tester = dritt;
-					break;
-				default:
-					throw new RuntimeException("Unbekannte Tiefe");
+	protected void rebuild(int startNummer, int alteWunschNummer) {
+		while (true) {
+			NavigableSet <Integer> benutzbar = new TreeSet <Integer>();
+			Set <Integer> tester;
+			switch (deep) {
+			case 1:
+				tester = erst;
+				break;
+			case 2:
+				tester = zweit;
+				break;
+			case 3:
+				tester = dritt;
+				break;
+			default:
+				throw new RuntimeException("Unbekannte Tiefe");
 			}
 			benutzbar.add(alteWunschNummer);
-			for (int i = startNummer+1;i <= klasse.size(); i++){
-				if (tester.contains(verteilung.get(i))){
+			for (int i = startNummer + 1; i <= klasse.size(); i ++ ) {
+				if (tester.contains(verteilung.get(i))) {
 					benutzbar.add(i);
 				}
 			}
-			for (int i = startNummer + 1, use = -1; i <=klasse.size(); i++){
-				if (tester.contains(verteilung.get(i))){
+			for (int i = startNummer + 1, use = -1; i <= klasse.size(); i ++ ) {
+				if (tester.contains(verteilung.get(i))) {
 					use = benutzbar.higher(use);
-					verteilung.set(i,use);
+					verteilung.set(i, use);
 				}
 			}
-			if (deep > 1){
-				deep --;
+			if (deep > 1) {
+				deep -- ;
 			} else return;
 		}
-	}
-	
-	/**
-	 * findeett gganz  ssicheer niichtt alle VVerteilungen
-	*/
-	public Verteilung nextOld() {
-		if (puffer) {
-			puffer = false;
-			return verteilung;
-		}
-		for (int i = 1; i <= klasse.size(); i ++ ) {
-			List <Teilnehmer> durchgehen = klasse.habenErstWunsch(i);
-			int nummer = verteilung.get(i);
-			for (int j = 0; j < durchgehen.size(); j ++ ) {
-				if (durchgehen.get(j).nummer() > nummer) {
-					verteilung.set(i, durchgehen.get(j).nummer());
-				}
-			}
-		}
-		for (int i = 1; i <= klasse.size(); i ++ ) {
-			List <Teilnehmer> durchgehen = klasse.habenZweitWunsch(i, erst);
-			int nummer = verteilung.get(i);
-			for (int j = 0; j < durchgehen.size(); j ++ ) {
-				if (durchgehen.get(j).nummer() > nummer) {
-					verteilung.set(i, durchgehen.get(j).nummer());
-				}
-			}
-		}
-		for (int i = 1; i <= klasse.size(); i ++ ) {
-			List <Teilnehmer> durchgehen = klasse.habenDrittWunsch(i, erst, zweit);
-			int nummer = verteilung.get(i);
-			for (int j = 0; j < durchgehen.size(); j ++ ) {
-				if (durchgehen.get(j).nummer() > nummer) {
-					verteilung.set(i, durchgehen.get(j).nummer());
-				}
-			}
-		}
-		Set <Integer> rest = new HashSet <Integer>();
-		for (int i = 1; i < klasse.size(); i ++ ) {
-			rest.add(i);
-		}
-		for (int i = 1; i < klasse.size(); i ++ ) {
-			if (verteilung.get(i) > 0) {
-				rest.remove(verteilung.get(i));
-			}
-		}
-		Iterator <Integer> iter = rest.iterator();
-		int verteilNummer = 1;
-		while (iter.hasNext()) {
-			int frei = iter.next();
-			while (true) {
-				if (verteilung.get(verteilNummer) <= 0) {
-					verteilung.set(verteilNummer, frei);
-					break;
-				}
-				verteilNummer ++ ;
-			}
-		}
-		return verteilung;
 	}
 	
 	public static void main(String[] args) {
