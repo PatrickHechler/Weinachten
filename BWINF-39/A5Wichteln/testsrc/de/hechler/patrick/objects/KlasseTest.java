@@ -222,14 +222,84 @@ class KlasseTest {
 	
 	@Test
 	void testEinzelnZweitWunschSetOfTeilnehmer() {
+		// 2 4 4 3 2 -> 3
+		Set<Integer> einzelnZweitWunsch = klasse.einzelnZweitWunsch(Collections.emptySet());
+		assertEquals(1, einzelnZweitWunsch.size());
+		assertTrue(einzelnZweitWunsch.contains(3));
+
+		Set<Teilnehmer> ignoreTeilnehmer = new HashSet<>();
+		
+		// 2 4 4 (3) 2  -> -
+		ignoreTeilnehmer.add(klasse.teilnehmer(4));
+		einzelnZweitWunsch = klasse.einzelnZweitWunsch(ignoreTeilnehmer);
+		assertEquals(0, einzelnZweitWunsch.size());
+		
+		// 2 4 (4) 3 2  -> 3 4
+		ignoreTeilnehmer.clear();
+		ignoreTeilnehmer.add(klasse.teilnehmer(3));
+		einzelnZweitWunsch = klasse.einzelnZweitWunsch(ignoreTeilnehmer);
+		assertEquals(2, einzelnZweitWunsch.size());
+		assertTrue(einzelnZweitWunsch.contains(3));
+		assertTrue(einzelnZweitWunsch.contains(4));
+		
+		// (2) (4) (4) 3 2  -> 2 3
+		ignoreTeilnehmer.clear();
+		ignoreTeilnehmer.add(klasse.teilnehmer(1));
+		ignoreTeilnehmer.add(klasse.teilnehmer(2));
+		ignoreTeilnehmer.add(klasse.teilnehmer(3));
+		einzelnZweitWunsch = klasse.einzelnZweitWunsch(ignoreTeilnehmer);
+		assertEquals(2, einzelnZweitWunsch.size());
+		assertTrue(einzelnZweitWunsch.contains(2));
+		assertTrue(einzelnZweitWunsch.contains(3));
+		
+		// (2) (4) (4) (3) (2)  -> -
+		ignoreTeilnehmer.clear();
+		ignoreTeilnehmer.add(klasse.teilnehmer(1));
+		ignoreTeilnehmer.add(klasse.teilnehmer(2));
+		ignoreTeilnehmer.add(klasse.teilnehmer(3));
+		ignoreTeilnehmer.add(klasse.teilnehmer(4));
+		ignoreTeilnehmer.add(klasse.teilnehmer(5));
+		einzelnZweitWunsch = klasse.einzelnZweitWunsch(ignoreTeilnehmer);
+		assertEquals(0, einzelnZweitWunsch.size());
+		
 	}
 
 	@Test
 	void testEinzelnDrittWunschSetOfTeilnehmerSetOfTeilnehmer() {
+		// 3 3 2 2 1 -> 1
+		Set<Integer> einzelnDrittWunsch = klasse.einzelnDrittWunsch(Collections.emptySet(), Collections.emptySet());
+		assertEquals(1, einzelnDrittWunsch.size());
+		assertTrue(einzelnDrittWunsch.contains(1));
+
+		Set<Teilnehmer> ignoreTeilnehmerA = new HashSet<>();
+		Set<Teilnehmer> ignoreTeilnehmerB = new HashSet<>();
+		
+		// 3 (3) 2 <2> 1 -> 1 2 3
+		ignoreTeilnehmerA.add(klasse.teilnehmer(2));
+		ignoreTeilnehmerB.add(klasse.teilnehmer(4));
+		einzelnDrittWunsch = klasse.einzelnDrittWunsch(ignoreTeilnehmerA, ignoreTeilnehmerB);
+		assertEquals(3, einzelnDrittWunsch.size());
+		assertTrue(einzelnDrittWunsch.contains(1));
+		assertTrue(einzelnDrittWunsch.contains(2));
+		assertTrue(einzelnDrittWunsch.contains(3));
+		
+		// 3 (<3>) 2 <2> (1) -> 2 3
+		ignoreTeilnehmerA.clear();
+		ignoreTeilnehmerB.clear();
+		ignoreTeilnehmerA.add(klasse.teilnehmer(2));
+		ignoreTeilnehmerA.add(klasse.teilnehmer(5));
+		ignoreTeilnehmerB.add(klasse.teilnehmer(2));
+		ignoreTeilnehmerB.add(klasse.teilnehmer(4));
+		einzelnDrittWunsch = klasse.einzelnDrittWunsch(ignoreTeilnehmerA, ignoreTeilnehmerB);
+		assertEquals(2, einzelnDrittWunsch.size());
+		assertTrue(einzelnDrittWunsch.contains(2));
+		assertTrue(einzelnDrittWunsch.contains(3));
+		
 	}
 
 	@Test
 	void testBewerte() {
+		
 	}
 
 }
