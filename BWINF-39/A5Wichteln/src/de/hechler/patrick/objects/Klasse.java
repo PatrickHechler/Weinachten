@@ -267,7 +267,8 @@ public class Klasse {
 	/**
 	 * Gibt alle {@link Teilnehmer} zurück, welche sich {@code gegenstandsNummer} als zweitWunsch wünschen.
 	 * 
-	 * @param ignore Alle {@link Teilnehmer}, die definitiv nicht zurückgegeben werden.
+	 * @param ignore
+	 *            Alle {@link Teilnehmer}, die definitiv nicht zurückgegeben werden.
 	 * @param gegenstandsNummer
 	 *            Der Gegenstand, welcher sich ein {@link Teilnehmer} wünschen muss um hier zurückgegeben zu werden
 	 * @return alle {@link Teilnehmer}, welche sich {@code gegenstandsNummer} als zweitWunsch wünschen.
@@ -277,6 +278,126 @@ public class Klasse {
 		ergebnis = new ArrayList <Teilnehmer>();
 		for (Teilnehmer teste : teilnehmer) {
 			if (gegenstandsNummer == teste.zweitWunsch() && !ignore.contains(teste)) {
+				ergebnis.add(teste);
+			}
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle Wunschnummern zurück, welche als drittWunsch auftauchen.
+	 * 
+	 * @return Alle Wunschnummern, die als drittWunsch in dieser {@link Klasse} existieren.
+	 */
+	public Set <Integer> drittWunsch() {
+		Set <Integer> ergebnis;
+		ergebnis = new TreeSet <Integer>();
+		for (Teilnehmer teste : teilnehmer) {
+			ergebnis.add(teste.drittWunsch());
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle Wunschnummern zurück, welche als drittWunsch auftauchen.
+	 * 
+	 * @return Alle Wunschnummern, die als drittWunsch in dieser {@link Klasse} existieren.
+	 */
+	public Set <Integer> drittWunsch(Set <Integer> ignore1, Set <Integer> ignore2) {
+		Set <Integer> ergebnis;
+		ergebnis = new TreeSet <Integer>();
+		for (Teilnehmer teste : teilnehmer) {
+			int drittWunsch = teste.drittWunsch();
+			if ( ! (ignore1.contains(drittWunsch) || ignore2.contains(drittWunsch))) {
+				ergebnis.add(drittWunsch);
+			}
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle Wunschnummern zurück, welche genau einmal als drittWunsch gewünscht werden.
+	 * 
+	 * @return Alle Wunschnummern, welche genau einmal als drittWunsch gewünscht werden.
+	 */
+	public Set <Integer> einzelnDrittWunsch() {
+		Set <Integer> tester;
+		Set <Integer> ergebnis;
+		tester = new HashSet <Integer>();
+		ergebnis = new TreeSet <Integer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if ( !tester.contains(teste.drittWunsch())) {
+				tester.add(teste.drittWunsch());
+				ergebnis.add(teste.drittWunsch());
+			} else {
+				ergebnis.remove(teste.drittWunsch());
+			}
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle {@link Teilnehmer} zurück, die die einzigen sind, welche sich den Gegenstand ihres drittWunsches als drittWunsch wünschen.
+	 * 
+	 * @return Alle {@link Teilnehmer}, die die einzigen sind, welche sich den Gegenstand ihres drittWunsches als drittWunsch wünschen.
+	 */
+	public List <Teilnehmer> einzelnDrittWunschTeilnehmer() {
+		Set <Integer> tester;
+		Set <Integer> merker;
+		List <Teilnehmer> ergebnis;
+		tester = new HashSet <Integer>();
+		merker = new HashSet <Integer>();
+		ergebnis = new ArrayList <Teilnehmer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if ( !tester.contains(teste.drittWunsch())) {
+				tester.add(teste.drittWunsch());
+				merker.add(teste.drittWunsch());
+			} else {
+				merker.remove(teste.drittWunsch());
+			}
+		}
+		for (Teilnehmer teste : ergebnis) {
+			if (merker.contains(teste.zweitWunsch())) {
+				ergebnis.add(teste);
+			}
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle {@link Teilnehmer} zurück, welche sich {@code gegenstandsNummer} als drittWunsch wünschen.
+	 * 
+	 * @param gegenstandsNummer
+	 *            Der Gegenstand, welcher sich ein {@link Teilnehmer} wünschen muss um hier zurückgegeben zu werden
+	 * @return alle {@link Teilnehmer}, welche sich {@code gegenstandsNummer} als drittWunsch wünschen.
+	 */
+	public List <Teilnehmer> drittWunschVon(int gegenstandsNummer) {
+		List <Teilnehmer> ergebnis;
+		ergebnis = new ArrayList <Teilnehmer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if (gegenstandsNummer == teste.drittWunsch()) {
+				ergebnis.add(teste);
+			}
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle {@link Teilnehmer} zurück, welche sich {@code gegenstandsNummer} als drittWunsch wünschen.
+	 * 
+	 * @param ignore1
+	 *            {@link Teilnehmer}, die definitiv nicht zurückgegeben werden.
+	 * @param ignore2
+	 *            {@link Teilnehmer}, die definitiv nicht zurückgegeben werden.
+	 * @param gegenstandsNummer
+	 *            Der Gegenstand, welcher sich ein {@link Teilnehmer} wünschen muss um hier zurückgegeben zu werden
+	 * @return alle {@link Teilnehmer}, welche sich {@code gegenstandsNummer} als drittWunsch wünschen.
+	 */
+	public List <Teilnehmer> drittWunschVon(int gegenstandsNummer, Set <Teilnehmer> ignore1, Set <Teilnehmer> ignore2) {
+		List <Teilnehmer> ergebnis;
+		ergebnis = new ArrayList <Teilnehmer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if (gegenstandsNummer == teste.drittWunsch() && !ignore1.contains(teste) && !ignore2.contains(teste)) {
 				ergebnis.add(teste);
 			}
 		}
