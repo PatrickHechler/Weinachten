@@ -3,6 +3,7 @@ package de.hechler.patrick.objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,6 +25,12 @@ class KlasseTest {
 			+ "5 3 2\n"
 			+ "5 2 1\n";
 	
+	private final static String dreierKlasse = 
+			  "3\n"
+			+ "1 2 3\n"
+			+ "1 2 3\n"
+			+ "1 2 3\n";
+
 	private final static String viererKlasse = 
 			  "4\n"
 			+ "1 2 3\n"
@@ -91,6 +98,12 @@ class KlasseTest {
 	@Test
 	void testSize() {
 		assertEquals(5,  klasse.size());
+		klasse = Klasse.lade(new ByteArrayInputStream(sechserKlasse.getBytes()));
+		assertEquals(6,  klasse.size());
+		klasse = Klasse.lade(new ByteArrayInputStream(viererKlasse.getBytes()));
+		assertEquals(4,  klasse.size());
+		klasse = Klasse.lade(new ByteArrayInputStream(dreierKlasse.getBytes()));
+		assertEquals(3,  klasse.size());
 	}
 
 	@Test
@@ -118,6 +131,10 @@ class KlasseTest {
 		klasse = Klasse.lade(new ByteArrayInputStream(viererKlasse.getBytes()));
 		erstWuensche = klasse.einzelnErstWunsch();
 		assertEquals(0, erstWuensche.size());
+		
+		klasse = Klasse.lade(new ByteArrayInputStream(dreierKlasse.getBytes()));
+		erstWuensche = klasse.einzelnErstWunsch();
+		assertEquals(0, erstWuensche.size());
 	}
 
 	@Test
@@ -133,6 +150,10 @@ class KlasseTest {
 		klasse = Klasse.lade(new ByteArrayInputStream(viererKlasse.getBytes()));
 		zweitWuensche = klasse.einzelnZweitWunsch();
 		assertEquals(0, zweitWuensche.size());
+		
+		klasse = Klasse.lade(new ByteArrayInputStream(dreierKlasse.getBytes()));
+		zweitWuensche = klasse.einzelnZweitWunsch();
+		assertEquals(0, zweitWuensche.size());
 	}
 
 	@Test
@@ -146,6 +167,10 @@ class KlasseTest {
 		assertEquals(6, drittWuensche.size());
 
 		klasse = Klasse.lade(new ByteArrayInputStream(viererKlasse.getBytes()));
+		drittWuensche = klasse.einzelnDrittWunsch();
+		assertEquals(0, drittWuensche.size());
+		
+		klasse = Klasse.lade(new ByteArrayInputStream(dreierKlasse.getBytes()));
 		drittWuensche = klasse.einzelnDrittWunsch();
 		assertEquals(0, drittWuensche.size());
 	}
@@ -197,14 +222,84 @@ class KlasseTest {
 	
 	@Test
 	void testEinzelnZweitWunschSetOfTeilnehmer() {
+		// 2 4 4 3 2 -> 3
+		Set<Integer> einzelnZweitWunsch = klasse.einzelnZweitWunsch(Collections.emptySet());
+		assertEquals(1, einzelnZweitWunsch.size());
+		assertTrue(einzelnZweitWunsch.contains(3));
+
+		Set<Teilnehmer> ignoreTeilnehmer = new HashSet<>();
+		
+		// 2 4 4 (3) 2  -> -
+		ignoreTeilnehmer.add(klasse.teilnehmer(4));
+		einzelnZweitWunsch = klasse.einzelnZweitWunsch(ignoreTeilnehmer);
+		assertEquals(0, einzelnZweitWunsch.size());
+		
+		// 2 4 (4) 3 2  -> 3 4
+		ignoreTeilnehmer.clear();
+		ignoreTeilnehmer.add(klasse.teilnehmer(3));
+		einzelnZweitWunsch = klasse.einzelnZweitWunsch(ignoreTeilnehmer);
+		assertEquals(2, einzelnZweitWunsch.size());
+		assertTrue(einzelnZweitWunsch.contains(3));
+		assertTrue(einzelnZweitWunsch.contains(4));
+		
+		// (2) (4) (4) 3 2  -> 2 3
+		ignoreTeilnehmer.clear();
+		ignoreTeilnehmer.add(klasse.teilnehmer(1));
+		ignoreTeilnehmer.add(klasse.teilnehmer(2));
+		ignoreTeilnehmer.add(klasse.teilnehmer(3));
+		einzelnZweitWunsch = klasse.einzelnZweitWunsch(ignoreTeilnehmer);
+		assertEquals(2, einzelnZweitWunsch.size());
+		assertTrue(einzelnZweitWunsch.contains(2));
+		assertTrue(einzelnZweitWunsch.contains(3));
+		
+		// (2) (4) (4) (3) (2)  -> -
+		ignoreTeilnehmer.clear();
+		ignoreTeilnehmer.add(klasse.teilnehmer(1));
+		ignoreTeilnehmer.add(klasse.teilnehmer(2));
+		ignoreTeilnehmer.add(klasse.teilnehmer(3));
+		ignoreTeilnehmer.add(klasse.teilnehmer(4));
+		ignoreTeilnehmer.add(klasse.teilnehmer(5));
+		einzelnZweitWunsch = klasse.einzelnZweitWunsch(ignoreTeilnehmer);
+		assertEquals(0, einzelnZweitWunsch.size());
+		
 	}
 
 	@Test
 	void testEinzelnDrittWunschSetOfTeilnehmerSetOfTeilnehmer() {
+		// 3 3 2 2 1 -> 1
+		Set<Integer> einzelnDrittWunsch = klasse.einzelnDrittWunsch(Collections.emptySet(), Collections.emptySet());
+		assertEquals(1, einzelnDrittWunsch.size());
+		assertTrue(einzelnDrittWunsch.contains(1));
+
+		Set<Teilnehmer> ignoreTeilnehmerA = new HashSet<>();
+		Set<Teilnehmer> ignoreTeilnehmerB = new HashSet<>();
+		
+		// 3 (3) 2 <2> 1 -> 1 2 3
+		ignoreTeilnehmerA.add(klasse.teilnehmer(2));
+		ignoreTeilnehmerB.add(klasse.teilnehmer(4));
+		einzelnDrittWunsch = klasse.einzelnDrittWunsch(ignoreTeilnehmerA, ignoreTeilnehmerB);
+		assertEquals(3, einzelnDrittWunsch.size());
+		assertTrue(einzelnDrittWunsch.contains(1));
+		assertTrue(einzelnDrittWunsch.contains(2));
+		assertTrue(einzelnDrittWunsch.contains(3));
+		
+		// 3 (<3>) 2 <2> (1) -> 2 3
+		ignoreTeilnehmerA.clear();
+		ignoreTeilnehmerB.clear();
+		ignoreTeilnehmerA.add(klasse.teilnehmer(2));
+		ignoreTeilnehmerA.add(klasse.teilnehmer(5));
+		ignoreTeilnehmerB.add(klasse.teilnehmer(2));
+		ignoreTeilnehmerB.add(klasse.teilnehmer(4));
+		einzelnDrittWunsch = klasse.einzelnDrittWunsch(ignoreTeilnehmerA, ignoreTeilnehmerB);
+		assertEquals(2, einzelnDrittWunsch.size());
+		assertTrue(einzelnDrittWunsch.contains(2));
+		assertTrue(einzelnDrittWunsch.contains(3));
+		
 	}
 
 	@Test
 	void testBewerte() {
+		
 	}
 
 }
