@@ -2,10 +2,6 @@ package de.hechler.patrick.objects;
 
 public abstract class LoadableVerteilungsGenerator extends VerteilungsGenerator {
 	
-	protected boolean loaded;
-	
-	
-	
 	protected LoadableVerteilungsGenerator(Klasse klasse, boolean richtigeStartVerteilung) {
 		super(klasse, richtigeStartVerteilung);
 	}
@@ -14,10 +10,7 @@ public abstract class LoadableVerteilungsGenerator extends VerteilungsGenerator 
 	
 	@Override
 	public Verteilung besteVerbleibende() {
-		if ( !loaded) {
-			load();
-			loaded = true;
-		}
+		load();
 		return super.besteVerbleibende();
 	}
 	

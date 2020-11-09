@@ -1,6 +1,6 @@
 package de.hechler.patrick.objects;
 
-public class Teilnehmer {
+public class Teilnehmer implements Comparable <Teilnehmer> {
 	
 	/**
 	 * speichert die nummer des {@link Teilnehmer}s.
@@ -97,11 +97,18 @@ public class Teilnehmer {
 	 * 
 	 * @implNote Gibt das gleiche zurück, wie: <br>
 	 *           <code>T[#" + {@link #nummer} + ":" + {@link #erstWunsch()} + "," + {@link #zweitWunsch()} + "," + {@link #drittWunsch()} + "]"</code>
-	 *           @return Diesen {@link Teilnehmer} als String
+	 * @return Diesen {@link Teilnehmer} als String
 	 */
 	@Override
 	public String toString() {
 		return "T[#" + nummer + ":" + wunsch[0] + "," + wunsch[1] + "," + wunsch[2] + "]";
+	}
+	
+	
+	
+	@Override
+	public int compareTo(Teilnehmer other) {
+		return Integer.compare(nummer, other.nummer);
 	}
 	
 }

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Klasse {
 	
@@ -80,7 +81,7 @@ public class Klasse {
 		}
 		throw new IndexOutOfBoundsException(check);
 	}
-
+	
 	/**
 	 * Gibt die Anzahl an {@link Teilnehmer}n dieser {@link Klasse} zurück.
 	 * 
@@ -102,18 +103,116 @@ public class Klasse {
 	}
 	
 	/**
+	 * Gibt alle Wunschnummern zurück, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
+	 * 
+	 * @return Alle {@link Teilnehmer}, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
+	 */
+	public Set <Integer> erstWunsch() {
+		Set <Integer> ergebnis;
+		ergebnis = new TreeSet <Integer>();
+		for (Teilnehmer teste : teilnehmer) {
+			ergebnis.add(teste.erstWunsch());
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle Wunschnummern zurück, welche als erstWunsch auftauchen.
+	 * 
+	 * @return Alle Wunschnummern, die als erstWunsch in dieser {@link Klasse} existieren.
+	 */
+	public Set <Integer> einzelnErstWunsch() {
+		Set <Integer> tester;
+		Set <Integer> ergebnis;
+		tester = new HashSet <Integer>();
+		ergebnis = new TreeSet <Integer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if ( !tester.contains(teste.erstWunsch())) {
+				tester.add(teste.erstWunsch());
+				ergebnis.add(teste.erstWunsch());
+			} else {
+				ergebnis.remove(teste.erstWunsch());
+			}
+		}
+		return ergebnis;
+	}
+	
+	/**
 	 * Gibt alle {@link Teilnehmer} zurück, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
 	 * 
 	 * @return Alle {@link Teilnehmer}, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
 	 */
-	public Set <Integer> einzelnErstWunsch() {
-		Set <Integer> ergebnis;
-		ergebnis = new HashSet <Integer>();
+	public List <Teilnehmer> einzelnErstWunschTeilnehmer() {
+		Set <Integer> tester;
+		Set <Integer> merker;
+		List <Teilnehmer> ergebnis;
+		tester = new HashSet <Integer>();
+		merker = new HashSet <Integer>();
+		ergebnis = new ArrayList <Teilnehmer>();
 		for (Teilnehmer teste : teilnehmer) {
-			if (ergebnis.contains(teste.erstWunsch())) {
-				ergebnis.remove(teste.erstWunsch());
+			if ( !tester.contains(teste.erstWunsch())) {
+				tester.add(teste.erstWunsch());
+				merker.add(teste.erstWunsch());
 			} else {
-				ergebnis.add(teste.erstWunsch());
+				merker.remove(teste.erstWunsch());
+			}
+		}
+		for (Teilnehmer teste : ergebnis) {
+			if (merker.contains(teste.erstWunsch())) {
+				ergebnis.add(teste);
+			}
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle {@link Teilnehmer} zurück, welche sich {@code gegenstandsNummer} als erstWunsch wünschen.
+	 * 
+	 * @param gegenstandsNummer
+	 *            Der Gegenstand, welcher sich ein {@link Teilnehmer} wünschen muss um hier zurückgegeben zu werden
+	 * @return alle {@link Teilnehmer}, welche sich {@code gegenstandsNummer} als erstWunsch wünschen.
+	 */
+	public List <Teilnehmer> erstWunschVon(int gegenstandsNummer) {
+		List <Teilnehmer> ergebnis;
+		ergebnis = new ArrayList <Teilnehmer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if (gegenstandsNummer == teste.erstWunsch()) {
+				ergebnis.add(teste);
+			}
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle Wunschnummern zurück, welche als zweitWunsch auftauchen.
+	 * 
+	 * @return Alle Wunschnummern, die als zweitWunsch in dieser {@link Klasse} existieren.
+	 */
+	public Set <Integer> zweitWunsch() {
+		Set <Integer> ergebnis;
+		ergebnis = new TreeSet <Integer>();
+		for (Teilnehmer teste : teilnehmer) {
+			ergebnis.add(teste.zweitWunsch());
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle Wunschnummern zurück, die die einzigen sind, welche sich den Gegenstand ihres zweitWunsches als zweitWunsch wünschen.
+	 * 
+	 * @return Alle Wunschnummern, die die einzigen sind, welche sich den Gegenstand ihres zweitWunsches als zweitWunsch wünschen.
+	 */
+	public Set <Integer> einzelnZweitWunsch() {
+		Set <Integer> tester;
+		Set <Integer> ergebnis;
+		tester = new HashSet <Integer>();
+		ergebnis = new TreeSet <Integer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if ( !tester.contains(teste.zweitWunsch())) {
+				tester.add(teste.zweitWunsch());
+				ergebnis.add(teste.zweitWunsch());
+			} else {
+				ergebnis.remove(teste.zweitWunsch());
 			}
 		}
 		return ergebnis;
@@ -124,191 +223,64 @@ public class Klasse {
 	 * 
 	 * @return Alle {@link Teilnehmer}, die die einzigen sind, welche sich den Gegenstand ihres zweitWunsches als zweitWunsch wünschen.
 	 */
-	public Set <Integer> einzelnZweitWunsch() {
-		Set <Integer> ergebnis;
-		ergebnis = new HashSet <Integer>();
+	public List <Teilnehmer> einzelnZweitWunschTeilnehmer() {
+		Set <Integer> tester;
+		Set <Integer> merker;
+		List <Teilnehmer> ergebnis;
+		tester = new HashSet <Integer>();
+		merker = new HashSet <Integer>();
+		ergebnis = new ArrayList <Teilnehmer>();
 		for (Teilnehmer teste : teilnehmer) {
-			if (ergebnis.contains(teste.zweitWunsch())) {
-				ergebnis.remove(teste.zweitWunsch());
+			if ( !tester.contains(teste.zweitWunsch())) {
+				tester.add(teste.zweitWunsch());
+				merker.add(teste.zweitWunsch());
 			} else {
-				ergebnis.add(teste.zweitWunsch());
+				merker.remove(teste.zweitWunsch());
 			}
 		}
-		return ergebnis;
-	}
-	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, die die einzigen sind, welche sich den Gegenstand ihres zweitWunsches als zweitWunsch wünschen und nicht in dem {@link Set}
-	 * {@code ignore} enthalten sind.
-	 * 
-	 * @implNote Es muss den gleichen Effekt haben, wie: <br>
-	 *           <code>erg = {@link #einzelnZweitWunsch()}; erg.removeAll(ignore); return erg;</code> <br>
-	 *           (removeAll(ignore) ist aus: {@link java.util.Collection#removeAll(java.util.Collection)})
-	 * 			
-	 * @param ignore
-	 *            speichert alle {@link Teilnehmer}, welche definitiv nicht zurückgegeben werden.
-	 * @return Alle {@link Teilnehmer}, die die einzigen sind, welche sich den Gegenstand ihres zweitWunsches als zweitWunsch wünschen und nicht in dem {@link Set} {@code ignore}
-	 *         enthalten sind.
-	 * 
-	 */
-	public Set <Integer> einzelnZweitWunsch(Set <Teilnehmer> ignore) {
-		Set <Integer> ergebnis;
-		ergebnis = new HashSet <Integer>();
-		for (Teilnehmer teste : teilnehmer) {
-			if ( !ignore.contains(teste)) {
-				if (ergebnis.contains(teste.zweitWunsch())) {
-					ergebnis.remove(teste.zweitWunsch());
-				} else {
-					ergebnis.add(teste.zweitWunsch());
-				}
-			}
-		}
-		return ergebnis;
-	}
-	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
-	 * 
-	 * @return Alle {@link Teilnehmer}, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
-	 */
-	public Set <Integer> einzelnDrittWunsch() {
-		Set <Integer> ergebnis;
-		ergebnis = new HashSet <Integer>();
-		for (Teilnehmer teste : teilnehmer) {
-			if (ergebnis.contains(teste.drittWunsch())) {
-				ergebnis.remove(teste.drittWunsch());
-			} else {
-				ergebnis.add(teste.drittWunsch());
-			}
-		}
-		return ergebnis;
-	}
-	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, die die einzigen sind, welche sich den Gegenstand ihres drittWunsches als drittWunsch wünschen und nicht in dem {@link Set}
-	 * {@code ignore} enthalten sind.
-	 * 
-	 * @implNote Es muss den gleichen Effekt haben, wie: <br>
-	 *           <code>erg = {@link #einzelnDrittWunsch()}; erg.removeAll(ignore1); erg.removeAll(ignore2); return erg;</code> <br>
-	 *           (removeAll(ignore) ist aus: {@link java.util.Collection#removeAll(java.util.Collection)})
-	 * 			
-	 * @param ignore1
-	 *            speichert ein Teil der {@link Teilnehmer}, welche definitiv nicht zurückgegeben werden.
-	 * @param ignore2
-	 *            speichert ein Teil der {@link Teilnehmer}, welche definitiv nicht zurückgegeben werden.
-	 * @return Alle {@link Teilnehmer}, die die einzigen sind, welche sich den Gegenstand ihres drittWunsches als drittWunsch wünschen und nicht in dem {@link Set} {@code ignore1}
-	 *         oder {@code ignore2} enthalten sind.
-	 * 		
-	 */
-	public Set <Integer> einzelnDrittWunsch(Set <Teilnehmer> ignore1, Set <Teilnehmer> ignore2) {
-		Set <Integer> ergebnis;
-		ergebnis = new HashSet <Integer>();
-		for (Teilnehmer teste : teilnehmer) {
-			if ( !ignore1.contains(teste) && !ignore2.contains(teste)) {
-				if (ergebnis.contains(teste.drittWunsch())) {
-					ergebnis.remove(teste.drittWunsch());
-				} else {
-					ergebnis.add(teste.drittWunsch());
-				}
-			}
-		}
-		return ergebnis;
-	}
-	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, die {@code gegenstand} als erstWunsch haben. <br>
-	 * Das Set ist sortiert nach der nummer der {@link Teilnehmer}.
-	 * 
-	 * @param gegenstand
-	 *            Das, was man sich als {@link Teilnehmer} erstWunsch wünschen muss, um hier zurückgegeben zu werden.
-	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als erstWunsch haben , sortiert nach der {@link Teilnehmer#nummer()} der {@link Teilnehmer}.
-	 */
-	public List <Teilnehmer> habenErstWunsch(int gegenstand) {
-		List <Teilnehmer> ergebnis;
-		ergebnis = new ArrayList <Teilnehmer>();
-		for (int i = 0; i < teilnehmer.length; i ++ ) {
-			if (gegenstand == teilnehmer[i].erstWunsch()) {
-				ergebnis.add(teilnehmer[i]);
-			}
-		}
-		return ergebnis;
-	}
-	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, die {@code gegenstand} als zweitWunsch haben <br>
-	 * Das Set ist sortiert nach der nummer der {@link Teilnehmer}.
-	 * 
-	 * @param gegenstand
-	 *            Das, was man sich als {@link Teilnehmer} als zweitWunsch wünschen muss, um hier zurückgegeben zu werden.
-	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als zweitWunsch haben, sortiert nach der {@link Teilnehmer#nummer()} der {@link Teilnehmer}.
-	 */
-	public List <Teilnehmer> habenZweitWunsch(int gegenstand) {
-		List <Teilnehmer> ergebnis;
-		ergebnis = new ArrayList <Teilnehmer>();
-		for (Teilnehmer teste : teilnehmer) {
-			if (gegenstand == teste.zweitWunsch()) {
-				ergebnis.add(teste);
-			}
-		}
-		return ergebnis;
-	}
-	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, die {@code gegenstand} als zweitWunsch haben und sich nicht in dem {@link Set} {@code ignore} befinden.<br>
-	 * Das Set ist sortiert nach der nummer der {@link Teilnehmer}.
-	 * 
-	 * @param gegenstand
-	 *            Das, was man sich als {@link Teilnehmer} als zweitWunsch wünschen muss, um hier zurückgegeben zu werden.
-	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als zweitWunsch haben, sortiert nach der {@link Teilnehmer#nummer()} der {@link Teilnehmer}.
-	 */
-	public List <Teilnehmer> habenZweitWunsch(int gegenstand, Set <Integer> ignore) {
-		List <Teilnehmer> ergebnis;
-		ergebnis = new ArrayList <Teilnehmer>();
-		for (Teilnehmer teste : teilnehmer) {
-			if ( !ignore.contains(teste.drittWunsch()) && gegenstand == teste.zweitWunsch()) {
-				ergebnis.add(teste);
-			}
-		}
-		return ergebnis;
-	}
-	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, die {@code gegenstand} als drittWunsch haben Das Set ist sortiert nach der nummer der {@link Teilnehmer}.
-	 * 
-	 * @param gegenstand
-	 *            Das, was man sich als {@link Teilnehmer} als drittWunsch wünschen muss, um hier zurückgegeben zu werden.
-	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als drittWunsch haben, sortiert nach der {@link Teilnehmer#nummer()} der {@link Teilnehmer}.
-	 */
-	public List <Teilnehmer> habenDrittWunsch(int gegenstand) {
-		List <Teilnehmer> ergebnis;
-		ergebnis = new ArrayList <Teilnehmer>();
-		for (Teilnehmer teste : teilnehmer) {
-			if (gegenstand == teste.drittWunsch()) {
-				ergebnis.add(teste);
-			}
-		}
-		return ergebnis;
-		
-	}
-	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, die {@code gegenstand} als drittWunsch haben und sich nicht in dem {@link Set} {@code ignore1} oder {@code ignore2} befinden <br>
-	 * Das Set ist sortiert nach der nummer der {@link Teilnehmer}.
-	 * 
-	 * @param gegenstand
-	 *            Das, was man sich als {@link Teilnehmer} als drittWunsch wünschen muss, um hier zurückgegeben zu werden.
-	 * @return Alle {@link Teilnehmer}, die {@code gegenstand} als drittWunsch haben, sortiert nach der {@link Teilnehmer#nummer()} der {@link Teilnehmer}.
-	 */
-	public List <Teilnehmer> habenDrittWunsch(int gegenstand, Set <Integer> ignore1, Set <Integer> ignore2) {
-		List <Teilnehmer> ergebnis;
-		ergebnis = new ArrayList <Teilnehmer>();
 		for (Teilnehmer teste : ergebnis) {
-			if ( !ignore1.contains(teste.drittWunsch()) && !ignore2.contains(teste.drittWunsch()) && gegenstand == teste.drittWunsch()) {
+			if (merker.contains(teste.zweitWunsch())) {
 				ergebnis.add(teste);
 			}
 		}
 		return ergebnis;
-		
+	}
+	
+	/**
+	 * Gibt alle {@link Teilnehmer} zurück, welche sich {@code gegenstandsNummer} als zweitWunsch wünschen.
+	 * 
+	 * @param gegenstandsNummer
+	 *            Der Gegenstand, welcher sich ein {@link Teilnehmer} wünschen muss um hier zurückgegeben zu werden
+	 * @return alle {@link Teilnehmer}, welche sich {@code gegenstandsNummer} als zweitWunsch wünschen.
+	 */
+	public List <Teilnehmer> zweitWunschVon(int gegenstandsNummer) {
+		List <Teilnehmer> ergebnis;
+		ergebnis = new ArrayList <Teilnehmer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if (gegenstandsNummer == teste.zweitWunsch()) {
+				ergebnis.add(teste);
+			}
+		}
+		return ergebnis;
+	}
+	
+	/**
+	 * Gibt alle {@link Teilnehmer} zurück, welche sich {@code gegenstandsNummer} als zweitWunsch wünschen.
+	 * 
+	 * @param ignore Alle {@link Teilnehmer}, die definitiv nicht zurückgegeben werden.
+	 * @param gegenstandsNummer
+	 *            Der Gegenstand, welcher sich ein {@link Teilnehmer} wünschen muss um hier zurückgegeben zu werden
+	 * @return alle {@link Teilnehmer}, welche sich {@code gegenstandsNummer} als zweitWunsch wünschen.
+	 */
+	public List <Teilnehmer> zweitWunschVon(int gegenstandsNummer, Set <Teilnehmer> ignore) {
+		List <Teilnehmer> ergebnis;
+		ergebnis = new ArrayList <Teilnehmer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if (gegenstandsNummer == teste.zweitWunsch() && !ignore.contains(teste)) {
+				ergebnis.add(teste);
+			}
+		}
+		return ergebnis;
 	}
 	
 	/**

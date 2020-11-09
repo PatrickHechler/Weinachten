@@ -1,12 +1,17 @@
 package de.hechler.patrick.objects.generatorenimpl;
 
 import java.util.HashSet;
+import java.util.Map;
+import java.util.NavigableMap;
 import java.util.NavigableSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.LoadableVerteilungsGenerator;
+import de.hechler.patrick.objects.Teilnehmer;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.VerteilungsGenerator;
 
@@ -20,12 +25,11 @@ import de.hechler.patrick.objects.VerteilungsGenerator;
 public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 	
 	private int deep;
-	private int cnt;
 	private int highPos;
 	private Verteilung fest;
-	private Set <Integer> erst;
-	private Set <Integer> zweit;
-	private Set <Integer> dritt;
+	private NavigableMap <Integer, Teilnehmer> erst;	//TODO: erst, zweit und dritt kommplett neu machen
+	private NavigableMap <Integer, Teilnehmer> zweit;
+	private NavigableMap <Integer, Teilnehmer> dritt;
 	private Set <Integer> frei;
 	private boolean puffer;
 	
@@ -34,16 +38,15 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 	protected OptimizedVertilungsGenerator(Klasse klasse) {
 		super(klasse, false);
 		this.fest = new Verteilung(klasse.size(), false);
-		this.cnt = 0;
 	}
 	
 	
 	
 	@Override
 	public void load() {
-		erst = new HashSet <Integer>();
-		zweit = new HashSet <Integer>();
-		dritt = new HashSet <Integer>();
+		erst = new TreeMap <Integer, Teilnehmer>();
+		zweit = new TreeMap <Integer, Teilnehmer>();
+		dritt = new TreeMap <Integer, Teilnehmer>();
 		Set <Integer> einzelnErstWunsch = klasse.einzelnErstWunsch();
 		frei = new HashSet <Integer>();
 		for (int i = 1; i <= klasse.size(); i ++ ) {
@@ -53,45 +56,51 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 			verteilung.set(festlegen, klasse.teilnehmer(festlegen).erstWunsch());
 			fest.set(festlegen, klasse.teilnehmer(festlegen).erstWunsch());
 		}
-		for (int gegenstandsNummer = 1; gegenstandsNummer < klasse.size(); gegenstandsNummer ++ ) {
-			if (klasse.habenErstWunsch(gegenstandsNummer).size() > 0) {
+		for (int gegenstandsNummer = 1; gegenstandsNummer <= klasse.size(); gegenstandsNummer ++ ) {
+			Map <Integer, Teilnehmer> erst = klasse.habenErstWunsch(gegenstandsNummer);
+			if (erst.size() > 0) {
 				frei.remove(gegenstandsNummer);
-				erst.add(gegenstandsNummer);
+				erst.forEach((Integer num, Teilnehmer add) -> this.erst.put(add.nummer(), add));
 			}
 		}
-		for (int gegenstandsNummer = 1; gegenstandsNummer < klasse.size(); gegenstandsNummer ++ ) {
-			if ( !erst.contains(gegenstandsNummer) && klasse.habenZweitWunsch(gegenstandsNummer).size() > 0) {
+		for (int gegenstandsNummer = 1; gegenstandsNummer <= klasse.size(); gegenstandsNummer ++ ) {
+			Map <Integer, Teilnehmer> zweit = klasse.habenZweitWunsch(gegenstandsNummer, new TreeSet <Teilnehmer>(erst.values()));
+			if (zweit.size() > 0) {
 				frei.remove(gegenstandsNummer);
-				zweit.add(gegenstandsNummer);
+				zweit.forEach((Integer num, Teilnehmer add) -> this.zweit.put(add.nummer(), add));
 			}
 		}
-		for (int gegenstandsNummer = 1; gegenstandsNummer < klasse.size(); gegenstandsNummer ++ ) {
-			if ( !erst.contains(gegenstandsNummer) && !zweit.contains(gegenstandsNummer) && klasse.habenZweitWunsch(gegenstandsNummer).size() > 0) {
+		for (int gegenstandsNummer = 1; gegenstandsNummer <= klasse.size(); gegenstandsNummer ++ ) {
+			Map <Integer, Teilnehmer> dritt = klasse.habenDrittWunsch(gegenstandsNummer, erst, zweit);
+			if (dritt.size() > 0) {
 				frei.remove(gegenstandsNummer);
-				dritt.add(gegenstandsNummer);
+				dritt.forEach((Integer num, Teilnehmer add) -> this.dritt.put(add.nummer(), add));
 			}
 		}
-		verteilung.fillRest();
 		deep = 3;
-		for (int i = klasse.size(); i > 0; i -- ) {
-			if (dritt.contains(i)) {
+		for (int i = klasse.size() - 1; i > 0; i -- ) {
+			if (dritt.containsKey(i)) {
 				highPos = i;
+				break;
 			}
 		}
 		if (highPos == 0) {
-			for (int i = klasse.size(); i > 0; i -- ) {
-				if (zweit.contains(i)) {
+			for (int i = klasse.size() - 1; i > 0; i -- ) {
+				if (zweit.containsKey(i)) {
 					highPos = i;
 				}
 			}
 		}
 		if (highPos == 0) {
-			for (int i = klasse.size(); i > 0; i -- ) {
-				if (erst.contains(i)) {
+			for (int i = klasse.size() - 1; i > 0; i -- ) {
+				if (erst.containsKey(i)) {
 					highPos = i;
+					break;
 				}
 			}
 		}
+		puffer = fest.isValid();
+		verteilung.fillRest();
 	}
 	
 	@Override
@@ -105,163 +114,98 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 		if (checkPuffer()) {
 			return verteilung;
 		}
-		Set <Integer> allowed;
+		Integer zw;
+		NavigableSet <Integer> allowedPos;
+		NavigableSet <Integer> allowedNumber;
 		int neu;
 		int alt;
-		switch (deep) {
-		case 1:
-			allowed = erst;
-			// TODO init highPos
-			
-			break;
-		case 2:
-			allowed = zweit;
-			// TODO init highPos
-			
-			break;
-		case 3:
-			allowed = dritt;
-			// TODO init highPos
-			
-			break;
-		default:
-			throw new RuntimeException("unknown deep! (pherhaps the load method has not been called)");
+		{
+			NavigableMap <Integer, Teilnehmer> zwischen;
+			switch (deep) {
+			case 1:
+				zwischen = erst;
+				break;
+			case 2:
+				zwischen = zweit;
+				break;
+			case 3:
+				zwischen = dritt;
+				break;
+			default:
+				throw new RuntimeException("unknown deep! (pherhaps the load method has not been called or evry Verteilung has been read)");
+			}
+			allowedNumber = new TreeSet <Integer>();
+			allowedPos = new TreeSet <Integer>();
+			for (int nummer = 1; nummer <= highPos; nummer ++ ) {
+				if (zwischen.containsKey(verteilung.get(nummer)) && fest.get(nummer) == 0) {
+					allowedPos.add(nummer);
+				}
+			}
+			for (int nummer = highPos + 1; nummer <= klasse.size(); nummer ++ ) {
+				if (zwischen.containsKey(verteilung.get(nummer)) && fest.get(nummer) == 0) {
+					allowedPos.add(nummer);
+					allowedNumber.add(verteilung.get(nummer));
+				}
+			}
 		}
+		// ( (highPos >= klasse.size() - 1) ? highPos : klasse.size()) - 1;
+		// low highPos or if not possible set higPos to the highest position
+		zw = allowedPos.lower(highPos);
+		if (zw == null) {
+			zw = allowedPos.last();
+		}
+		highPos = zw;
 		neu = alt = verteilung.get(highPos);
 		while (true) {
-			if (neu >= klasse.size()) {
+			try {
+				zw = allowedNumber.last();
+			} catch (NoSuchElementException noMoreElements) {
+				deep -- ;
+				if (deep == 0) {
+					return null;
+				}
+				return next();
+			}
+			if (neu >= zw) {
 				verteilung.set(highPos, alt);
-				// TODO low highPos
+				highPos = allowedPos.lower(highPos); // low highPos
+				allowedNumber.add(alt);
 				neu = alt = verteilung.get(highPos);
 			}
-			// TODO high neu
+			neu = allowedNumber.higher(neu);// high neu
 			verteilung.set(highPos, neu);
-			// TODO rebuild
+			// rebuild from highPos+1
+			int pos = highPos;
+			while (true) {
+				pos = allowedPos.higher(pos);
+				if (verteilung.get(pos) == neu) {
+					verteilung.set(pos, alt);
+					break;
+				}
+			}
+			pos = allowedPos.higher(highPos);
+			int nummer = allowedNumber.first();
+			while (true) {
+				verteilung.set(pos, nummer);
+				zw = allowedPos.higher(pos);
+				if (zw == null) {
+					return verteilung;
+				}
+				pos = zw;
+				nummer = allowedNumber.higher(nummer);
+			}
 		}
 	}
 	
-	
 	private boolean checkPuffer() {
 		if (puffer) {
-			return puffer = false;
+			puffer = fest.isValid();
+			return true;
 		}
 		return false;
 	}
 	
-	@Deprecated
-	public Verteilung nextOld() {
-		if (puffer) {
-			puffer = false;
-			return verteilung;
-		}
-		int alteNummer;
-		int nummer;
-		switch (deep) {
-		case 1:
-			while (true) {
-				int cnt = 0;
-				this.cnt ++ ;
-				for (nummer = 1; nummer <= klasse.size(); nummer ++ ) {
-					if (klasse.habenErstWunsch(nummer).size() > 1) {
-						cnt ++ ;
-						if (cnt == this.cnt) {
-							break;
-						}
-					}
-				}
-				if (cnt == this.cnt) break;
-				else if (cnt > this.cnt) {
-					return null;// gibt keine weitere Verteilung mehr
-				}
-			}
-			alteNummer = verteilung.get(nummer);
-			verteilung.set(nummer, alteNummer + klasse.habenErstWunsch(nummer).get(highPos).nummer());
-			rebuild(nummer, alteNummer);
-			break;
-		case 2:
-			while (true) {
-				int cnt = 0;
-				this.cnt ++ ;
-				for (nummer = 1; nummer <= klasse.size(); nummer ++ ) {
-					if (klasse.habenZweitWunsch(nummer, erst).size() > 1) {
-						cnt ++ ;
-						if (cnt == this.cnt) {
-							break;
-						}
-					}
-				}
-				if (cnt == this.cnt) break;
-				else if (cnt > this.cnt) {
-					deep = 1;
-					return next();
-				}
-			}
-			alteNummer = verteilung.get(nummer);
-			verteilung.set(nummer, alteNummer + klasse.habenZweitWunsch(nummer, erst).get(highPos).nummer());
-			rebuild(nummer, alteNummer);
-			break;
-		case 3:
-			while (true) {
-				int cnt = 0;
-				this.cnt ++ ;
-				for (nummer = 1; nummer <= klasse.size(); nummer ++ ) {
-					if (klasse.habenDrittWunsch(nummer, erst, zweit).size() > 1) {
-						cnt ++ ;
-						if (cnt == this.cnt) {
-							break;
-						}
-					}
-				}
-				if (cnt == this.cnt) break;
-				else if (cnt > this.cnt) {
-					deep = 2;
-					return next();
-				}
-			}
-			alteNummer = verteilung.get(nummer);
-			verteilung.set(nummer, alteNummer + klasse.habenDrittWunsch(nummer, erst, zweit).get(highPos).nummer());
-			rebuild(nummer, alteNummer);
-			break;
-		default:
-			throw new RuntimeException("Unbekannte Tiefe (Vieleicht wurde vorher nicht geladen)!");
-		}
-		return verteilung;
-	}
 	
-	protected void rebuild(int startNummer, int alteWunschNummer) {
-		while (true) {
-			NavigableSet <Integer> benutzbar = new TreeSet <Integer>();
-			Set <Integer> tester;
-			switch (deep) {
-			case 1:
-				tester = erst;
-				break;
-			case 2:
-				tester = zweit;
-				break;
-			case 3:
-				tester = dritt;
-				break;
-			default:
-				throw new RuntimeException("Unbekannte Tiefe");
-			}
-			benutzbar.add(alteWunschNummer);
-			for (int i = startNummer + 1; i <= klasse.size(); i ++ ) {
-				if (tester.contains(verteilung.get(i))) {
-					benutzbar.add(i);
-				}
-			}
-			for (int i = startNummer + 1, use = -1; i <= klasse.size(); i ++ ) {
-				if (tester.contains(verteilung.get(i))) {
-					use = benutzbar.higher(use);
-					verteilung.set(i, use);
-				}
-			}
-			if (deep > 1) {
-				deep -- ;
-			} else return;
-		}
-	}
 	
 	public static void main(String[] args) {
 		System.out.println("lade die Klasse");
