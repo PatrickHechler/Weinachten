@@ -1,3 +1,4 @@
+// This folder is excluded from the build path!
 package de.hechler.patrick.objects.generatorenimpl;
 
 import java.util.HashSet;

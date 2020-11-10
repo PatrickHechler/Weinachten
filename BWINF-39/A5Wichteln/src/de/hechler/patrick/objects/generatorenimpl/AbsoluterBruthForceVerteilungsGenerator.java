@@ -62,7 +62,7 @@ public class AbsoluterBruthForceVerteilungsGenerator extends VerteilungsGenerato
 		System.out.println("Fertig geladen");
 		VerteilungsGenerator generator;
 		generator = new AbsoluterBruthForceVerteilungsGenerator(klasse);
-//		generator = new OptimizedVertilungsGenerator(klasse);
+//		generator = new OptimierterVerteilungsGenerator(klasse);
 		System.out.println("Suche nun nach der besten Möglichkeit");
 		Verteilung verteilung = generator.besteVerbleibende();
 		System.out.println("Hier ist sie: (OVG)");
