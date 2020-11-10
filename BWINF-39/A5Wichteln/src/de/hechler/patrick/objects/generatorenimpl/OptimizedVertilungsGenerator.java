@@ -27,7 +27,7 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 	private int deep;
 	private int highPos;
 	private Verteilung fest;
-	private NavigableMap <Integer, Teilnehmer> erst;	//TODO: erst, zweit und dritt kommplett neu machen
+	private NavigableMap <Integer, Teilnehmer> erst;	//TODO: erst, zweit und dritt komplett neu machen
 	private NavigableMap <Integer, Teilnehmer> zweit;
 	private NavigableMap <Integer, Teilnehmer> dritt;
 	private Set <Integer> frei;
