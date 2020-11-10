@@ -22,7 +22,7 @@ import de.hechler.patrick.objects.VerteilungsGenerator;
  * @author Patrick
  *
  */
-public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
+public class OptimizedVertilungsGeneratorOLD extends LoadableVerteilungsGenerator {
 	
 	private int deep;
 	private int highPos;
@@ -35,7 +35,7 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 	
 	
 	
-	protected OptimizedVertilungsGenerator(Klasse klasse) {
+	protected OptimizedVertilungsGeneratorOLD(Klasse klasse) {
 		super(klasse, false);
 		this.fest = new Verteilung(klasse.size(), false);
 	}
@@ -57,21 +57,21 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 			fest.set(festlegen, klasse.teilnehmer(festlegen).erstWunsch());
 		}
 		for (int gegenstandsNummer = 1; gegenstandsNummer <= klasse.size(); gegenstandsNummer ++ ) {
-			Map <Integer, Teilnehmer> erst = klasse.habenErstWunsch(gegenstandsNummer);
+			Map <Integer, Teilnehmer> erst = klasse.erstWunschVon(gegenstandsNummer);
 			if (erst.size() > 0) {
 				frei.remove(gegenstandsNummer);
 				erst.forEach((Integer num, Teilnehmer add) -> this.erst.put(add.nummer(), add));
 			}
 		}
 		for (int gegenstandsNummer = 1; gegenstandsNummer <= klasse.size(); gegenstandsNummer ++ ) {
-			Map <Integer, Teilnehmer> zweit = klasse.habenZweitWunsch(gegenstandsNummer, new TreeSet <Teilnehmer>(erst.values()));
+			Map <Integer, Teilnehmer> zweit = klasse.zweitWunschVon(gegenstandsNummer, new TreeSet <Teilnehmer>(erst.values()));
 			if (zweit.size() > 0) {
 				frei.remove(gegenstandsNummer);
 				zweit.forEach((Integer num, Teilnehmer add) -> this.zweit.put(add.nummer(), add));
 			}
 		}
 		for (int gegenstandsNummer = 1; gegenstandsNummer <= klasse.size(); gegenstandsNummer ++ ) {
-			Map <Integer, Teilnehmer> dritt = klasse.habenDrittWunsch(gegenstandsNummer, erst, zweit);
+			Map <Integer, Teilnehmer> dritt = klasse.drittWunschVon(gegenstandsNummer, erst, zweit);
 			if (dritt.size() > 0) {
 				frei.remove(gegenstandsNummer);
 				dritt.forEach((Integer num, Teilnehmer add) -> this.dritt.put(add.nummer(), add));
@@ -211,7 +211,7 @@ public class OptimizedVertilungsGenerator extends LoadableVerteilungsGenerator {
 		System.out.println("lade die Klasse");
 		Klasse klasse = Klasse.lade(System.in);
 		System.out.println("Fertig geladen");
-		VerteilungsGenerator generator = new OptimizedVertilungsGenerator(klasse);
+		VerteilungsGenerator generator = new OptimizedVertilungsGeneratorOLD(klasse);
 		System.out.println("Suche nun nach der besten Möglichkeit");
 		Verteilung verteilung = generator.besteVerbleibende();
 		System.out.println("BEWERTUNG:" + klasse.bewerte(verteilung));
