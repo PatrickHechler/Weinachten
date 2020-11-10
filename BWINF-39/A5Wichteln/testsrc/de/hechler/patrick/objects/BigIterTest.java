@@ -81,7 +81,7 @@ class BigIterTest {
 		List<List<String>> bl1 = array2List(backtrackListLarge); 
 		BigIter<String> bigiter = new BigIter<>(bl1);
 		while (bigiter.hasNext()) {
-			List<String> currentPermutation = bigiter.next();
+			bigiter.next();
 			cnt += 1;
 		}
 		long dauer = System.currentTimeMillis() - startTime;
@@ -98,7 +98,7 @@ class BigIterTest {
 		List<List<String>> bl1 = array2List(backtrackListXLarge); 
 		BigIter<String> bigiter = new BigIter<>(bl1);
 		while (bigiter.hasNext()) {
-			List<String> currentPermutation = bigiter.next();
+			bigiter.next();
 			cnt += 1;
 		}
 		long dauer = System.currentTimeMillis() - startTime;
