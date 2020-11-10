@@ -10,8 +10,8 @@ public class BigIter <E> implements Iterator <List <E>> {
 	private List <List <E>> inahlt;
 	private List <E> erg;
 	private Iterator <E>[] iters;
-	private final int maxCnt;
-	private int cnt;
+	private final long cntBorder;
+	private long cnt;
 	
 	
 	
@@ -19,15 +19,16 @@ public class BigIter <E> implements Iterator <List <E>> {
 	public BigIter(List <List <E>> inahlt) {
 		this.inahlt = inahlt;
 		iters = new Iterator[inahlt.size()];
-		int zw = 1;
+		long zw = 1;
 		for (int i = 0; i < inahlt.size(); i ++ ) {
 			zw *= inahlt.get(i).size();
 			iters[i] = inahlt.get(i).iterator();
 		}
-		maxCnt = zw;
-		if (maxCnt != 0) {
+		cntBorder = zw;
+		if (cntBorder != 0) {
 			erg = new ArrayList <E>(inahlt.size());
-			for (int i = 0; i < iters.length; i ++ ) {
+			erg.add(null);
+			for (int i = 1; i < iters.length; i ++ ) {
 				erg.add(iters[i].next());
 			}
 		}
@@ -37,12 +38,13 @@ public class BigIter <E> implements Iterator <List <E>> {
 	
 	@Override
 	public boolean hasNext() {
-		return cnt <= maxCnt;
+		return cnt < cntBorder;
 	}
 	
 	@Override
 	public List <E> next() {
 		int i = 0;
+		cnt ++;
 		while (true) {
 			if (iters[i].hasNext()) {
 				erg.set(i, iters[i].next());
