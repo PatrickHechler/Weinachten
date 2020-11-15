@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BigIter <E> implements Iterator <List <E>> {
 	
-	private List <List <E>> inahlt;
+	private List <List <E>> inhalt;
 	private List <E> erg;
 	private Iterator <E>[] iters;
 	private final long cntBorder;
@@ -15,23 +15,28 @@ public class BigIter <E> implements Iterator <List <E>> {
 	
 	
 	
+	private BigIter(List <List <E>> inahlt, long cntBorder) {
+		this.inhalt = inahlt;
+		this.cntBorder = cntBorder;
+	}
+	
 	@SuppressWarnings("unchecked")
-	public BigIter(List <List <E>> inahlt) {
-		this.inahlt = inahlt;
-		iters = new Iterator[inahlt.size()];
-		long zw = 1;
-		for (int i = 0; i < inahlt.size(); i ++ ) {
-			zw *= inahlt.get(i).size();
-			iters[i] = inahlt.get(i).iterator();
+	public static <E> BigIter <E> create(List <List <E>> inhalt) {
+		Iterator <E>[] iters = new Iterator[inhalt.size()];
+		long cntBorder = 1;
+		for (int i = 0; i < inhalt.size(); i ++ ) {
+			cntBorder *= inhalt.get(i).size();
+			iters[i] = inhalt.get(i).iterator();
 		}
-		cntBorder = zw;
+		BigIter <E> erg = new BigIter <E>(inhalt, cntBorder);
 		if (cntBorder != 0) {
-			erg = new ArrayList <E>(inahlt.size());
-			erg.add(null);
+			erg.erg = new ArrayList <E>(inhalt.size());
+			erg.erg.add(null);
 			for (int i = 1; i < iters.length; i ++ ) {
-				erg.add(iters[i].next());
+				erg.erg.add(iters[i].next());
 			}
 		}
+		return erg;
 	}
 	
 	
@@ -44,15 +49,15 @@ public class BigIter <E> implements Iterator <List <E>> {
 	@Override
 	public List <E> next() {
 		int i = 0;
-		cnt ++;
+		cnt ++ ;
 		while (true) {
 			if (iters[i].hasNext()) {
 				erg.set(i, iters[i].next());
 				return erg;
 			}
-			iters[i] = inahlt.get(i).iterator();
+			iters[i] = inhalt.get(i).iterator();
 			erg.set(i, iters[i].next());
-			i ++;
+			i ++ ;
 		}
 	}
 	
