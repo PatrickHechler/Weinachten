@@ -55,7 +55,7 @@ class BigIterTest {
 	void testBigIterSmall() {
 		System.out.println("SMALL");
 		List<List<Integer>> bl1 = array2List(backtrackListSmall); 
-		BigIter<Integer> bigiter = new BigIter<>(bl1);
+		BigIter<Integer> bigiter = BigIter.create(bl1);
 		while (bigiter.hasNext()) {
 			List<Integer> currentPermutation = bigiter.next();
 			System.out.println(currentPermutation);
@@ -67,7 +67,7 @@ class BigIterTest {
 	void testBigIterMedium() {
 		System.out.println("MEDIUM");
 		List<List<Integer>> bl1 = array2List(backtrackListMedium); 
-		BigIter<Integer> bigiter = new BigIter<>(bl1);
+		BigIter<Integer> bigiter = BigIter.create(bl1);
 		while (bigiter.hasNext()) {
 			List<Integer> currentPermutation = bigiter.next();
 			System.out.println(currentPermutation);
@@ -79,7 +79,7 @@ class BigIterTest {
 		int cnt = 0;
 		long startTime = System.currentTimeMillis();
 		List<List<String>> bl1 = array2List(backtrackListLarge); 
-		BigIter<String> bigiter = new BigIter<>(bl1);
+		BigIter<String> bigiter = BigIter.create(bl1);
 		while (bigiter.hasNext()) {
 			bigiter.next();
 			cnt += 1;
@@ -96,7 +96,7 @@ class BigIterTest {
 		long cnt = 0;
 		long startTime = System.currentTimeMillis();
 		List<List<String>> bl1 = array2List(backtrackListXLarge); 
-		BigIter<String> bigiter = new BigIter<>(bl1);
+		BigIter<String> bigiter = BigIter.create(bl1);
 		while (bigiter.hasNext()) {
 			bigiter.next();
 			cnt += 1;
