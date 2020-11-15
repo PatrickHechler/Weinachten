@@ -15,9 +15,10 @@ public class BigIter <E> implements Iterator <List <E>> {
 	
 	
 	
-	private BigIter(List <List <E>> inahlt, long cntBorder) {
+	private BigIter(List <List <E>> inahlt, long cntBorder, Iterator <E>[] iters) {
 		this.inhalt = inahlt;
 		this.cntBorder = cntBorder;
+		this.iters = iters;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -25,10 +26,11 @@ public class BigIter <E> implements Iterator <List <E>> {
 		Iterator <E>[] iters = new Iterator[inhalt.size()];
 		long cntBorder = 1;
 		for (int i = 0; i < inhalt.size(); i ++ ) {
-			cntBorder *= inhalt.get(i).size();
-			iters[i] = inhalt.get(i).iterator();
+			List <E> diese = inhalt.get(i);
+			cntBorder *= diese.size();
+			iters[i] = diese.iterator();
 		}
-		BigIter <E> erg = new BigIter <E>(inhalt, cntBorder);
+		BigIter <E> erg = new BigIter <E>(inhalt, cntBorder, iters);
 		if (cntBorder != 0) {
 			erg.erg = new ArrayList <E>(inhalt.size());
 			erg.erg.add(null);
