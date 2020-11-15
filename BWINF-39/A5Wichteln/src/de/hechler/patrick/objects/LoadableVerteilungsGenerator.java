@@ -6,6 +6,11 @@ public abstract class LoadableVerteilungsGenerator extends VerteilungsGenerator 
 		super(klasse, richtigeStartVerteilung);
 	}
 	
+	
+	
+	/**
+	 * lädt den {@link LoadableVerteilungsGenerator}, damit dieser {@link Verteilung}en generieren kann.
+	 */
 	public abstract void load();
 	
 	@Override
