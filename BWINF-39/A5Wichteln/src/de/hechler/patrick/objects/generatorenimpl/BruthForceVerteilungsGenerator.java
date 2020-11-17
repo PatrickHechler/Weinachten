@@ -1,7 +1,11 @@
 package de.hechler.patrick.objects.generatorenimpl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import de.hechler.patrick.objects.DiffrentFirstVerteilungsGenerator;
-import de.hechler.patrick.objects.Klasse;
+import de.hechler.patrick.objects.ModifilableKlasse;
 import de.hechler.patrick.objects.Verteilung;
 
 /**
@@ -16,9 +20,9 @@ public class BruthForceVerteilungsGenerator extends DiffrentFirstVerteilungsGene
 	
 	
 	
-	public BruthForceVerteilungsGenerator(Klasse klasse) {
-		super(klasse, true);
-		highPos = klasse.size();
+	public BruthForceVerteilungsGenerator(ModifilableKlasse modifilableKlasse) {
+		super(modifilableKlasse, true);
+		highPos = modifilableKlasse.size();
 	}
 	
 	
@@ -37,17 +41,17 @@ public class BruthForceVerteilungsGenerator extends DiffrentFirstVerteilungsGene
 	public Verteilung next() {
 		int neu;
 		int old;
-		highPos = ( (highPos >= klasse.size() - 1) ? highPos : klasse.size()) - 1;
+		highPos = ( (highPos >= modifilableKlasse.size() - 1) ? highPos : modifilableKlasse.size()) - 1;
 		neu = old = verteilung.get(highPos);
 		while (true) {
-			if (neu >= klasse.size()) {
+			if (neu >= modifilableKlasse.size()) {
 				verteilung.set(highPos, old);
 				highPos -- ;
 				neu = old = verteilung.get(highPos);
 			}
 			neu ++ ;
 			verteilung.set(highPos, neu);
-			for (int runde = highPos + 1; runde <= klasse.size(); runde ++ ) {
+			for (int runde = highPos + 1; runde <= modifilableKlasse.size(); runde ++ ) {
 				if (verteilung.get(runde) == neu) {
 					verteilung.set(runde, old);
 					verteilung.sortFrom(highPos + 1);
@@ -55,6 +59,12 @@ public class BruthForceVerteilungsGenerator extends DiffrentFirstVerteilungsGene
 				}
 			}
 		}
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException {
+		ModifilableKlasse kl = ModifilableKlasse.lade(new FileInputStream(new File("./beispieldaten/wichteln1.txt")));
+		BruthForceVerteilungsGenerator bfvg = new BruthForceVerteilungsGenerator(kl);
+		bfvg.besteVerbleibende().print();
 	}
 	
 }

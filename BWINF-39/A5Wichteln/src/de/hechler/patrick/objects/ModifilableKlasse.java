@@ -5,19 +5,32 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Klasse implements Iterable <Teilnehmer> {
+public class ModifilableKlasse implements Iterable <Teilnehmer> {
 	
 	/**
 	 * speichert alle Schüler/Teilnehmer der Klasse/des Wichtelevents.
 	 */
-	private Teilnehmer[] teilnehmer;
+	private List <Teilnehmer> teilnehmer;
+	private final int size;
 	
 	
+	
+	/**
+	 * erzeugt eine Klasse mit den {@link Teilnehmer} {@code teilnehmer} und der Größe {@code size}
+	 * 
+	 * @param teilnehmer
+	 *            Die {@link Teilnehmer} der Klasse
+	 * @param size
+	 *            Die anzahl an ursprünglichen {@link Teilnehmer} der Klasse
+	 */
+	private ModifilableKlasse(List <Teilnehmer> teilnehmer, int size) {
+		this.teilnehmer = new ArrayList <Teilnehmer>(teilnehmer);
+		this.size = size;
+	}
 	
 	/**
 	 * Initialisiert {@link #teilnehmer} mit <code>new {@link Teilnehmer}[size]</code>. Diese werden aber nicht innerhalb diesen Konstruktors gesetzt.
@@ -25,13 +38,14 @@ public class Klasse implements Iterable <Teilnehmer> {
 	 * @param size
 	 *            die anzahl an {@link Teilnehmer}n in der klasse.
 	 */
-	private Klasse(int size) {
-		teilnehmer = new Teilnehmer[size];
+	private ModifilableKlasse(int size) {
+		teilnehmer = new ArrayList <Teilnehmer>(size);
+		this.size = size;
 	}
 	
 	/**
-	 * lädt eine {@link Klasse} aus dem {@link InputStream} {@code in}. <br>
-	 * Eine {@link Klasse} muss diese Struktur haben: <br>
+	 * lädt eine {@link ModifilableKlasse} aus dem {@link InputStream} {@code in}. <br>
+	 * Eine {@link ModifilableKlasse} muss diese Struktur haben: <br>
 	 * size <br>
 	 * 1.Wunsch 2.Wunsch 3.Wunsch <br>
 	 * . <br>
@@ -39,16 +53,16 @@ public class Klasse implements Iterable <Teilnehmer> {
 	 * . <br>
 	 * 
 	 * @param in
-	 *            der {@link InputStream} aus dem die {@link Klasse} geladen wird.
-	 * @return die geladene {@link Klasse}
+	 *            der {@link InputStream} aus dem die {@link ModifilableKlasse} geladen wird.
+	 * @return die geladene {@link ModifilableKlasse}
 	 */
-	public static Klasse lade(InputStream in) {
+	public static ModifilableKlasse lade(InputStream in) {
 		return lade(new Scanner(in));
 	}
 	
 	/**
-	 * lädt eine {@link Klasse} aus dem {@link Scanner} {@code eingang}. <br>
-	 * Eine {@link Klasse} muss diese Struktur haben: <br>
+	 * lädt eine {@link ModifilableKlasse} aus dem {@link Scanner} {@code eingang}. <br>
+	 * Eine {@link ModifilableKlasse} muss diese Struktur haben: <br>
 	 * size <br>
 	 * 1.Wunsch 2.Wunsch 3.Wunsch <br>
 	 * . <br>
@@ -56,84 +70,75 @@ public class Klasse implements Iterable <Teilnehmer> {
 	 * . <br>
 	 * 
 	 * @param in
-	 *            der {@link InputStream} aus dem die {@link Klasse} geladen wird.
-	 * @return die geladene {@link Klasse}
+	 *            der {@link InputStream} aus dem die {@link ModifilableKlasse} geladen wird.
+	 * @return die geladene {@link ModifilableKlasse}
 	 */
-	public static Klasse lade(Scanner eingang) {
-		Klasse ergebnis;
+	public static ModifilableKlasse lade(Scanner eingang) {
+		ModifilableKlasse ergebnis;
 		int zwischenA;
 		int zwischenB;
 		int zwischenC;
-		zwischenA = eingang.nextInt();
-		ergebnis = new Klasse(zwischenA);
-		for (int runde = 0; runde < ergebnis.teilnehmer.length; runde ++ ) {
+		int size = eingang.nextInt();
+		zwischenA = size;
+		ergebnis = new ModifilableKlasse(zwischenA);
+		for (int runde = 0; runde < size; runde ++ ) {
 			zwischenA = checkNummer(eingang.nextInt(), ergebnis);
-			zwischenB = eingang.nextInt();
-			zwischenC = eingang.nextInt();
-			ergebnis.teilnehmer[runde] = new Teilnehmer(runde + 1, zwischenA, zwischenB, zwischenC);
+			zwischenB = checkNummer(eingang.nextInt(), ergebnis);
+			zwischenC = checkNummer(eingang.nextInt(), ergebnis);
+			ergebnis.teilnehmer.add(new Teilnehmer(runde + 1, zwischenA, zwischenB, zwischenC));
 		}
 		return ergebnis;
 	}
 	
 	
 	
-	private static int checkNummer(int check, Klasse with) {
-		if (check > 0 || with.teilnehmer.length <= check) {
+	private static int checkNummer(int check, ModifilableKlasse with) {
+		if (check > 0 || with.size <= check) {
 			return check;
 		}
 		throw new IndexOutOfBoundsException(check);
 	}
 	
 	/**
-	 * Gibt die Anzahl an {@link Teilnehmer}n dieser {@link Klasse} zurück.
+	 * Gibt die Anzahl an {@link Teilnehmer}n dieser {@link ModifilableKlasse} zurück.
 	 * 
-	 * @return Anzahl der {@link Teilnehmer} dieser {@link Klasse}
+	 * @return Anzahl der {@link Teilnehmer} dieser {@link ModifilableKlasse}
 	 */
 	public int size() {
-		return teilnehmer.length;
+		return size;
 	}
 	
 	/**
-	 * Gibt den {@link Teilnehmer} mit der übergebenen {@code teilnehmerNummer} zurück.
-	 * 
-	 * @param teilnehmerNummer
-	 *            Die Nummer des zurückzugebenden {@link Teilnehmer}s.
-	 * @return Den {@link Teilnehmer} mit der übergebenen {@code teilnehmerNummer}.
-	 */
-	public Teilnehmer teilnehmer(int teilnehmerNummer) {
-		return teilnehmer[teilnehmerNummer - 1];
-	}
-	
-	/**
-	 * Gibt alle Teilnehmernummern zurück, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
-	 * 
-	 * @return Alle {@link Teilnehmer}, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
 	 */
 	public Set <Integer> erstWunsch() {
 		Set <Integer> ergebnis;
 		ergebnis = new HashSet <>();
 		for (Teilnehmer teste : teilnehmer) {
-			ergebnis.add(teste.nummer());
+			ergebnis.add(teste.erstWunsch());
 		}
 		return ergebnis;
 	}
 	
 	/**
-	 * Gibt alle Teilnehmernummern zurück, welche als alleine erstWunsch auftauchen.
-	 * 
-	 * @return Alle Teilnehmernummern, die als erstWunsch in dieser {@link Klasse} existieren.
 	 */
-	public Set <Integer> einzelnErstWunsch() {
+	public Set <Teilnehmer> einzelnErstWunsch() {
+		Set <Integer> merker;
 		Set <Integer> tester;
-		Set <Integer> ergebnis;
+		Set <Teilnehmer> ergebnis;
 		tester = new HashSet <>();
-		ergebnis = new HashSet <>();
+		merker = new HashSet <>();
 		for (Teilnehmer teste : teilnehmer) {
-			if ( !tester.contains(teste.erstWunsch())) {
+			if ( !merker.contains(teste.erstWunsch())) {
+				merker.add(teste.erstWunsch());
 				tester.add(teste.erstWunsch());
-				ergebnis.add(teste.nummer());
 			} else {
-				ergebnis.remove(teste.nummer());
+				tester.remove(teste.erstWunsch());
+			}
+		}
+		ergebnis = new HashSet <>();
+		for (Teilnehmer teilnehmer : teilnehmer) {
+			if (tester.contains(teilnehmer.erstWunsch())) {
+				ergebnis.add(teilnehmer);
 			}
 		}
 		return ergebnis;
@@ -188,7 +193,7 @@ public class Klasse implements Iterable <Teilnehmer> {
 	/**
 	 * Gibt alle Wunschnummern zurück, welche als zweitWunsch auftauchen.
 	 * 
-	 * @return Alle Wunschnummern, die als zweitWunsch in dieser {@link Klasse} existieren.
+	 * @return Alle Wunschnummern, die als zweitWunsch in dieser {@link ModifilableKlasse} existieren.
 	 */
 	public Set <Integer> zweitWunsch() {
 		Set <Integer> ergebnis;
@@ -289,7 +294,7 @@ public class Klasse implements Iterable <Teilnehmer> {
 	/**
 	 * Gibt alle Wunschnummern zurück, welche als drittWunsch auftauchen.
 	 * 
-	 * @return Alle Wunschnummern, die als drittWunsch in dieser {@link Klasse} existieren.
+	 * @return Alle Wunschnummern, die als drittWunsch in dieser {@link ModifilableKlasse} existieren.
 	 */
 	public Set <Integer> drittWunsch() {
 		Set <Integer> ergebnis;
@@ -303,7 +308,7 @@ public class Klasse implements Iterable <Teilnehmer> {
 	/**
 	 * Gibt alle Wunschnummern zurück, welche als drittWunsch auftauchen.
 	 * 
-	 * @return Alle Wunschnummern, die als drittWunsch in dieser {@link Klasse} existieren.
+	 * @return Alle Wunschnummern, die als drittWunsch in dieser {@link ModifilableKlasse} existieren.
 	 */
 	public Set <Integer> drittWunsch(Set <Integer> ignore1, Set <Integer> ignore2) {
 		Set <Integer> ergebnis;
@@ -407,7 +412,7 @@ public class Klasse implements Iterable <Teilnehmer> {
 	}
 	
 	/**
-	 * Bewertet, wie gut die {@link Verteilung} zu dieser {@link Klasse} passt und gibt das Ergebnis dann als {@link Bewertung} zurück.
+	 * Bewertet, wie gut die {@link Verteilung} zu dieser {@link ModifilableKlasse} passt und gibt das Ergebnis dann als {@link Bewertung} zurück.
 	 * 
 	 * @param verteilung
 	 *            Die zu bewertende {@link Verteilung}
@@ -423,18 +428,17 @@ public class Klasse implements Iterable <Teilnehmer> {
 	}
 	
 	/**
-	 * Gibt die {@link Klasse} genau so zurück, wie sie Standardweise gespeichert wird: <br>
+	 * Gibt die {@link ModifilableKlasse} genau so zurück, wie sie Standardweise gespeichert wird: <br>
 	 * 1. Zeile: size <br>
 	 * 2-n+1. Zeile: {@link Teilnehmer}[n]
 	 * 
-	 * @return Die {@link Klasse} als {@link String}
+	 * @return Die {@link ModifilableKlasse} als {@link String}
 	 */
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 		result.append(Integer.toString(size())).append("\n");
-		for (int i = 1; i <= size(); i ++ ) {
-			Teilnehmer t = teilnehmer(i);
+		for (Teilnehmer t : teilnehmer) {
 			result.append(Integer.toString(t.erstWunsch())).append(" ");
 			result.append(Integer.toString(t.zweitWunsch())).append(" ");
 			result.append(Integer.toString(t.drittWunsch())).append("\n");
@@ -444,32 +448,11 @@ public class Klasse implements Iterable <Teilnehmer> {
 	
 	@Override
 	public Iterator <Teilnehmer> iterator() {
-		return new Iter();
+		return teilnehmer.iterator();
 	}
 	
-	private class Iter implements Iterator <Teilnehmer> {
-		
-		private int index;
-		
-		
-		
-		public Iter() {
-			index = 0;
-		}
-		
-		
-		
-		@Override
-		public boolean hasNext() {
-			return index < teilnehmer.length;
-		}
-		
-		@Override
-		public Teilnehmer next() {
-			return teilnehmer[index];
-		}
-		
-		
+	public void removeAll(Set <Teilnehmer> einzelnErst) {
+		teilnehmer.removeAll(einzelnErst);
 	}
 	
 }

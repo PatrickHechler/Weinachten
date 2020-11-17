@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import de.hechler.patrick.objects.BigIter;
-import de.hechler.patrick.objects.Klasse;
+import de.hechler.patrick.objects.ModifilableKlasse;
 import de.hechler.patrick.objects.VorzubereitenderGepufferterVerteilungsGenerator;
 import de.hechler.patrick.objects.Teilnehmer;
 import de.hechler.patrick.objects.Verteilung;
@@ -18,30 +18,28 @@ import de.hechler.patrick.objects.Verteilung;
  * @author Patrick
  *
  */
-public class OptimierterVertielungsGenerator extends VorzubereitenderGepufferterVerteilungsGenerator {
+public class OptimierterVerteilungsGeneratorBACKUP extends VorzubereitenderGepufferterVerteilungsGenerator {
 	
 	private BigIter <Teilnehmer> erstWunschIter;
 	private BigIter <Teilnehmer> zweitWunschIter;
 	private Verteilung fest;
-	private Set <Integer> erstTeilnehmerNummern;
-	private Set <Integer> einzelnErstTeilnehmerNummern;
+	private Set <Teilnehmer> aktuelleErstTeilnehmer;
+	private Set <Teilnehmer> einzelnErstTeilnehmer;
 	
 	
 	
-	public OptimierterVertielungsGenerator(Klasse klasse) {
-		super(klasse, false);
+	public OptimierterVerteilungsGeneratorBACKUP(ModifilableKlasse modifilableKlasse) {
+		super(modifilableKlasse, false);
 	}
 	
 	
 	
 	@Override
 	public void vorbeitung() {
-		erstTeilnehmerNummern = klasse.erstWunsch();
-		einzelnErstTeilnehmerNummern = klasse.einzelnErstWunsch();
-		einzelnErstTeilnehmerNummern.forEach((Integer nummer) -> {
-			fest.set(nummer, klasse.teilnehmer(nummer).erstWunsch());
+		einzelnErstTeilnehmer = modifilableKlasse.einzelnErstWunsch();
+		einzelnErstTeilnehmer.forEach((Teilnehmer teilnehmer) -> {
+			fest.set(teilnehmer.nummer(), teilnehmer.erstWunsch());
 		});
-		
 		buildErstIter();
 		buildZweitIter();
 	}
@@ -51,9 +49,9 @@ public class OptimierterVertielungsGenerator extends VorzubereitenderGepufferter
 		if (zweitWunschIter.hasNext()) {
 			Set <Integer> tester = nextSmallIteration();
 			NavigableSet <Teilnehmer> benutzen = new TreeSet <>();
-			for (int i = 1; i < klasse.size(); i ++ ) {
-				if (fest.get(i) == 0 && !tester.contains(verteilung.get(i)) && !erstTeilnehmerNummern.contains(i)) {
-					benutzen.add(klasse.teilnehmer(i));
+			for (int i = 1; i < modifilableKlasse.size(); i ++ ) {
+				if (fest.get(i) == 0 && !tester.contains(verteilung.get(i)) && !aktuelleErstTeilnehmer.contains(modifilableKlasse.teilnehmer(i))) {
+					benutzen.add(modifilableKlasse.teilnehmer(i));
 				}
 			}
 			

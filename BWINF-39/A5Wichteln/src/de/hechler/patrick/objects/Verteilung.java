@@ -8,7 +8,7 @@ import java.util.Set;
 public class Verteilung {
 	
 	/**
-	 * speichert die {@link Verteilung} der Geschenke an die {@link Teilnehmer} einer {@link Klasse}.
+	 * speichert die {@link Verteilung} der Geschenke an die {@link Teilnehmer} einer {@link ModifilableKlasse}.
 	 */
 	private int[] geschenke;
 	
@@ -20,17 +20,17 @@ public class Verteilung {
 	 * falls {@code richtig} = {@code false}: werden alle {@link #geschenke} mit 0 (ungültige Zahl) initialisiert.
 	 * 
 	 * @param size
-	 *            Die anzahl an {@link Teilnehmer} der zugehörigen {@link Klasse}
-	 * @param richtig
+	 *            Die anzahl an {@link Teilnehmer} der zugehörigen {@link ModifilableKlasse}
+	 * @param initialisieren
 	 *            falls {@code richtig} = {@code true}, werden die einzelnen Elemente von {@link #geschenke} fortlaufend generiert (von 1 bis size) falls {@code richtig} =
 	 *            {@code false}: werden alle {@link #geschenke} mit 0 (ungültige Zahl) initialisiert.
 	 */
-	public Verteilung(int size, boolean richtig) {
+	public Verteilung(int size, boolean initialisieren) {
 		geschenke = new int[size];
-		if (richtig) {
+		if (initialisieren) {
 			int i = 0;
 			while (i < geschenke.length) {
-				geschenke[i] = i += 1;
+				geschenke[i] = ++ i;
 			}
 		}
 	}
@@ -72,6 +72,7 @@ public class Verteilung {
 	
 	/**
 	 * Klont diese {@link Verteilung} Ding und gibt eine {@link Verteilung} zurück, welche unabhängig von dieser ist, aber Inhalt hat, wie diese {@link Verteilung} aktuell hat.
+	 * 
 	 * @return die geklonte {@link Verteilung}
 	 */
 	@Override
@@ -88,6 +89,7 @@ public class Verteilung {
 	
 	/**
 	 * prüft, ob diese {@link Verteilung} gültig ist.
+	 * 
 	 * @return <code>true</code>, falls diese {@link Verteilung} gültig ist, ansonsten <code>false</code>
 	 */
 	public boolean isValid() {
@@ -103,6 +105,7 @@ public class Verteilung {
 	
 	/**
 	 * TODO hier weitermachen
+	 * 
 	 * @param teilnehmerNummerEnde
 	 */
 	public void sortTo(int teilnehmerNummerEnde) {
@@ -130,11 +133,11 @@ public class Verteilung {
 		return true;
 	}
 	
-		public void fillRest() {
-				
-		}
-
-
+	public void fillRest() {
+		
+	}
+	
+	
 	public void print() {
 		int len = (geschenke.length + "").length();
 		for (int i = 0; i < geschenke.length; i ++ ) {
@@ -146,7 +149,7 @@ public class Verteilung {
 			while (geschenk.length() < len) {
 				geschenk += " ";
 			}
-			System.out.println("Teilnehmer[" + teilnehmer + "]" + " kriegt: Geschenk[" + geschenk + "]");
+			System.out.println("T[" + teilnehmer + "]" + " : G[" + geschenk + "]");
 		}
 	}
 	

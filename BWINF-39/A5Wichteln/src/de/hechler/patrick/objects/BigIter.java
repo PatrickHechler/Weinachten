@@ -30,6 +30,9 @@ public class BigIter <E> implements Iterator <List <E>> {
 			cntBorder *= diese.size();
 			iters[i] = diese.iterator();
 		}
+		if (inhalt.size() == 0) {
+			cntBorder = 0;
+		}
 		BigIter <E> erg = new BigIter <E>(inhalt, cntBorder, iters);
 		if (cntBorder != 0) {
 			erg.erg = new ArrayList <E>(inhalt.size());

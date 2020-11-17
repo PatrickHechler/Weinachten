@@ -1,8 +1,8 @@
 package de.hechler.patrick.objects.generatorenimpl;
 
-import de.hechler.patrick.objects.Klasse;
+import de.hechler.patrick.objects.ModifilableKlasse;
 import de.hechler.patrick.objects.Verteilung;
-import de.hechler.patrick.objects.VerteilungsGenerator;
+import de.hechler.patrick.objects.MobilerVerteilungsGenerator;
 
 /**
  * iterates to all {@link Verteilung} and returns it in the {@link #next()} method, when returns true by calling {@link Verteilung#isValid()}
@@ -10,14 +10,14 @@ import de.hechler.patrick.objects.VerteilungsGenerator;
  * @author Patrick
  *
  */
-public class AbsoluterBruthForceVerteilungsGenerator extends VerteilungsGenerator {
+public class AbsoluterBruthForceVerteilungsGenerator extends MobilerVerteilungsGenerator {
 	
 	private boolean puffer;
 	
 	
 	
-	public AbsoluterBruthForceVerteilungsGenerator(Klasse klasse) {
-		super(klasse, false);
+	public AbsoluterBruthForceVerteilungsGenerator(ModifilableKlasse modifilableKlasse) {
+		super(modifilableKlasse, false);
 	}
 	
 	
@@ -49,7 +49,7 @@ public class AbsoluterBruthForceVerteilungsGenerator extends VerteilungsGenerato
 	}
 	
 	private void check(int nummer) {
-		while (verteilung.get(nummer) > klasse.size()) {
+		while (verteilung.get(nummer) > modifilableKlasse.size()) {
 			verteilung.set(nummer, 1);
 			nummer ++ ;
 			verteilung.set(nummer, verteilung.get(nummer) + 1);
@@ -58,10 +58,10 @@ public class AbsoluterBruthForceVerteilungsGenerator extends VerteilungsGenerato
 	
 	public static void main(String[] args) {
 		System.out.println("lade die Klasse");
-		Klasse klasse = Klasse.lade(System.in);
+		ModifilableKlasse modifilableKlasse = ModifilableKlasse.lade(System.in);
 		System.out.println("Fertig geladen");
-		VerteilungsGenerator generator;
-		generator = new AbsoluterBruthForceVerteilungsGenerator(klasse);
+		MobilerVerteilungsGenerator generator;
+		generator = new AbsoluterBruthForceVerteilungsGenerator(modifilableKlasse);
 //		generator = new OptimierterVerteilungsGenerator(klasse);
 		System.out.println("Suche nun nach der besten Möglichkeit");
 		Verteilung verteilung = generator.besteVerbleibende();

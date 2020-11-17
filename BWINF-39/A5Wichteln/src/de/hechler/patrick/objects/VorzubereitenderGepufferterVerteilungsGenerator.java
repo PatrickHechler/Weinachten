@@ -6,7 +6,7 @@ package de.hechler.patrick.objects;
  * @author Patrick
  *
  */
-public abstract class VorzubereitenderGepufferterVerteilungsGenerator extends VerteilungsGenerator {
+public abstract class VorzubereitenderGepufferterVerteilungsGenerator extends MobilerVerteilungsGenerator {
 	
 	/**
 	 * speichert, ob bereits eine neue {@link Verteilung} generiert wurde oder ob eine neue generiert werden muss.
@@ -15,8 +15,8 @@ public abstract class VorzubereitenderGepufferterVerteilungsGenerator extends Ve
 	
 	
 	
-	protected VorzubereitenderGepufferterVerteilungsGenerator(Klasse klasse, boolean richtigeStartVerteilung) {
-		super(klasse, richtigeStartVerteilung);
+	protected VorzubereitenderGepufferterVerteilungsGenerator(ModifilableKlasse modifilableKlasse, boolean initialisierteStartVerteilung) {
+		super(modifilableKlasse, initialisierteStartVerteilung);
 	}
 	
 	
@@ -42,8 +42,8 @@ public abstract class VorzubereitenderGepufferterVerteilungsGenerator extends Ve
 	}
 	
 	/**
-	 * Generiert eine neue {@link Verteilung} und speichert diese in {@link VerteilungsGenerator#verteilung}. <br>
-	 * Wenn keine weitere {@link Verteilung} mehr generiert werden kann wird {@link VerteilungsGenerator#verteilung} auf <code>null</code> gesetzt.
+	 * Generiert eine neue {@link Verteilung} und speichert diese in {@link MobilerVerteilungsGenerator#verteilung}. <br>
+	 * Wenn keine weitere {@link Verteilung} mehr generiert werden kann wird {@link MobilerVerteilungsGenerator#verteilung} auf <code>null</code> gesetzt.
 	 */
 	protected abstract void generiereVerteilung();
 	
