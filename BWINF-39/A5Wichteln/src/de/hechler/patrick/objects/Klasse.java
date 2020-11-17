@@ -3,12 +3,14 @@ package de.hechler.patrick.objects;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Klasse {
+public class Klasse implements Iterable <Teilnehmer> {
 	
 	/**
 	 * speichert alle Schüler/Teilnehmer der Klasse/des Wichtelevents.
@@ -103,35 +105,35 @@ public class Klasse {
 	}
 	
 	/**
-	 * Gibt alle Wunschnummern zurück, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
+	 * Gibt alle Teilnehmernummern zurück, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
 	 * 
 	 * @return Alle {@link Teilnehmer}, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
 	 */
 	public Set <Integer> erstWunsch() {
 		Set <Integer> ergebnis;
-		ergebnis = new TreeSet <Integer>();
+		ergebnis = new HashSet <>();
 		for (Teilnehmer teste : teilnehmer) {
-			ergebnis.add(teste.erstWunsch());
+			ergebnis.add(teste.nummer());
 		}
 		return ergebnis;
 	}
 	
 	/**
-	 * Gibt alle Wunschnummern zurück, welche als erstWunsch auftauchen.
+	 * Gibt alle Teilnehmernummern zurück, welche als alleine erstWunsch auftauchen.
 	 * 
-	 * @return Alle Wunschnummern, die als erstWunsch in dieser {@link Klasse} existieren.
+	 * @return Alle Teilnehmernummern, die als erstWunsch in dieser {@link Klasse} existieren.
 	 */
 	public Set <Integer> einzelnErstWunsch() {
 		Set <Integer> tester;
 		Set <Integer> ergebnis;
-		tester = new HashSet <Integer>();
-		ergebnis = new TreeSet <Integer>();
+		tester = new HashSet <>();
+		ergebnis = new HashSet <>();
 		for (Teilnehmer teste : teilnehmer) {
 			if ( !tester.contains(teste.erstWunsch())) {
 				tester.add(teste.erstWunsch());
-				ergebnis.add(teste.erstWunsch());
+				ergebnis.add(teste.nummer());
 			} else {
-				ergebnis.remove(teste.erstWunsch());
+				ergebnis.remove(teste.nummer());
 			}
 		}
 		return ergebnis;
@@ -438,6 +440,36 @@ public class Klasse {
 			result.append(Integer.toString(t.drittWunsch())).append("\n");
 		}
 		return result.toString();
+	}
+	
+	@Override
+	public Iterator <Teilnehmer> iterator() {
+		return new Iter();
+	}
+	
+	private class Iter implements Iterator <Teilnehmer> {
+		
+		private int index;
+		
+		
+		
+		public Iter() {
+			index = 0;
+		}
+		
+		
+		
+		@Override
+		public boolean hasNext() {
+			return index < teilnehmer.length;
+		}
+		
+		@Override
+		public Teilnehmer next() {
+			return teilnehmer[index];
+		}
+		
+		
 	}
 	
 }

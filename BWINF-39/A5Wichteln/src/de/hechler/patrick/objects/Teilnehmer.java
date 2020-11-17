@@ -1,5 +1,7 @@
 package de.hechler.patrick.objects;
 
+import java.util.Objects;
+
 public class Teilnehmer implements Comparable <Teilnehmer> {
 	
 	/**
@@ -92,6 +94,23 @@ public class Teilnehmer implements Comparable <Teilnehmer> {
 		return nummer;
 	}
 	
+	@Override
+	public int hashCode() {
+		return nummer;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if ( ! (obj instanceof Teilnehmer)) {
+			return false;
+		}
+		Teilnehmer t = (Teilnehmer) obj;
+		if (t.nummer != nummer) {
+			return false;
+		}
+		return Objects.deepEquals(t.wunsch, wunsch);
+	}
+	
 	/**
 	 * Gibt einen String zurück, welcher diesen {@link Teilnehmer} darstellt. <br>
 	 * 
@@ -103,8 +122,6 @@ public class Teilnehmer implements Comparable <Teilnehmer> {
 	public String toString() {
 		return "T[#" + nummer + ":" + wunsch[0] + "," + wunsch[1] + "," + wunsch[2] + "]";
 	}
-	
-	
 	
 	@Override
 	public int compareTo(Teilnehmer other) {

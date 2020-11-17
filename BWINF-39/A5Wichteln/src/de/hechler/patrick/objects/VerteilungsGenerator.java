@@ -1,15 +1,8 @@
 package de.hechler.patrick.objects;
 
 import java.util.Iterator;
-import java.util.List;
 
 public abstract class VerteilungsGenerator implements Iterator <Verteilung> {
-	
-	/**
-	 * Debugzwecke in {@link #besteVerbleibende()}
-	 */
-	private List <Verteilung> alle;
-	
 	
 	/**
 	 * speichert die aktuelle {@link Verteilung}
@@ -49,9 +42,6 @@ public abstract class VerteilungsGenerator implements Iterator <Verteilung> {
 			Verteilung testen;
 			Bewertung testbewertung;
 			testen = next();
-			if (alle != null) {
-				alle.add(testen.clone());
-			}
 			cnt ++ ;
 			testbewertung = klasse.bewerte(testen);
 			if (testbewertung.compareTo(bewertung) > 0) {
@@ -61,10 +51,6 @@ public abstract class VerteilungsGenerator implements Iterator <Verteilung> {
 		}
 		System.out.println("CNT:" + cnt);
 		return beste;
-	}
-	
-	public List <Verteilung> getAlle() {
-		return alle;
 	}
 	
 }
