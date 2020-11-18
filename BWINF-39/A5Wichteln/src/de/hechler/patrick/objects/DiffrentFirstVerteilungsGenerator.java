@@ -23,7 +23,7 @@ public abstract class DiffrentFirstVerteilungsGenerator extends MobilerVerteilun
 	public Verteilung besteVerbleibende() {
 		Verteilung first = first();
 		Verteilung ergebnis = super.besteVerbleibende();
-		int bewertung = modifilableKlasse.bewerte(first).compareTo(modifilableKlasse.bewerte(ergebnis));
+		int bewertung = klasse.bewerte(first).compareTo(klasse.bewerte(ergebnis));
 		return (bewertung > 0) ? (first.isValid() ? first : ergebnis) : ergebnis;
 	}
 	

@@ -49,7 +49,7 @@ public class AbsoluterBruthForceVerteilungsGenerator extends MobilerVerteilungsG
 	}
 	
 	private void check(int nummer) {
-		while (verteilung.get(nummer) > modifilableKlasse.size()) {
+		while (verteilung.get(nummer) > klasse.size()) {
 			verteilung.set(nummer, 1);
 			nummer ++ ;
 			verteilung.set(nummer, verteilung.get(nummer) + 1);

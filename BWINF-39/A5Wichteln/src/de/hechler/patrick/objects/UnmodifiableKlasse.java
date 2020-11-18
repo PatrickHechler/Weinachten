@@ -103,8 +103,6 @@ public class UnmodifiableKlasse implements Iterable <Teilnehmer> {
 		return teilnehmer[teilnehmerNummer - 1];
 	}
 	
-	/**
-	 */
 	public Set <Integer> erstWunsch() {
 		Set <Integer> ergebnis;
 		ergebnis = new HashSet <>();
@@ -114,8 +112,6 @@ public class UnmodifiableKlasse implements Iterable <Teilnehmer> {
 		return ergebnis;
 	}
 	
-	/**
-	 */
 	public Set <Teilnehmer> einzelnErstWunsch() {
 		Set <Integer> tester;
 		Set <Teilnehmer> ergebnis;

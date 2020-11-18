@@ -9,12 +9,15 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class ModifilableKlasse implements Iterable <Teilnehmer> {
+public class ModifilableKlasse implements Klasse {
 	
 	/**
 	 * speichert alle Schüler/Teilnehmer der Klasse/des Wichtelevents.
 	 */
 	private List <Teilnehmer> teilnehmer;
+	/**
+	 * speichert die Anzahl an ursprünglichen {@link Teilnehmer} der Klasse
+	 */
 	private final int size;
 	
 	
@@ -99,17 +102,10 @@ public class ModifilableKlasse implements Iterable <Teilnehmer> {
 		throw new IndexOutOfBoundsException(check);
 	}
 	
-	/**
-	 * Gibt die Anzahl an {@link Teilnehmer}n dieser {@link ModifilableKlasse} zurück.
-	 * 
-	 * @return Anzahl der {@link Teilnehmer} dieser {@link ModifilableKlasse}
-	 */
 	public int size() {
 		return size;
 	}
 	
-	/**
-	 */
 	public Set <Integer> erstWunsch() {
 		Set <Integer> ergebnis;
 		ergebnis = new HashSet <>();
@@ -119,8 +115,6 @@ public class ModifilableKlasse implements Iterable <Teilnehmer> {
 		return ergebnis;
 	}
 	
-	/**
-	 */
 	public Set <Teilnehmer> einzelnErstWunsch() {
 		Set <Integer> merker;
 		Set <Integer> tester;
@@ -143,42 +137,30 @@ public class ModifilableKlasse implements Iterable <Teilnehmer> {
 		}
 		return ergebnis;
 	}
-	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
-	 * 
-	 * @return Alle {@link Teilnehmer}, die die einzigen sind, welche sich den Gegenstand ihres erstWunsches als erstWunsch wünschen.
-	 */
-	public List <Teilnehmer> einzelnErstWunschTeilnehmer() {
-		Set <Integer> tester;
-		Set <Integer> merker;
-		List <Teilnehmer> ergebnis;
-		tester = new HashSet <Integer>();
-		merker = new HashSet <Integer>();
-		ergebnis = new ArrayList <Teilnehmer>();
-		for (Teilnehmer teste : teilnehmer) {
-			if ( !tester.contains(teste.erstWunsch())) {
-				tester.add(teste.erstWunsch());
-				merker.add(teste.erstWunsch());
-			} else {
-				merker.remove(teste.erstWunsch());
-			}
-		}
-		for (Teilnehmer teste : ergebnis) {
-			if (merker.contains(teste.erstWunsch())) {
-				ergebnis.add(teste);
-			}
-		}
-		return ergebnis;
-	}
-	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, welche sich {@code gegenstandsNummer} als erstWunsch wünschen.
-	 * 
-	 * @param gegenstandsNummer
-	 *            Der Gegenstand, welcher sich ein {@link Teilnehmer} wünschen muss um hier zurückgegeben zu werden
-	 * @return alle {@link Teilnehmer}, welche sich {@code gegenstandsNummer} als erstWunsch wünschen.
-	 */
+	//unbenutzt und unnötig (oben ist fast die gleiche Methode)
+//	public List <Teilnehmer> einzelnErstWunschTeilnehmer() {
+//		Set <Integer> tester;
+//		Set <Integer> merker;
+//		List <Teilnehmer> ergebnis;
+//		tester = new HashSet <Integer>();
+//		merker = new HashSet <Integer>();
+//		ergebnis = new ArrayList <Teilnehmer>();
+//		for (Teilnehmer teste : teilnehmer) {
+//			if ( !tester.contains(teste.erstWunsch())) {
+//				tester.add(teste.erstWunsch());
+//				merker.add(teste.erstWunsch());
+//			} else {
+//				merker.remove(teste.erstWunsch());
+//			}
+//		}
+//		for (Teilnehmer teste : ergebnis) {
+//			if (merker.contains(teste.erstWunsch())) {
+//				ergebnis.add(teste);
+//			}
+//		}
+//		return ergebnis;
+//	}
+//	
 	public List <Teilnehmer> erstWunschVon(int gegenstandsNummer) {
 		List <Teilnehmer> ergebnis;
 		ergebnis = new ArrayList <Teilnehmer>();
@@ -271,15 +253,6 @@ public class ModifilableKlasse implements Iterable <Teilnehmer> {
 		return ergebnis;
 	}
 	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, welche sich {@code gegenstandsNummer} als zweitWunsch wünschen.
-	 * 
-	 * @param ignore
-	 *            Alle {@link Teilnehmer}, die definitiv nicht zurückgegeben werden.
-	 * @param gegenstandsNummer
-	 *            Der Gegenstand, welcher sich ein {@link Teilnehmer} wünschen muss um hier zurückgegeben zu werden
-	 * @return alle {@link Teilnehmer}, welche sich {@code gegenstandsNummer} als zweitWunsch wünschen.
-	 */
 	public List <Teilnehmer> zweitWunschVon(int gegenstandsNummer, Set <Teilnehmer> ignore) {
 		List <Teilnehmer> ergebnis;
 		ergebnis = new ArrayList <Teilnehmer>();
@@ -389,17 +362,6 @@ public class ModifilableKlasse implements Iterable <Teilnehmer> {
 		return ergebnis;
 	}
 	
-	/**
-	 * Gibt alle {@link Teilnehmer} zurück, welche sich {@code gegenstandsNummer} als drittWunsch wünschen.
-	 * 
-	 * @param ignore1
-	 *            {@link Teilnehmer}, die definitiv nicht zurückgegeben werden.
-	 * @param ignore2
-	 *            {@link Teilnehmer}, die definitiv nicht zurückgegeben werden.
-	 * @param gegenstandsNummer
-	 *            Der Gegenstand, welcher sich ein {@link Teilnehmer} wünschen muss um hier zurückgegeben zu werden
-	 * @return alle {@link Teilnehmer}, welche sich {@code gegenstandsNummer} als drittWunsch wünschen.
-	 */
 	public List <Teilnehmer> drittWunschVon(int gegenstandsNummer, Set <Teilnehmer> ignore1, Set <Teilnehmer> ignore2) {
 		List <Teilnehmer> ergebnis;
 		ergebnis = new ArrayList <Teilnehmer>();

@@ -5,7 +5,7 @@ public abstract class MobilerVerteilungsGenerator extends VerteilungsGenerator {
 	/**
 	 * speichert die {@link ModifilableKlasse}, welche zu diesem {@link MobilerVerteilungsGenerator} gehört
 	 */
-	protected ModifilableKlasse modifilableKlasse;
+	protected ModifilableKlasse klasse;
 	
 	
 	
@@ -19,15 +19,15 @@ public abstract class MobilerVerteilungsGenerator extends VerteilungsGenerator {
 	 *            wird weitergereicht an {@link Verteilung#Verteilung(int, boolean)}.
 	 */
 	protected MobilerVerteilungsGenerator(ModifilableKlasse modifilableKlasse, boolean initialisierteStartVerteilung) {
-		super(modifilableKlasse.size(), initialisierteStartVerteilung);
-		this.modifilableKlasse = modifilableKlasse;
+		super(modifilableKlasse, initialisierteStartVerteilung);
+		this.klasse = modifilableKlasse;
 	}
 	
 	
 	
 	@Override
 	public Bewertung bewerte(Verteilung verteilung) {
-		return modifilableKlasse.bewerte(verteilung);
+		return klasse.bewerte(verteilung);
 	}
 	
 }

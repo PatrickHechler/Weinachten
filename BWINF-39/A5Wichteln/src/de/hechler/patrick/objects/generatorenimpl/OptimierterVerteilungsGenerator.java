@@ -8,11 +8,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import de.hechler.patrick.objects.BigIter;
 import de.hechler.patrick.objects.ModifilableKlasse;
 import de.hechler.patrick.objects.Teilnehmer;
+import de.hechler.patrick.objects.UnmodifiableKlasse;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.VorzubereitenderGepufferterVerteilungsGenerator;
 
@@ -36,6 +38,9 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	 * Speichert die {@link Teilnehmer}, welche einen eindeutigen erst-Wunsch haben.
 	 */
 	private Set <Teilnehmer> einzelnErst;
+	/**
+	 * Speichert die erst-Wünsche der {@link Teilnehmer} in {@link #einzelnErst}.
+	 */
 	private Set <Integer> einzelnErstNummern;
 	/**
 	 * Speichert die aktuellen erst-Wunsch-Teilnehmer der aktuellen Kombination. Die letzte Rückgabe von {@link #erstWunschIter}.
@@ -49,8 +54,17 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	 * Speichert die aktuellen dritt-Wunsch-Teilnehmer der aktuellen Kombination.
 	 */
 	private HashSet <Teilnehmer> aktuelleDrittTeilnehmer;
+	/**
+	 * Speichert die erst-Wünsche der {@link Teilnehmer} in {@link #aktuelleErstTeilnehmer}
+	 */
 	private Set <Integer> aktuelleErstWunschNummern;
+	/**
+	 * Speichert die zweit-Wünsche der {@link Teilnehmer} in {@link #aktuelleZweitTeilnehmer}
+	 */
 	private Set <Integer> aktuelleZweitWunschNummern;
+	/**
+	 * Speichert die dritt-Wünsche der {@link Teilnehmer} in {@link #aktuelleDrittTeilnehmer}
+	 */
 	private Set <Integer> aktuelleDrittWunschNummern;
 	
 	
@@ -63,13 +77,13 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	
 	@Override
 	public void vorbeitung() {
-		einzelnErst = modifilableKlasse.einzelnErstWunsch();
+		einzelnErst = klasse.einzelnErstWunsch();
 		einzelnErstNummern = new HashSet <Integer>();
 		for (Teilnehmer eindeutigerErstWunsch : einzelnErst) {
 			einzelnErstNummern.add(eindeutigerErstWunsch.erstWunsch());
 			verteilung.set(eindeutigerErstWunsch.nummer(), eindeutigerErstWunsch.erstWunsch());
 		}
-		modifilableKlasse.removeAll(einzelnErst);
+		klasse.removeAll(einzelnErst);
 		
 		buildErstIter();
 	}
@@ -112,9 +126,9 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	private void dritt() {
 		aktuelleDrittTeilnehmer = new HashSet <Teilnehmer>();
 		aktuelleDrittWunschNummern = new HashSet <Integer>();
-		for (int i = 1; i < modifilableKlasse.size(); i ++ ) {
+		for (int i = 1; i < klasse.size(); i ++ ) {
 			if ( ! (einzelnErstNummern.contains(i) || aktuelleErstWunschNummern.contains(i) || aktuelleZweitWunschNummern.contains(i))) {
-				List <Teilnehmer> wunschVonI = modifilableKlasse.drittWunschVon(i, aktuelleErstTeilnehmer, aktuelleZweitTeilnehmer);
+				List <Teilnehmer> wunschVonI = klasse.drittWunschVon(i, aktuelleErstTeilnehmer, aktuelleZweitTeilnehmer);
 				if ( !wunschVonI.isEmpty()) {
 					Teilnehmer dieser = wunschVonI.get(0);
 					aktuelleDrittTeilnehmer.add(dieser);
@@ -128,7 +142,7 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	
 	private void pech() {
 		Set <Integer> nummern = new HashSet <Integer>();
-		for (int i = 1; i <= modifilableKlasse.size(); i ++ ) {
+		for (int i = 1; i <= klasse.size(); i ++ ) {
 			nummern.add(i);
 		}
 		einzelnErst.forEach(t -> nummern.remove(t.erstWunsch()));
@@ -136,7 +150,7 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 		nummern.removeAll(aktuelleZweitWunschNummern);
 		nummern.removeAll(aktuelleDrittWunschNummern);
 		Iterator <Integer> iter = nummern.iterator();
-		for (Teilnehmer teilnehmer : modifilableKlasse) {
+		for (Teilnehmer teilnehmer : klasse) {
 			if ( ! (aktuelleErstTeilnehmer.contains(teilnehmer) || aktuelleZweitTeilnehmer.contains(teilnehmer) || aktuelleDrittTeilnehmer.contains(teilnehmer))) {
 				verteilung.set(teilnehmer.nummer(), iter.next());
 			}
@@ -145,8 +159,8 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	
 	private void buildErstIter() {
 		List <List <Teilnehmer>> build = new ArrayList <List <Teilnehmer>>();
-		for (int i = 1; i <= modifilableKlasse.size(); i ++ ) {
-			List <Teilnehmer> wunschVonI = modifilableKlasse.erstWunschVon(i);
+		for (int i = 1; i <= klasse.size(); i ++ ) {
+			List <Teilnehmer> wunschVonI = klasse.erstWunschVon(i);
 			if ( !wunschVonI.isEmpty()) {
 				build.add(wunschVonI);
 			}
@@ -156,9 +170,9 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	
 	private void buildZweitIter() {
 		List <List <Teilnehmer>> build = new ArrayList <List <Teilnehmer>>();
-		for (int i = 1; i <= modifilableKlasse.size(); i ++ ) {
+		for (int i = 1; i <= klasse.size(); i ++ ) {
 			if ( !einzelnErstNummern.contains(i) && !aktuelleErstWunschNummern.contains(i)) {
-				List <Teilnehmer> wunschVonI = modifilableKlasse.zweitWunschVon(i, aktuelleErstTeilnehmer);
+				List <Teilnehmer> wunschVonI = klasse.zweitWunschVon(i, aktuelleErstTeilnehmer);
 				if ( !wunschVonI.isEmpty()) {
 					build.add(wunschVonI);
 				}
@@ -168,12 +182,27 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		ModifilableKlasse kl;
-		kl = ModifilableKlasse.lade(new FileInputStream(new File("./beispieldaten/wichteln1.txt")));
+		UnmodifiableKlasse orig;
+		String pathname = "./beispieldaten/wichteln3.txt";
+		orig = UnmodifiableKlasse.lade(new FileInputStream(new File(pathname)));
+		System.out.println("SIZE:" + orig.size());
+		System.out.println("OPT:");
+		ModifilableKlasse optKl;
+		optKl = ModifilableKlasse.lade(new FileInputStream(new File(pathname)));
 		// kl = ModifilableKlasse.lade(new FileInputStream(new File("./beispieldaten/simple1.txt")));
-		OptimierterVerteilungsGenerator opvg = new OptimierterVerteilungsGenerator(kl);
-		Verteilung bv = opvg.besteVerbleibende();
-		bv.print();
+		OptimierterVerteilungsGenerator opt = new OptimierterVerteilungsGenerator(optKl);
+		Verteilung optVer = opt.besteVerbleibende();
+		optVer.print();
+		System.out.println();
+		System.out.println("BRU:");
+		ModifilableKlasse bruKl;
+		bruKl = ModifilableKlasse.lade(new FileInputStream(new File(pathname)));
+		BruthForceVerteilungsGenerator bru = new BruthForceVerteilungsGenerator(bruKl);
+		Verteilung bruVer = bru.besteVerbleibende();
+		bruVer.print();
+		System.out.println(Objects.equals(optVer, bruVer));
+		System.out.println("OPT:" + orig.bewerte(optVer));
+		System.out.println("BRU:" + orig.bewerte(bruVer));
 	}
 	
 }

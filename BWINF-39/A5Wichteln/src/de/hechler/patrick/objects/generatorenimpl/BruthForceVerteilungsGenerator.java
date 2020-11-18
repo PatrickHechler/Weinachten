@@ -41,17 +41,17 @@ public class BruthForceVerteilungsGenerator extends DiffrentFirstVerteilungsGene
 	public Verteilung next() {
 		int neu;
 		int old;
-		highPos = ( (highPos >= modifilableKlasse.size() - 1) ? highPos : modifilableKlasse.size()) - 1;
+		highPos = ( (highPos >= klasse.size() - 1) ? highPos : klasse.size()) - 1;
 		neu = old = verteilung.get(highPos);
 		while (true) {
-			if (neu >= modifilableKlasse.size()) {
+			if (neu >= klasse.size()) {
 				verteilung.set(highPos, old);
 				highPos -- ;
 				neu = old = verteilung.get(highPos);
 			}
 			neu ++ ;
 			verteilung.set(highPos, neu);
-			for (int runde = highPos + 1; runde <= modifilableKlasse.size(); runde ++ ) {
+			for (int runde = highPos + 1; runde <= klasse.size(); runde ++ ) {
 				if (verteilung.get(runde) == neu) {
 					verteilung.set(runde, old);
 					verteilung.sortFrom(highPos + 1);
