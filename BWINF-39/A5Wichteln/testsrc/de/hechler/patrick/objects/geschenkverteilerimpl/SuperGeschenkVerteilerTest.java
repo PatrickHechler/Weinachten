@@ -15,6 +15,38 @@ import de.hechler.patrick.objects.generatorenimpl.OptimierterVerteilungsGenerato
 
 
 class SuperGeschenkVerteilerTest {
+
+	
+	@Test
+	void testNichtOptimal3() {
+		compareResults(
+				  "10 "
+				+ " 9  3  1 "
+				+ " 8 10  1 "
+				+ " 7 10  8 "
+				+ " 9  5  7 "
+				+ " 5  7  8 "
+				+ "10  1  2 "
+				+ " 9  8 10 "
+				+ " 3  7  5 "
+				+ " 3  6  4 "
+				+ " 3 10  7 "
+		);
+	}
+
+	 
+	
+	@Test
+	void testOptBewertungFalsch() {
+		compareResults(
+				  "4 "
+				+ "3 4 2 "
+				+ "2 4 1 "
+				+ "1 3 2 "
+				+ "1 3 2 "
+		);
+	}
+
 	
 	
 	@Test
@@ -55,8 +87,16 @@ class SuperGeschenkVerteilerTest {
 	
 	@Test
 	void testVierer() {
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<10000; i++) {
 			String klassenText = generateKlassenText(4, i);
+			compareResults(klassenText);
+		}
+	}
+
+	@Test
+	void testZehner() {
+		for (int i=0; i<100; i++) {
+			String klassenText = generateKlassenText(10, i);
 			compareResults(klassenText);
 		}
 	}
@@ -85,12 +125,13 @@ class SuperGeschenkVerteilerTest {
 	
 	void compareResults(String klassenText) {
 		try {
+			UnmodifiableKlasse bewertungKl = UnmodifiableKlasse.lade(new Scanner(klassenText));
 			System.out.println("SUP:");
 			UnmodifiableKlasse optKl = UnmodifiableKlasse.lade(new Scanner(klassenText));
 			SuperGeschenkVerteiler opt = new SuperGeschenkVerteiler(optKl);
 			Verteilung optVer = opt.beste();
 			optVer.print();
-			Bewertung optBewertung = optKl.bewerte(optVer);
+			Bewertung optBewertung = bewertungKl.bewerte(optVer);
 			System.out.println(optBewertung);
 	
 			System.out.println();
@@ -99,7 +140,7 @@ class SuperGeschenkVerteilerTest {
 			OptimierterVerteilungsGenerator bru = new OptimierterVerteilungsGenerator(bruKl);
 			Verteilung bruVer = bru.besteVerbleibende();
 			bruVer.print();
-			Bewertung bruBewertung = optKl.bewerte(bruVer);
+			Bewertung bruBewertung = bewertungKl.bewerte(bruVer);
 			System.out.println(bruBewertung);
 			if (!bruBewertung.equals(optBewertung)) {
 				throw new RuntimeException("unterschiedliche Bewertungen SUP: "+optBewertung+", OPT: "+bruBewertung);
