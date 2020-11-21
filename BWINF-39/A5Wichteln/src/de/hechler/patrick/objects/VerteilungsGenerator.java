@@ -21,13 +21,13 @@ public abstract class VerteilungsGenerator implements Iterator <Verteilung> {
 	}
 	
 	
-	/**
-	 * bewertet die {@link Verteilung} {@code verteilung} und gibt das Ergebnis als {@link Bewertung} zurück.
-	 * 
-	 * @return das Ergebnis der {@link Bewertung}
-	 */
-	public abstract Bewertung bewerte(Verteilung verteilung);
-	
+//	/**
+//	 * bewertet die {@link Verteilung} {@code verteilung} und gibt das Ergebnis als {@link Bewertung} zurück.
+//	 * 
+//	 * @return das Ergebnis der {@link Bewertung}
+//	 */
+//	public abstract Bewertung bewerte(Verteilung verteilung);
+//	
 	/**
 	 * Gibt die beste verbleibende {@link Verteilung} des {@link MobilerVerteilungsGenerator}s zurück.
 	 * 
@@ -40,7 +40,7 @@ public abstract class VerteilungsGenerator implements Iterator <Verteilung> {
 			Verteilung testen;
 			Bewertung testbewertung;
 			testen = next();
-			testbewertung = bewerte(testen);
+			testbewertung = klasse.bewerte(testen);
 			if (testbewertung.compareTo(bewertung) > 0) {
 				beste = testen.clone();
 				bewertung = testbewertung;
