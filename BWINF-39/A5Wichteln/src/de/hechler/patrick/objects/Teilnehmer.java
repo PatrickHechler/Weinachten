@@ -111,6 +111,10 @@ public class Teilnehmer implements Comparable <Teilnehmer> {
 		this.wunsch[2] = 0;
 	}
 	
+	public boolean keinWunsch() {
+		return wunsch[0] == 0 && wunsch[1] == 0 && wunsch[2] == 0;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if ( ! (obj instanceof Teilnehmer)) {
