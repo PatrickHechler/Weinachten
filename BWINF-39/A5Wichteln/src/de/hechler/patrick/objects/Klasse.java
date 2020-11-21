@@ -60,5 +60,11 @@ public interface Klasse extends Iterable <Teilnehmer> {
 	 * @return das Ergebnis der Bewertung in Form einer {@link Bewertung}
 	 */
 	Bewertung bewerte(Verteilung verteilung);
+
+	/**
+	 * Gibt alle aktuell enthaltenen {@link Teilnehmer} dieser {@link Klasse} zurück.
+	 * @return alle aktuell enthaltenen {@link Teilnehmer} dieser {@link Klasse}.
+	 */
+	List <Teilnehmer> alleTeilnehmer();
 	
 }

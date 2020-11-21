@@ -133,10 +133,33 @@ public class Verteilung {
 		return true;
 	}
 	
-	public void fillRest() {
-		
+	@Override
+	public String toString() {
+		StringBuilder erg = new StringBuilder();
+		int len = (geschenke.length + "").length();
+		for (int i = 0; i < geschenke.length; i ++ ) {
+			String teilnehmer = "" + (i + 1);
+			int tZusatz = 0;
+			String geschenk = "" + geschenke[i];
+			int gZusatz = 0;
+			while (teilnehmer.length() < len) {
+				tZusatz ++ ;
+			}
+			while (geschenk.length() < len) {
+				gZusatz ++ ;
+			}
+			erg.append("[T[").append(teilnehmer);
+			for (; tZusatz > 0; tZusatz -- ) {
+				erg.append(" ");
+			}
+			erg.append("]").append(" : G[").append(geschenk);
+			for (; gZusatz > 0; gZusatz -- ) {
+				erg.append(" ");
+			}
+			erg.append("]], ");
+		}
+		return erg.toString();
 	}
-	
 	
 	public void print() {
 		int len = (geschenke.length + "").length();

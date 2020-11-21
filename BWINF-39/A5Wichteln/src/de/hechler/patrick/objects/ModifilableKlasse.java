@@ -30,7 +30,7 @@ public class ModifilableKlasse implements Klasse {
 	 * @param size
 	 *            Die anzahl an ursprünglichen {@link Teilnehmer} der Klasse
 	 */
-	private ModifilableKlasse(List <Teilnehmer> teilnehmer, int size) {
+	public ModifilableKlasse(List <Teilnehmer> teilnehmer, int size) {
 		this.teilnehmer = new ArrayList <Teilnehmer>(teilnehmer);
 		this.size = size;
 	}
@@ -186,22 +186,24 @@ public class ModifilableKlasse implements Klasse {
 		return ergebnis;
 	}
 	
-	/**
-	 * Gibt alle Wunschnummern zurück, die die einzigen sind, welche sich den Gegenstand ihres zweitWunsches als zweitWunsch wünschen.
-	 * 
-	 * @return Alle Wunschnummern, die die einzigen sind, welche sich den Gegenstand ihres zweitWunsches als zweitWunsch wünschen.
-	 */
-	public Set <Integer> einzelnZweitWunsch() {
+	public Set <Teilnehmer> einzelnZweitWunsch() {
 		Set <Integer> tester;
-		Set <Integer> ergebnis;
+		Set <Integer> merker;
+		Set<Teilnehmer> ergebnis;
 		tester = new HashSet <Integer>();
-		ergebnis = new TreeSet <Integer>();
+		merker = new TreeSet <Integer>();
 		for (Teilnehmer teste : teilnehmer) {
 			if ( !tester.contains(teste.zweitWunsch())) {
 				tester.add(teste.zweitWunsch());
-				ergebnis.add(teste.zweitWunsch());
+				merker.add(teste.zweitWunsch());
 			} else {
-				ergebnis.remove(teste.zweitWunsch());
+				merker.remove(teste.zweitWunsch());
+			}
+		}
+		ergebnis = new HashSet <Teilnehmer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if (merker.contains(teste.zweitWunsch())) {
+				ergebnis.add(teste);
 			}
 		}
 		return ergebnis;
@@ -415,6 +417,11 @@ public class ModifilableKlasse implements Klasse {
 	
 	public void removeAll(Set <Teilnehmer> einzelnErst) {
 		teilnehmer.removeAll(einzelnErst);
+	}
+
+	@Override
+	public List <Teilnehmer> alleTeilnehmer() {
+		return new ArrayList <Teilnehmer>(teilnehmer);
 	}
 	
 }
