@@ -21,14 +21,14 @@ public class SuperFeststeller implements Feststeller {
 		Set <Integer> alleErstWunsch = klasse.erstWunsch();
 		einzelnErst(klasse, feststellen);
 		entferneUnerreichbareZweitUDrittWunsch(klasse, alleErstWunsch);
-		Map <Integer, Teilnehmer> xMinusMinus = suchexNichtsNichtsErstWunsch(feststellen, klasse);
+		Map <Integer, Teilnehmer> xMinusMinus = sucheXNichtsNichtsErstWunsch(feststellen, klasse);
 		entferneUnerreichbareErstWunsch(klasse, xMinusMinus.keySet());
 	}
 	
-	private Map <Integer, Teilnehmer> suchexNichtsNichtsErstWunsch(Verteilung feststellen, Klasse klasse) {
+	private Map <Integer, Teilnehmer> sucheXNichtsNichtsErstWunsch(Verteilung feststellen, Klasse klasse) {
 		Map <Integer, Teilnehmer> xMinusMinus = new HashMap <Integer, Teilnehmer>();
 		for (Teilnehmer dieser : klasse) {
-			if (dieser.zweitWunsch() == 0 && dieser.drittWunsch() == 0) {
+			if (dieser.erstWunsch() != 0 && dieser.zweitWunsch() == 0 && dieser.drittWunsch() == 0) {
 				xMinusMinus.put(dieser.erstWunsch(), dieser);
 			}
 		}

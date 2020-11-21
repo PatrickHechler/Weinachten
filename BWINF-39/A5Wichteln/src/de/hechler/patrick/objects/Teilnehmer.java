@@ -47,6 +47,9 @@ public class Teilnehmer implements Comparable <Teilnehmer> {
 	 *            Die {@link Bewertung}, welche ja nach Wunscherfüllung des {@link Teilnehmer}s verändert wird.
 	 */
 	public void bewerte(int zugeteilt, Bewertung bew) {
+		if (zugeteilt == 0) {
+			return;
+		}
 		if (zugeteilt == wunsch[0]) {
 			bew.incRichtigeErste();
 		}

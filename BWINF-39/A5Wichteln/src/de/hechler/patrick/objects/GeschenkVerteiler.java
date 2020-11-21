@@ -16,6 +16,18 @@ public abstract class GeschenkVerteiler {
 	protected Klasse klasse;
 	
 	
+	/**
+	 * Dieser Konstruktor vertraut darauf, dass die {@link Klasse} {@code modifiable} {@link UnmodifiableKlasse} {@code orig} gehört.
+	 * 
+	 * @param orig
+	 *            Die originale {@link UnmodifiableKlasse}
+	 * @param modifyable
+	 *            Die {@link Klasse}, welche zu {@code orig} gehört und möglicherweise bereits modifiziert wurde.
+	 */
+	protected GeschenkVerteiler(UnmodifiableKlasse orig, Klasse modifyable) {
+		this.klasse = modifyable;
+		this.orig = orig;
+	}
 	
 	/**
 	 * erstellt einen neuen {@link GeschenkVerteiler} mit den {@link Teilnehmer}n, welche in der {@link List}<code><{@link Teilnehmer}> teilnehmer</code>. <br>
@@ -24,7 +36,7 @@ public abstract class GeschenkVerteiler {
 	 * @param teilnehmer
 	 *            alle {@link Teilnehmer} der zu dem {@link GeschenkVerteiler} gehörenden {@link Klasse}
 	 */
-	protected GeschenkVerteiler(List <Teilnehmer> teilnehmer) {
+	public GeschenkVerteiler(List <Teilnehmer> teilnehmer) {
 		klasse = new Klasse(teilnehmer, teilnehmer.size());
 		Teilnehmer[] array = new Teilnehmer[teilnehmer.size()];
 		for (int i = 0; i < array.length; i ++ ) {
@@ -40,11 +52,11 @@ public abstract class GeschenkVerteiler {
 	 * @param teilnehmer
 	 *            alle {@link Teilnehmer} der zu dem {@link GeschenkVerteiler} gehörenden {@link Klasse}
 	 */
-	protected GeschenkVerteiler(UnmodifiableKlasse klasse) {
+	public GeschenkVerteiler(UnmodifiableKlasse klasse) {
 		orig = klasse;
 		List <Teilnehmer> liste = new ArrayList <Teilnehmer>(klasse.size());
 		for (int i = 0; i < klasse.size(); i ++ ) {
-			liste.add(klasse.teilnehmer(i+1));
+			liste.add(klasse.teilnehmer(i + 1));
 		}
 		this.klasse = new Klasse(liste, klasse.size());
 	}
@@ -56,7 +68,7 @@ public abstract class GeschenkVerteiler {
 	 * @param teilnehmer
 	 *            alle {@link Teilnehmer} der zu dem {@link GeschenkVerteiler} gehörenden {@link Klasse}
 	 */
-	protected GeschenkVerteiler(Teilnehmer[] teilnehmer) {
+	public GeschenkVerteiler(Teilnehmer[] teilnehmer) {
 		orig = new UnmodifiableKlasse(teilnehmer);
 		List <Teilnehmer> liste = new ArrayList <Teilnehmer>(teilnehmer.length);
 		for (int i = 0; i < teilnehmer.length; i ++ ) {

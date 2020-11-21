@@ -113,6 +113,7 @@ public class Klasse implements KlasseInterface {
 		for (Teilnehmer teste : teilnehmer) {
 			ergebnis.add(teste.erstWunsch());
 		}
+		ergebnis.remove(0);
 		return ergebnis;
 	}
 	
@@ -138,30 +139,31 @@ public class Klasse implements KlasseInterface {
 		}
 		return ergebnis;
 	}
-	//unbenutzt und unnötig (oben ist fast die gleiche Methode)
-//	public List <Teilnehmer> einzelnErstWunschTeilnehmer() {
-//		Set <Integer> tester;
-//		Set <Integer> merker;
-//		List <Teilnehmer> ergebnis;
-//		tester = new HashSet <Integer>();
-//		merker = new HashSet <Integer>();
-//		ergebnis = new ArrayList <Teilnehmer>();
-//		for (Teilnehmer teste : teilnehmer) {
-//			if ( !tester.contains(teste.erstWunsch())) {
-//				tester.add(teste.erstWunsch());
-//				merker.add(teste.erstWunsch());
-//			} else {
-//				merker.remove(teste.erstWunsch());
-//			}
-//		}
-//		for (Teilnehmer teste : ergebnis) {
-//			if (merker.contains(teste.erstWunsch())) {
-//				ergebnis.add(teste);
-//			}
-//		}
-//		return ergebnis;
-//	}
-//	
+	
+	// unbenutzt und unnötig (oben ist fast die gleiche Methode)
+	// public List <Teilnehmer> einzelnErstWunschTeilnehmer() {
+	// Set <Integer> tester;
+	// Set <Integer> merker;
+	// List <Teilnehmer> ergebnis;
+	// tester = new HashSet <Integer>();
+	// merker = new HashSet <Integer>();
+	// ergebnis = new ArrayList <Teilnehmer>();
+	// for (Teilnehmer teste : teilnehmer) {
+	// if ( !tester.contains(teste.erstWunsch())) {
+	// tester.add(teste.erstWunsch());
+	// merker.add(teste.erstWunsch());
+	// } else {
+	// merker.remove(teste.erstWunsch());
+	// }
+	// }
+	// for (Teilnehmer teste : ergebnis) {
+	// if (merker.contains(teste.erstWunsch())) {
+	// ergebnis.add(teste);
+	// }
+	// }
+	// return ergebnis;
+	// }
+	//
 	public List <Teilnehmer> erstWunschVon(int gegenstandsNummer) {
 		List <Teilnehmer> ergebnis;
 		ergebnis = new ArrayList <Teilnehmer>();
@@ -187,10 +189,31 @@ public class Klasse implements KlasseInterface {
 		return ergebnis;
 	}
 	
+	/**
+	 * Gibt alle Wunschnummern zurück, welche als zweitWunsch auftauchen und nicht in dem {@link Set} {@code ignoreGeschenke} ist, wobei {@link Teilnehmer} in dem {@link Set}
+	 * {@code ignoreTeilnehmer} nicht zählen.
+	 * 
+	 * @return Alle Wunschnummern, die als zweitWunsch in dieser {@link Klasse} existieren und nicht in dem {@link Set} {@code ignoreGeschenke} ist, wobei {@link Teilnehmer} in dem
+	 *         {@link Set} {@code ignoreTeilnehmer} nicht zählen.
+	 */
+	public Set <Integer> zweitWunsch(Set <Teilnehmer> ignoreTeilnehmer, Set <Integer> ignoreGeschenke) {
+		Set <Integer> ergebnis;
+		ergebnis = new TreeSet <Integer>();
+		for (Teilnehmer teste : teilnehmer) {
+			if ( !ignoreTeilnehmer.contains(teste)) {
+				int zweitWunsch = teste.zweitWunsch();
+				if ( !ignoreGeschenke.contains(zweitWunsch)) {
+					ergebnis.add(zweitWunsch);
+				}
+			}
+		}
+		return ergebnis;
+	}
+	
 	public Set <Teilnehmer> einzelnZweitWunsch() {
 		Set <Integer> tester;
 		Set <Integer> merker;
-		Set<Teilnehmer> ergebnis;
+		Set <Teilnehmer> ergebnis;
 		tester = new HashSet <Integer>();
 		merker = new TreeSet <Integer>();
 		for (Teilnehmer teste : teilnehmer) {
@@ -419,5 +442,5 @@ public class Klasse implements KlasseInterface {
 	public void removeAll(Collection <Teilnehmer> collection) {
 		teilnehmer.removeAll(collection);
 	}
-
+	
 }
