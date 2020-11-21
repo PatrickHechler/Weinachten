@@ -11,17 +11,14 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 	
 	public SuperGeschenkVerteiler(List <Teilnehmer> teilnehmer) {
 		super(teilnehmer);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public SuperGeschenkVerteiler(Teilnehmer[] teilnehmer) {
 		super(teilnehmer);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public SuperGeschenkVerteiler(UnmodifiableKlasse klasse) {
 		super(klasse);
-		// TODO Auto-generated constructor stub
 	}
 	
 	
