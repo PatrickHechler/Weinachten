@@ -74,4 +74,8 @@ public abstract class GeschenkVerteiler {
 	 */
 	public abstract Verteilung beste();
 	
+	public UnmodifiableKlasse getorigKlasse() {
+		return orig;
+	}
+	
 }

@@ -1,6 +1,8 @@
 package de.hechler.patrick.objects.feststellerimpl;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -9,21 +11,9 @@ import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.Teilnehmer;
 import de.hechler.patrick.objects.Verteilung;
 
-public class GlobalFeststeller implements Feststeller {
+public class SuperFeststeller implements Feststeller {
 	
-	private static final GlobalFeststeller DER_FESTSTELLER;
-	
-	
-	
-	static {
-		DER_FESTSTELLER = new GlobalFeststeller();
-	}
-	
-	private GlobalFeststeller() {
-	}
-	
-	public static GlobalFeststeller getInstance() {
-		return DER_FESTSTELLER;
+	public SuperFeststeller() {
 	}
 	
 	
@@ -36,7 +26,7 @@ public class GlobalFeststeller implements Feststeller {
 		Map <Integer, Teilnehmer> xMinusMinus = suchexNichtsNichtsErstWunsch(feststellen, klasse);
 		entferneUnerreichbareErstWunsch(klasse, xMinusMinus.keySet());
 	}
-
+	
 	private Map <Integer, Teilnehmer> suchexNichtsNichtsErstWunsch(Verteilung feststellen, Klasse klasse) {
 		Map <Integer, Teilnehmer> xMinusMinus = new HashMap <Integer, Teilnehmer>();
 		for (Teilnehmer dieser : klasse) {
@@ -58,7 +48,7 @@ public class GlobalFeststeller implements Feststeller {
 			}
 		}
 	}
-
+	
 	private void entferneUnerreichbareZweitUDrittWunsch(Klasse klasse, Set <Integer> alleErstWunsch) {
 		for (Teilnehmer dieser : klasse) {
 			if (alleErstWunsch.contains(dieser.zweitWunsch())) {
