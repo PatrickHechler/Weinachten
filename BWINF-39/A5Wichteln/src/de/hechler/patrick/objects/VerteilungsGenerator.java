@@ -13,11 +13,11 @@ public abstract class VerteilungsGenerator implements Iterator <Verteilung> {
 	/**
 	 * speichert die {@link KlasseInterface} dieses {@link VerteilungsGenerator}s.
 	 */
-	protected KlasseInterface klasseInterface;
+	protected KlasseInterface klasse;
 	
 	public VerteilungsGenerator(KlasseInterface klasseInterface, boolean initialisierteStartVerteilung) {
 		verteilung = new Verteilung(klasseInterface.size(), initialisierteStartVerteilung);
-		this.klasseInterface = klasseInterface;
+		this.klasse = klasseInterface;
 	}
 	
 	
