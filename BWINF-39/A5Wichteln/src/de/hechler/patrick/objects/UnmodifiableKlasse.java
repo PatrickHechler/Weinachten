@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class UnmodifiableKlasse implements Iterable <Teilnehmer> {
+public class UnmodifiableKlasse implements KlasseInterface {
 	
 	/**
 	 * speichert alle Schüler/Teilnehmer der Klasse/des Wichtelevents.
@@ -17,6 +17,11 @@ public class UnmodifiableKlasse implements Iterable <Teilnehmer> {
 	private Teilnehmer[] teilnehmer;
 	
 	
+	
+	
+	public UnmodifiableKlasse(Teilnehmer[] teilnehmer) {
+		this.teilnehmer = teilnehmer.clone();
+	}
 	
 	/**
 	 * Initialisiert {@link #teilnehmer} mit <code>new {@link Teilnehmer}[size]</code>. Diese werden aber nicht innerhalb diesen Konstruktors gesetzt.
@@ -460,5 +465,5 @@ public class UnmodifiableKlasse implements Iterable <Teilnehmer> {
 		
 		
 	}
-	
+
 }

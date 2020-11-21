@@ -420,9 +420,4 @@ public class Klasse implements KlasseInterface {
 		teilnehmer.removeAll(collection);
 	}
 
-	@Override
-	public List <Teilnehmer> alleTeilnehmer() {
-		return new ArrayList <Teilnehmer>(teilnehmer);
-	}
-	
 }

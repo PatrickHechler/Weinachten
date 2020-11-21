@@ -23,11 +23,4 @@ public abstract class MobilerVerteilungsGenerator extends VerteilungsGenerator {
 		this.klasse = klasse;
 	}
 	
-	
-	
-	@Override
-	public Bewertung bewerte(Verteilung verteilung) {
-		return klasse.bewerte(verteilung);
-	}
-	
 }

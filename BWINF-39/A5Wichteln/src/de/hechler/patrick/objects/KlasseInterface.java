@@ -61,10 +61,10 @@ public interface KlasseInterface extends Iterable <Teilnehmer> {
 	 */
 	Bewertung bewerte(Verteilung verteilung);
 
-	/**
-	 * Gibt alle aktuell enthaltenen {@link Teilnehmer} dieser {@link KlasseInterface} zurück.
-	 * @return alle aktuell enthaltenen {@link Teilnehmer} dieser {@link KlasseInterface}.
-	 */
-	List <Teilnehmer> alleTeilnehmer();
+//	/**
+//	 * Gibt alle aktuell enthaltenen {@link Teilnehmer} dieser {@link KlasseInterface} zurück.
+//	 * @return alle aktuell enthaltenen {@link Teilnehmer} dieser {@link KlasseInterface}.
+//	 */
+//	List <Teilnehmer> alleTeilnehmer();
 	
 }
