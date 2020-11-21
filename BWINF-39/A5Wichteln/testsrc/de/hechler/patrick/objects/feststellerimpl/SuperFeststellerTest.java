@@ -16,13 +16,13 @@ import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.Teilnehmer;
 import de.hechler.patrick.objects.Verteilung;
 
-class GlobalFeststellerTest {
+class SuperFeststellerTest {
 
-	private GlobalFeststeller feststeller;
+	private SuperFeststeller feststeller;
 	
 	@BeforeEach
 	public void setup() {
-		feststeller = GlobalFeststeller.getInstance();
+		feststeller = new SuperFeststeller();
 	}
 	
 	@AfterEach
