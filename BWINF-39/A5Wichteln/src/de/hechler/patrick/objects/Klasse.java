@@ -131,6 +131,7 @@ public class Klasse implements KlasseInterface {
 				tester.remove(teste.erstWunsch());
 			}
 		}
+		tester.remove(0);
 		ergebnis = new HashSet <>();
 		for (Teilnehmer teilnehmer : teilnehmer) {
 			if (tester.contains(teilnehmer.erstWunsch())) {
@@ -186,6 +187,7 @@ public class Klasse implements KlasseInterface {
 		for (Teilnehmer teste : teilnehmer) {
 			ergebnis.add(teste.zweitWunsch());
 		}
+		ergebnis.remove(0);
 		return ergebnis;
 	}
 	
@@ -207,6 +209,7 @@ public class Klasse implements KlasseInterface {
 				}
 			}
 		}
+		ergebnis.remove(0);
 		return ergebnis;
 	}
 	

@@ -1,7 +1,5 @@
 package de.hechler.patrick.objects;
 
-import java.util.Objects;
-
 public class Teilnehmer implements Comparable <Teilnehmer> {
 	
 	/**
@@ -116,14 +114,10 @@ public class Teilnehmer implements Comparable <Teilnehmer> {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if ( ! (obj instanceof Teilnehmer)) {
-			return false;
+		if (obj instanceof Teilnehmer) {
+			return ((Teilnehmer) obj).nummer() == nummer();
 		}
-		Teilnehmer t = (Teilnehmer) obj;
-		if (t.nummer != nummer) {
-			return false;
-		}
-		return Objects.deepEquals(t.wunsch, wunsch);
+		return false;
 	}
 	
 	/**

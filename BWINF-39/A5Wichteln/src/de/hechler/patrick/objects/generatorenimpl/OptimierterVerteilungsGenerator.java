@@ -65,6 +65,7 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	 * Speichert die dritt-Wünsche der {@link Teilnehmer} in {@link #aktuelleDrittTeilnehmer}
 	 */
 	private Set <Integer> aktuelleDrittWunschNummern;
+	private Boolean vorbereitet;
 	
 	
 	
@@ -83,12 +84,24 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 			verteilung.set(eindeutigerErstWunsch.nummer(), eindeutigerErstWunsch.erstWunsch());
 		}
 		klasse.removeAll(einzelnErst);
-		
+		vorbereitet = false;
+		if (verteilung.isValid()) {
+			vorbereitet = true;
+			return;
+		}
 		buildErstIter();
 	}
 	
 	@Override
 	protected void generiereVerteilung() {
+		if (vorbereitet == null) {
+			verteilung = null;
+			return;
+		}
+		if (vorbereitet) {
+			vorbereitet =  null;
+			return;
+		}
 		if (zweitWunschIter != null && zweitWunschIter.hasNext()) {
 			zweit();
 		} else if (erstWunschIter.hasNext()) {

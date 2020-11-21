@@ -1,5 +1,6 @@
 package de.hechler.patrick.objects;
 
+import java.util.Objects;
 
 public class Bewertung implements Comparable <Bewertung> {
 	
@@ -61,6 +62,14 @@ public class Bewertung implements Comparable <Bewertung> {
 	@Override
 	public String toString() {
 		return richtigePlatzierungen[0] + "." + richtigePlatzierungen[1] + "." + richtigePlatzierungen[2];
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Bewertung) {
+			return Objects.deepEquals(richtigePlatzierungen, ((Bewertung) obj).richtigePlatzierungen);
+		}
+		return false;
 	}
 	
 }

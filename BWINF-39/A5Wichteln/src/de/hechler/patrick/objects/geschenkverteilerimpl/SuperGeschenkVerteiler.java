@@ -20,7 +20,6 @@ import de.hechler.patrick.objects.Teilnehmer;
 import de.hechler.patrick.objects.UnmodifiableKlasse;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.feststellerimpl.SuperFeststeller;
-import de.hechler.patrick.objects.generatorenimpl.BruthForceVerteilungsGenerator;
 import de.hechler.patrick.objects.generatorenimpl.OptimierterVerteilungsGenerator;
 
 public class SuperGeschenkVerteiler extends GeschenkVerteiler {
@@ -69,7 +68,7 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 		}
 		Set <Integer> ignoreGeschenke = new HashSet <>();
 		List <List <Teilnehmer>> bi = new ArrayList <List <Teilnehmer>>();
-		for (int i = 1; i >= klasse.size(); i ++ ) {
+		for (int i = 1; i <= klasse.size(); i ++ ) {
 			List <Teilnehmer> erstWunschI = klasse.erstWunschVon(i);
 			if ( !erstWunschI.isEmpty()) {
 				ignoreGeschenke.add(i);
@@ -92,6 +91,7 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 			}
 		}
 		int besteDrittWunschAnzahl = -1;
+		Verteilung besteErstWunschVerteilungVerteilung = erg.clone();
 		Set <Teilnehmer> besteErstWunschVerteilungTeil = Collections.emptySet();
 		Set <Teilnehmer> besteZweitWunschVerteilungTeil = Collections.emptySet();
 		for (Set <Teilnehmer> verteilung : besteVerteilungen) {
@@ -111,7 +111,7 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 			}
 			ignoreGeschenke = new HashSet <>();
 			bi = new ArrayList <List <Teilnehmer>>();
-			for (int i = 1; i >= kls.size(); i ++ ) {
+			for (int i = 1; i <= kls.size(); i ++ ) {
 				List <Teilnehmer> erstWunschI = kls.erstWunschVon(i);
 				if ( !erstWunschI.isEmpty()) {
 					ignoreGeschenke.add(i);
@@ -125,23 +125,53 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 				int size = zweitWunsch.size();
 				if (size > besteDrittWunschAnzahl) {
 					besteDrittWunschAnzahl = size;
+					besteErstWunschVerteilungVerteilung = modify;
 					besteErstWunschVerteilungTeil = verteilung;
 					besteZweitWunschVerteilungTeil = diese;
 				}
 			}
+			if (bi.isEmpty()) {
+				Set <Integer> zweitWunsch = kls.zweitWunsch(Collections.emptySet(), ignoreGeschenke);
+				int size = zweitWunsch.size();
+				if (size > besteDrittWunschAnzahl) {
+					besteDrittWunschAnzahl = size;
+					besteErstWunschVerteilungVerteilung = modify;
+					besteErstWunschVerteilungTeil = verteilung;
+					besteZweitWunschVerteilungTeil = Collections.emptySet();
+				}
+			}
 		}
 		// Aus dem besten Ergebnis wird nun eine Gültige Verteilung generiert
-		for (Teilnehmer dieser : besteErstWunschVerteilungTeil) {
-			erg.set(dieser.nummer(), dieser.erstWunsch());
-		}
-		for (Teilnehmer dieser : besteZweitWunschVerteilungTeil) {
-			erg.set(dieser.nummer(), dieser.zweitWunsch());
+		erg = besteErstWunschVerteilungVerteilung;
+		Set <Teilnehmer> rem = new HashSet <>();
+		Set<Integer> del = new HashSet <>();
+		for (Teilnehmer dieser : klasse) {
+			if (erg.get(dieser.nummer()) != 0) {
+				rem.add(dieser);
+				del.add(erg.get(dieser.nummer()));
+			}
 		}
 		RestKlasse rest = RestKlasse.create(klasse);
-		rest.removeAll(besteErstWunschVerteilungTeil);
+		rest.removeAll(rem);
 		rest = RestKlasse.create(rest);
-		rest.removeAll(besteZweitWunschVerteilungTeil);
+		for (Teilnehmer dieser : rest) {
+			if (del.contains(dieser.erstWunsch())){
+				dieser.deleteErstWunsch();
+			}
+		}
 		vorarbeiter.stelleFest(erg, rest);
+		
+		// for (Teilnehmer dieser : besteErstWunschVerteilungTeil) {
+		// erg.set(dieser.nummer(), dieser.erstWunsch());
+		// }
+		// for (Teilnehmer dieser : besteZweitWunschVerteilungTeil) {
+		// erg.set(dieser.nummer(), dieser.zweitWunsch());
+		// }
+		// RestKlasse rest = RestKlasse.create(klasse);
+		// rest.removeAll(besteErstWunschVerteilungTeil);
+		// rest = RestKlasse.create(rest);
+		// rest.removeAll(besteZweitWunschVerteilungTeil);
+		// vorarbeiter.stelleFest(erg, rest);
 		Set <Integer> nummern = new HashSet <Integer>();
 		for (int i = 1; i <= klasse.size(); i ++ ) {
 			nummern.add(i);
@@ -164,7 +194,7 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		final UnmodifiableKlasse orig;
-		String pathname = "./beispieldaten/wichteln1.txt";
+		String pathname = "./beispieldaten/wichteln3.txt";
 		orig = UnmodifiableKlasse.lade(new FileInputStream(new File(pathname)));
 		System.out.println("SIZE:" + orig.size());
 		System.out.println("OPT:");
@@ -178,7 +208,7 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 		System.out.println("BRU:");
 		Klasse bruKl;
 		bruKl = Klasse.lade(new FileInputStream(new File(pathname)));
-		BruthForceVerteilungsGenerator bru = new BruthForceVerteilungsGenerator(bruKl);
+		OptimierterVerteilungsGenerator bru = new OptimierterVerteilungsGenerator(bruKl);
 		Verteilung bruVer = bru.besteVerbleibende();
 		bruVer.print();
 		System.out.println(Objects.equals(optVer, bruVer));
