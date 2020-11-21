@@ -1,20 +1,27 @@
 package de.hechler.patrick.objects.geschenkverteilerimpl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import de.hechler.patrick.objects.BigIter;
 import de.hechler.patrick.objects.Feststeller;
 import de.hechler.patrick.objects.GeschenkVerteiler;
+import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.RestKlasse;
 import de.hechler.patrick.objects.Teilnehmer;
 import de.hechler.patrick.objects.UnmodifiableKlasse;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.feststellerimpl.SuperFeststeller;
+import de.hechler.patrick.objects.generatorenimpl.BruthForceVerteilungsGenerator;
+import de.hechler.patrick.objects.generatorenimpl.OptimierterVerteilungsGenerator;
 
 public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 	
@@ -136,22 +143,47 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 		rest.removeAll(besteZweitWunschVerteilungTeil);
 		vorarbeiter.stelleFest(erg, rest);
 		Set <Integer> nummern = new HashSet <Integer>();
-		for (int i = 1; i < klasse.size(); i ++ ) {
+		for (int i = 1; i <= klasse.size(); i ++ ) {
 			nummern.add(i);
 		}
-		for (int i = 1; i < klasse.size(); i ++ ) {
+		for (int i = 1; i <= klasse.size(); i ++ ) {
 			nummern.remove(erg.get(i));
 		}
 		Iterator <Integer> iter = nummern.iterator();
-		for (int i = 1; i < klasse.size(); i ++ ) {
+		for (int i = 1; i <= klasse.size(); i ++ ) {
 			if (erg.get(i) == 0) {
 				erg.set(i, iter.next());
 			}
 		}
+		System.out.println(erg.toString());
 		if (iter.hasNext()) {
 			throw new RuntimeException("TooMuchElements!");
 		}
 		return erg;
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException {
+		final UnmodifiableKlasse orig;
+		String pathname = "./beispieldaten/wichteln1.txt";
+		orig = UnmodifiableKlasse.lade(new FileInputStream(new File(pathname)));
+		System.out.println("SIZE:" + orig.size());
+		System.out.println("OPT:");
+		UnmodifiableKlasse optKl;
+		optKl = UnmodifiableKlasse.lade(new FileInputStream(new File(pathname)));
+		// kl = ModifilableKlasse.lade(new FileInputStream(new File("./beispieldaten/simple1.txt")));
+		SuperGeschenkVerteiler opt = new SuperGeschenkVerteiler(optKl);
+		Verteilung optVer = opt.beste();
+		optVer.print();
+		System.out.println();
+		System.out.println("BRU:");
+		Klasse bruKl;
+		bruKl = Klasse.lade(new FileInputStream(new File(pathname)));
+		BruthForceVerteilungsGenerator bru = new BruthForceVerteilungsGenerator(bruKl);
+		Verteilung bruVer = bru.besteVerbleibende();
+		bruVer.print();
+		System.out.println(Objects.equals(optVer, bruVer));
+		System.out.println("OPT:" + orig.bewerte(optVer));
+		System.out.println("BRU:" + orig.bewerte(bruVer));
 	}
 	
 }

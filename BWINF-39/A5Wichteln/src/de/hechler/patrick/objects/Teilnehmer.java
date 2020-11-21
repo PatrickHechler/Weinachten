@@ -28,10 +28,6 @@ public class Teilnehmer implements Comparable <Teilnehmer> {
 	 *            der drittWunsch des {@link Teilnehmer}s
 	 */
 	public Teilnehmer(int eigeneNummer, int erstWunsch, int zweitWunsch, int drittWunsch) {
-		if (eigeneNummer < 1 || erstWunsch < 1 || zweitWunsch < 1 || drittWunsch < 1) {
-			throw new RuntimeException("Die folgenden vars müssen min. 1 sein: eigenNummer = " + eigeneNummer + ", erstWunsch = " + erstWunsch + ", zweitWunsch = " + zweitWunsch
-					+ ", drittWunsch = " + drittWunsch + "!");
-		}
 		nummer = eigeneNummer;
 		wunsch = new int[] {erstWunsch, zweitWunsch, drittWunsch };
 	}

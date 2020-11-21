@@ -138,25 +138,22 @@ public class Verteilung {
 		StringBuilder erg = new StringBuilder();
 		int len = (geschenke.length + "").length();
 		for (int i = 0; i < geschenke.length; i ++ ) {
-			String teilnehmer = "" + (i + 1);
-			int tZusatz = 0;
+//			String teilnehmer = "" + (i + 1);
+//			int tZusatz = len - teilnehmer.length();
 			String geschenk = "" + geschenke[i];
-			int gZusatz = 0;
-			while (teilnehmer.length() < len) {
-				tZusatz ++ ;
-			}
-			while (geschenk.length() < len) {
-				gZusatz ++ ;
-			}
-			erg.append("[T[").append(teilnehmer);
-			for (; tZusatz > 0; tZusatz -- ) {
-				erg.append(" ");
-			}
-			erg.append("]").append(" : G[").append(geschenk);
+			int gZusatz = len - geschenk.length();
+//			erg.append("[T[").append(teilnehmer);
+//			for (; tZusatz > 0; tZusatz -- ) {
+//				erg.append(" ");
+//			}
+//			erg.append("]"); 
+//			erg.append("["); 
+			erg.append(geschenk);
 			for (; gZusatz > 0; gZusatz -- ) {
 				erg.append(" ");
 			}
-			erg.append("]], ");
+//			erg.append("]"); 
+			erg.append(" ");
 		}
 		return erg.toString();
 	}
