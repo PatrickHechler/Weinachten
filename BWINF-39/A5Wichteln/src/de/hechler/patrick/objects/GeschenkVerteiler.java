@@ -40,6 +40,22 @@ public abstract class GeschenkVerteiler {
 	 * @param teilnehmer
 	 *            alle {@link Teilnehmer} der zu dem {@link GeschenkVerteiler} gehörenden {@link Klasse}
 	 */
+	protected GeschenkVerteiler(UnmodifiableKlasse klasse) {
+		orig = klasse;
+		List <Teilnehmer> liste = new ArrayList <Teilnehmer>(klasse.size());
+		for (int i = 0; i < klasse.size(); i ++ ) {
+			liste.add(klasse.teilnehmer(i+1));
+		}
+		this.klasse = new Klasse(liste, klasse.size());
+	}
+	
+	/**
+	 * erstellt einen neuen {@link GeschenkVerteiler} mit den {@link Teilnehmer}n, welche in dem <code>{@link Teilnehmer}[] teilnehmer</code>. <br>
+	 * Wenn in diesem Array nicht alle {@link Teilnehmer} der {@link Klasse} enthalten sind wird es zu Fehlern kommen können!
+	 * 
+	 * @param teilnehmer
+	 *            alle {@link Teilnehmer} der zu dem {@link GeschenkVerteiler} gehörenden {@link Klasse}
+	 */
 	protected GeschenkVerteiler(Teilnehmer[] teilnehmer) {
 		orig = new UnmodifiableKlasse(teilnehmer);
 		List <Teilnehmer> liste = new ArrayList <Teilnehmer>(teilnehmer.length);
