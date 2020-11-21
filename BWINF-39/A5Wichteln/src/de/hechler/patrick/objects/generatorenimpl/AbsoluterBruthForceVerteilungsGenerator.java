@@ -1,6 +1,6 @@
 package de.hechler.patrick.objects.generatorenimpl;
 
-import de.hechler.patrick.objects.ModifilableKlasse;
+import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.MobilerVerteilungsGenerator;
 
@@ -16,8 +16,8 @@ public class AbsoluterBruthForceVerteilungsGenerator extends MobilerVerteilungsG
 	
 	
 	
-	public AbsoluterBruthForceVerteilungsGenerator(ModifilableKlasse modifilableKlasse) {
-		super(modifilableKlasse, false);
+	public AbsoluterBruthForceVerteilungsGenerator(Klasse klasse) {
+		super(klasse, false);
 	}
 	
 	
@@ -58,10 +58,10 @@ public class AbsoluterBruthForceVerteilungsGenerator extends MobilerVerteilungsG
 	
 	public static void main(String[] args) {
 		System.out.println("lade die Klasse");
-		ModifilableKlasse modifilableKlasse = ModifilableKlasse.lade(System.in);
+		Klasse klasse = Klasse.lade(System.in);
 		System.out.println("Fertig geladen");
 		MobilerVerteilungsGenerator generator;
-		generator = new AbsoluterBruthForceVerteilungsGenerator(modifilableKlasse);
+		generator = new AbsoluterBruthForceVerteilungsGenerator(klasse);
 //		generator = new OptimierterVerteilungsGenerator(klasse);
 		System.out.println("Suche nun nach der besten Möglichkeit");
 		Verteilung verteilung = generator.besteVerbleibende();

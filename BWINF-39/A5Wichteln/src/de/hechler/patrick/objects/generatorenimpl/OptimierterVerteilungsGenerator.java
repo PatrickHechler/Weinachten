@@ -12,9 +12,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import de.hechler.patrick.objects.BigIter;
-import de.hechler.patrick.objects.ModifilableKlasse;
+import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.Teilnehmer;
-import de.hechler.patrick.objects.UnmodifiableKlasse;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.VorzubereitenderGepufferterVerteilungsGenerator;
 
@@ -69,8 +68,8 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	
 	
 	
-	public OptimierterVerteilungsGenerator(ModifilableKlasse modifilableKlasse) {
-		super(modifilableKlasse, false);
+	public OptimierterVerteilungsGenerator(Klasse klasse) {
+		super(klasse, false);
 	}
 	
 	
@@ -182,21 +181,21 @@ public class OptimierterVerteilungsGenerator extends VorzubereitenderGepufferter
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		UnmodifiableKlasse orig;
+		Klasse orig;
 		String pathname = "./beispieldaten/wichteln3.txt";
-		orig = UnmodifiableKlasse.lade(new FileInputStream(new File(pathname)));
+		orig = Klasse.lade(new FileInputStream(new File(pathname)));
 		System.out.println("SIZE:" + orig.size());
 		System.out.println("OPT:");
-		ModifilableKlasse optKl;
-		optKl = ModifilableKlasse.lade(new FileInputStream(new File(pathname)));
+		Klasse optKl;
+		optKl = Klasse.lade(new FileInputStream(new File(pathname)));
 		// kl = ModifilableKlasse.lade(new FileInputStream(new File("./beispieldaten/simple1.txt")));
 		OptimierterVerteilungsGenerator opt = new OptimierterVerteilungsGenerator(optKl);
 		Verteilung optVer = opt.besteVerbleibende();
 		optVer.print();
 		System.out.println();
 		System.out.println("BRU:");
-		ModifilableKlasse bruKl;
-		bruKl = ModifilableKlasse.lade(new FileInputStream(new File(pathname)));
+		Klasse bruKl;
+		bruKl = Klasse.lade(new FileInputStream(new File(pathname)));
 		BruthForceVerteilungsGenerator bru = new BruthForceVerteilungsGenerator(bruKl);
 		Verteilung bruVer = bru.besteVerbleibende();
 		bruVer.print();

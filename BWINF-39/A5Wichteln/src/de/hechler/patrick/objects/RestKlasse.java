@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class RestKlasse extends ModifilableKlasse {
+public class RestKlasse extends Klasse {
 	
 	private RestKlasse(List <Teilnehmer> teilnehmer, int size) {
 		super(teilnehmer, size);
@@ -13,7 +13,7 @@ public class RestKlasse extends ModifilableKlasse {
 	
 	
 	
-	public static RestKlasse create(Klasse von) {
+	public static RestKlasse create(KlasseInterface von) {
 		List <Teilnehmer> erg;
 		erg = new ArrayList <Teilnehmer>();
 		for (Teilnehmer dieser : von) {

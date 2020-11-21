@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import de.hechler.patrick.objects.DiffrentFirstVerteilungsGenerator;
-import de.hechler.patrick.objects.ModifilableKlasse;
+import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.Verteilung;
 
 /**
@@ -20,9 +20,9 @@ public class BruthForceVerteilungsGenerator extends DiffrentFirstVerteilungsGene
 	
 	
 	
-	public BruthForceVerteilungsGenerator(ModifilableKlasse modifilableKlasse) {
-		super(modifilableKlasse, true);
-		highPos = modifilableKlasse.size();
+	public BruthForceVerteilungsGenerator(Klasse klasse) {
+		super(klasse, true);
+		highPos = klasse.size();
 	}
 	
 	
@@ -62,7 +62,7 @@ public class BruthForceVerteilungsGenerator extends DiffrentFirstVerteilungsGene
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		ModifilableKlasse kl = ModifilableKlasse.lade(new FileInputStream(new File("./beispieldaten/wichteln1.txt")));
+		Klasse kl = Klasse.lade(new FileInputStream(new File("./beispieldaten/wichteln1.txt")));
 		BruthForceVerteilungsGenerator bfvg = new BruthForceVerteilungsGenerator(kl);
 		bfvg.besteVerbleibende().print();
 	}

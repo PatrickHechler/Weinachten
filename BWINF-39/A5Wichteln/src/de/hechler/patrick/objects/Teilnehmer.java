@@ -99,6 +99,18 @@ public class Teilnehmer implements Comparable <Teilnehmer> {
 		return nummer;
 	}
 	
+	public void deleteErstWunsch() {
+		this.wunsch[0] = 0;
+	}
+	
+	public void deleteZweitWunsch() {
+		this.wunsch[1] = 0;
+	}
+	
+	public void deleteDrittWunsch() {
+		this.wunsch[2] = 0;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if ( ! (obj instanceof Teilnehmer)) {

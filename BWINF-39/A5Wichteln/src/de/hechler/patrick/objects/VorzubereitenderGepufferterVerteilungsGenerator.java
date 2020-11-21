@@ -15,8 +15,8 @@ public abstract class VorzubereitenderGepufferterVerteilungsGenerator extends Mo
 	
 	
 	
-	protected VorzubereitenderGepufferterVerteilungsGenerator(ModifilableKlasse modifilableKlasse, boolean initialisierteStartVerteilung) {
-		super(modifilableKlasse, initialisierteStartVerteilung);
+	protected VorzubereitenderGepufferterVerteilungsGenerator(Klasse klasse, boolean initialisierteStartVerteilung) {
+		super(klasse, initialisierteStartVerteilung);
 	}
 	
 	

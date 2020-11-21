@@ -2,8 +2,8 @@ package de.hechler.patrick.objects;
 
 public abstract class DiffrentFirstVerteilungsGenerator extends MobilerVerteilungsGenerator {
 	
-	protected DiffrentFirstVerteilungsGenerator(ModifilableKlasse modifilableKlasse, boolean richtigeStartVerteilung) {
-		super(modifilableKlasse, richtigeStartVerteilung);
+	protected DiffrentFirstVerteilungsGenerator(Klasse klasse, boolean richtigeStartVerteilung) {
+		super(klasse, richtigeStartVerteilung);
 	}
 	
 	/**

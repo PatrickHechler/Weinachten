@@ -8,7 +8,7 @@ import java.util.Set;
 public class Verteilung {
 	
 	/**
-	 * speichert die {@link Verteilung} der Geschenke an die {@link Teilnehmer} einer {@link ModifilableKlasse}.
+	 * speichert die {@link Verteilung} der Geschenke an die {@link Teilnehmer} einer {@link Klasse}.
 	 */
 	private int[] geschenke;
 	
@@ -20,7 +20,7 @@ public class Verteilung {
 	 * falls {@code richtig} = {@code false}: werden alle {@link #geschenke} mit 0 (ungültige Zahl) initialisiert.
 	 * 
 	 * @param size
-	 *            Die anzahl an {@link Teilnehmer} der zugehörigen {@link ModifilableKlasse}
+	 *            Die anzahl an {@link Teilnehmer} der zugehörigen {@link Klasse}
 	 * @param initialisieren
 	 *            falls {@code richtig} = {@code true}, werden die einzelnen Elemente von {@link #geschenke} fortlaufend generiert (von 1 bis size) falls {@code richtig} =
 	 *            {@code false}: werden alle {@link #geschenke} mit 0 (ungültige Zahl) initialisiert.
@@ -36,7 +36,7 @@ public class Verteilung {
 	}
 	
 	/**
-	 * Erstellt eine {@link Verteilung} und stellt @{@code this.}{@link #geschenke} auf {@code geschenke}
+	 * Erstellt eine {@link Verteilung} und stellt {@code this.}{@link #geschenke} auf {@code geschenke}
 	 * 
 	 * @param geschenke
 	 *            Der zukünftige Wert von {@link #geschenke}
