@@ -8,7 +8,7 @@ import java.util.Scanner;
 import org.junit.jupiter.api.Test;
 
 import de.hechler.patrick.objects.Bewertung;
-import de.hechler.patrick.objects.UnmodifiableKlasse;
+import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.Verteilung;
 
 
@@ -172,9 +172,9 @@ class SuperGeschenkVerteilerTest {
 	
 	void compareResults(String klassenText) {
 		try {
-			UnmodifiableKlasse bewertungKl = UnmodifiableKlasse.lade(new Scanner(klassenText));
+			Klasse bewertungKl = Klasse.lade(new Scanner(klassenText));
 			System.out.println("SUP:");
-			UnmodifiableKlasse optKl = UnmodifiableKlasse.lade(new Scanner(klassenText));
+			Klasse optKl = Klasse.lade(new Scanner(klassenText));
 			SuperGeschenkVerteiler opt = new SuperGeschenkVerteiler(optKl);
 			Verteilung optVer = opt.beste();
 			optVer.print();

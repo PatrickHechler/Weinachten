@@ -10,9 +10,9 @@ import java.util.Set;
 import de.hechler.patrick.objects.BigIter;
 import de.hechler.patrick.objects.Feststeller;
 import de.hechler.patrick.objects.GeschenkVerteiler;
+import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.RestKlasse;
 import de.hechler.patrick.objects.Teilnehmer;
-import de.hechler.patrick.objects.UnmodifiableKlasse;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.feststellerimpl.SuperFeststeller;
 
@@ -21,6 +21,11 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 	private Feststeller vorarbeiter;
 	
 	
+	
+	public SuperGeschenkVerteiler(Klasse teilnehmer, Feststeller vorarbeiter) {
+		super(teilnehmer);
+		this.vorarbeiter = vorarbeiter;
+	}
 	
 	public SuperGeschenkVerteiler(List <Teilnehmer> teilnehmer, Feststeller vorarbeiter) {
 		super(teilnehmer);
@@ -32,9 +37,9 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 		this.vorarbeiter = vorarbeiter;
 	}
 	
-	public SuperGeschenkVerteiler(UnmodifiableKlasse klasse, Feststeller vorarbeiter) {
-		super(klasse);
-		this.vorarbeiter = vorarbeiter;
+	public SuperGeschenkVerteiler(Klasse teilnehmer) {
+		super(teilnehmer);
+		this.vorarbeiter = new SuperFeststeller();
 	}
 	
 	public SuperGeschenkVerteiler(List <Teilnehmer> teilnehmer) {
@@ -44,11 +49,6 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 	
 	public SuperGeschenkVerteiler(Teilnehmer[] teilnehmer) {
 		super(teilnehmer);
-		vorarbeiter = new SuperFeststeller();
-	}
-	
-	public SuperGeschenkVerteiler(UnmodifiableKlasse klasse) {
-		super(klasse);
 		vorarbeiter = new SuperFeststeller();
 	}
 	

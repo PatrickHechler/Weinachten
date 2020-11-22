@@ -418,6 +418,18 @@ public class Klasse implements KlasseInterface {
 		return ergebnis;
 	}
 	
+	@Override
+	public Klasse clone() {
+		Klasse erg;
+		try {
+			erg = (Klasse) super.clone();
+			erg.teilnehmer = new ArrayList<>(teilnehmer);
+		} catch (CloneNotSupportedException e) {
+			erg = new Klasse(teilnehmer, size);
+		}
+		return erg;
+	}
+	
 	/**
 	 * Gibt die {@link Klasse} genau so zurück, wie sie Standardweise gespeichert wird: <br>
 	 * 1. Zeile: size <br>
