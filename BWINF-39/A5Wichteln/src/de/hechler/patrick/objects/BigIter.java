@@ -1,6 +1,7 @@
 package de.hechler.patrick.objects;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class BigIter <E> implements Iterator <List <E>> {
 			iters[i] = diese.iterator();
 		}
 		if (inhalt.size() == 0) {
-			cntBorder = 0;
+			cntBorder = 1;
 		}
 		BigIter <E> erg = new BigIter <E>(inhalt, cntBorder, iters);
 		if (cntBorder != 0) {
@@ -55,6 +56,9 @@ public class BigIter <E> implements Iterator <List <E>> {
 	public List <E> next() {
 		int i = 0;
 		cnt ++ ;
+		if (iters.length == 0) {
+			return Collections.emptyList();
+		}
 		while (true) {
 			if (iters[i].hasNext()) {
 				erg.set(i, iters[i].next());
