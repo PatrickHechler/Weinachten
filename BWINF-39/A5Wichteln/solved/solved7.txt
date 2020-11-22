@@ -1,4 +1,4 @@
-benÃ¶tigte Zeit: 3938s
+benötigte Zeit: 1026s
 Bewertung: 541.127.58
 anzahl Teilnehmer: 1000
 T[1   ] : G[484 ]

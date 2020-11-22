@@ -1,4 +1,4 @@
-benÃ¶tigte Zeit: 46ms
+benötigte Zeit: 38ms
 Bewertung: 37.3.21
 anzahl Teilnehmer: 90
 T[1 ] : G[2 ]

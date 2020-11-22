@@ -1,4 +1,4 @@
-benÃ¶tigte Zeit: 3ms
+benötigte Zeit: 2ms
 Bewertung: 6.0.2
 anzahl Teilnehmer: 10
 T[1 ] : G[5 ]

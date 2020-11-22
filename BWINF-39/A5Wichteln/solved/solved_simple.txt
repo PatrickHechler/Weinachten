@@ -1,0 +1,7 @@
+benötigte Zeit: 2ms
+Bewertung: 2.2.0
+anzahl Teilnehmer: 4
+T[1] : G[4]
+T[2] : G[3]
+T[3] : G[1]
+T[4] : G[2]
