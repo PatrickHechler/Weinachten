@@ -10,14 +10,14 @@ import java.util.List;
 
 import de.hechler.patrick.objects.Bewertung;
 import de.hechler.patrick.objects.GeschenkVerteiler;
-import de.hechler.patrick.objects.UnmodifiableKlasse;
+import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.Verteilung;
 import de.hechler.patrick.objects.geschenkverteilerimpl.SuperGeschenkVerteiler;
 
 public class Haupt {
 	
 	private static GeschenkVerteiler verteiler;
-	private static UnmodifiableKlasse bewerter;
+	private static Klasse bewerter;
 	private static List <PrintStream> savers;
 	
 	public static void main(String[] args) {
@@ -127,7 +127,7 @@ public class Haupt {
 			bewerter = null;
 			return;
 		}
-		bewerter = UnmodifiableKlasse.lade(in);
+		bewerter = Klasse.lade(in);
 		verteiler = new SuperGeschenkVerteiler(bewerter.clone());
 	}
 	
