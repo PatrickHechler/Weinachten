@@ -89,39 +89,6 @@ public class Haupt {
 				}
 				file = new File(args[i]);
 				break;
-			case "-pf":
-			case "-potfile":
-				if (args.length == i + 1) {
-					if (file != null) {
-						System.err.println("wrong args, can't read from console and file!");
-						help(System.err);
-						System.exit(1);
-					}
-					console = true;
-					break;
-				}
-				if (args[i + 1].startsWith("-")) {
-					if (file != null) {
-						System.err.println("wrong args, can't read from console and file!");
-						help(System.err);
-						System.exit(1);
-					}
-					console = true;
-					break;
-				}
-				i++;
-				if (file != null) {
-					System.err.println("wrong args, can't read from two files!");
-					help(System.err);
-					System.exit(1);
-				}
-				if (console) {
-					System.err.println("wrong args, can't read from console and file!");
-					help(System.err);
-					System.exit(1);
-				}
-				file = new File(args[i]);
-				break;
 			case "-s":
 			case "-save":
 				i ++ ;
