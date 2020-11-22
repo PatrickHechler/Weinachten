@@ -18,6 +18,47 @@ class SuperGeschenkVerteilerTest {
 
 	
 	@Test
+	void test_01_NichtOptimal4() {
+		compareResults(
+				  "5 "
+				+ "5 4 3 "
+				+ "3 4 5 "
+				+ "3 4 5 "
+				+ "5 2 1 "
+				+ "4 2 5 "
+		);
+	}
+	
+
+	@Test
+	void test_02_NichtOptimal5() {
+		compareResults(
+				  "5 "
+				+ "1 2 5 "
+				+ "4 3 5 "
+				+ "1 4 2 "
+				+ "1 2 5 "
+				+ "1 2 5 "
+		);
+	}
+	
+
+	
+	@Test
+	void test_03_BesserAlsOptimal() {
+		compareResults(
+				  "5 "
+				+ "1 3 5 "
+				+ "1 4 3 "
+				+ "1 4 3 "
+				+ "3 5 2 "
+				+ "1 4 3 "
+		);
+	}
+
+	
+	
+	@Test
 	void testNichtOptimal3() {
 		compareResults(
 				  "10 "
@@ -89,6 +130,14 @@ class SuperGeschenkVerteilerTest {
 	void testVierer() {
 		for (int i=0; i<10000; i++) {
 			String klassenText = generateKlassenText(4, i);
+			compareResults(klassenText);
+		}
+	}
+
+	@Test
+	void testfuenfer() {
+		for (int i=0; i<10000; i++) {
+			String klassenText = generateKlassenText(5, i);
 			compareResults(klassenText);
 		}
 	}
