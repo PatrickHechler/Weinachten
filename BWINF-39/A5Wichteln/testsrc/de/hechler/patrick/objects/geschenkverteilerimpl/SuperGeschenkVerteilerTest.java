@@ -8,10 +8,8 @@ import java.util.Scanner;
 import org.junit.jupiter.api.Test;
 
 import de.hechler.patrick.objects.Bewertung;
-import de.hechler.patrick.objects.Klasse;
 import de.hechler.patrick.objects.UnmodifiableKlasse;
 import de.hechler.patrick.objects.Verteilung;
-import de.hechler.patrick.objects.generatorenimpl.OptimierterVerteilungsGenerator;
 
 
 class SuperGeschenkVerteilerTest {
@@ -185,15 +183,16 @@ class SuperGeschenkVerteilerTest {
 	
 			System.out.println();
 			System.out.println("OPT:");
-			Klasse bruKl = Klasse.lade(new Scanner(klassenText));
-			OptimierterVerteilungsGenerator bru = new OptimierterVerteilungsGenerator(bruKl);
-			Verteilung bruVer = bru.besteVerbleibende();
-			bruVer.print();
-			Bewertung bruBewertung = bewertungKl.bewerte(bruVer);
-			System.out.println(bruBewertung);
-			if (!bruBewertung.equals(optBewertung)) {
-				throw new RuntimeException("unterschiedliche Bewertungen SUP: "+optBewertung+", OPT: "+bruBewertung);
-			}
+			//TODO Referenz einbauen
+//			Klasse bruKl = Klasse.lade(new Scanner(klassenText));
+//			OptimierterVerteilungsGenerator bru = new OptimierterVerteilungsGenerator(bruKl);
+//			Verteilung bruVer = bru.besteVerbleibende();
+//			bruVer.print();
+//			Bewertung bruBewertung = bewertungKl.bewerte(bruVer);
+//			System.out.println(bruBewertung);
+//			if (!bruBewertung.equals(optBewertung)) {
+//				throw new RuntimeException("unterschiedliche Bewertungen SUP: "+optBewertung+", OPT: "+bruBewertung);
+//			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
