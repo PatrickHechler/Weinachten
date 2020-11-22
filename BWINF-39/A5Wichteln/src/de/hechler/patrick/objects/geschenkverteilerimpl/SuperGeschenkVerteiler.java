@@ -142,7 +142,40 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 			// }
 			// }
 		}
+		erg = wiederherrstellenDerBestenVariante(besteErstWunschVerteilungVerteilung, besteErstWunschVerteilungTeil, besteZweitWunschVerteilungTeil);
 		// Aus dem besten Ergebnis wird nun eine Gültige Verteilung generiert
+		
+		// RestKlasse rest = RestKlasse.create(klasse);
+		// rest.removeAll(besteErstWunschVerteilungTeil);
+		// rest = RestKlasse.create(rest);
+		// rest.removeAll(besteZweitWunschVerteilungTeil);
+		// vorarbeiter.stelleFest(erg, rest);
+		
+		// Verteilen der Drittwünsche
+		Set <Integer> nummern = new HashSet <Integer>();
+		for (int i = 1; i <= klasse.size(); i ++ ) {
+			nummern.add(i);
+		}
+		for (int i = 1; i <= klasse.size(); i ++ ) {
+			nummern.remove(erg.get(i));
+		}
+		Iterator <Integer> iter = nummern.iterator();
+		for (int i = 1; i <= klasse.size(); i ++ ) {
+			if (erg.get(i) == 0) {
+				erg.set(i, iter.next());
+			}
+		}
+//		System.out.println(erg.toString());
+		// Kann nicht passieren
+		if (iter.hasNext()) {
+			throw new RuntimeException("TooMuchElements!");
+		}
+		return erg;
+	}
+	
+	private Verteilung wiederherrstellenDerBestenVariante(Verteilung besteErstWunschVerteilungVerteilung, Set <Teilnehmer> besteErstWunschVerteilungTeil,
+			Set <Teilnehmer> besteZweitWunschVerteilungTeil) {
+		Verteilung erg;
 		erg = besteErstWunschVerteilungVerteilung;
 		for (Teilnehmer dieser : besteErstWunschVerteilungTeil) {
 			erg.set(dieser.nummer(), dieser.erstWunsch());
@@ -167,29 +200,6 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 			}
 		}
 		vorarbeiter.stelleFest(erg, rest);
-		
-		// RestKlasse rest = RestKlasse.create(klasse);
-		// rest.removeAll(besteErstWunschVerteilungTeil);
-		// rest = RestKlasse.create(rest);
-		// rest.removeAll(besteZweitWunschVerteilungTeil);
-		// vorarbeiter.stelleFest(erg, rest);
-		Set <Integer> nummern = new HashSet <Integer>();
-		for (int i = 1; i <= klasse.size(); i ++ ) {
-			nummern.add(i);
-		}
-		for (int i = 1; i <= klasse.size(); i ++ ) {
-			nummern.remove(erg.get(i));
-		}
-		Iterator <Integer> iter = nummern.iterator();
-		for (int i = 1; i <= klasse.size(); i ++ ) {
-			if (erg.get(i) == 0) {
-				erg.set(i, iter.next());
-			}
-		}
-//		System.out.println(erg.toString());
-		if (iter.hasNext()) {
-			throw new RuntimeException("TooMuchElements!");
-		}
 		return erg;
 	}
 	
