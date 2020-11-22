@@ -1,0 +1,13 @@
+benötigte Zeit: 3ms
+Bewertung: 6.0.2
+anzahl Teilnehmer: 10
+T[1 ] : G[5 ]
+T[2 ] : G[2 ]
+T[3 ] : G[1 ]
+T[4 ] : G[8 ]
+T[5 ] : G[3 ]
+T[6 ] : G[4 ]
+T[7 ] : G[7 ]
+T[8 ] : G[10]
+T[9 ] : G[9 ]
+T[10] : G[6 ]
