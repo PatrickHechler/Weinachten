@@ -119,16 +119,26 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 				int size = zweitWunsch.size();
 				if (size > besteDrittWunschAnzahl) {
 					besteDrittWunschAnzahl = size;
-					besteErstWunschVerteilungVerteilung = modify;
 					besteErstWunschVerteilungTeil = verteilung;
 					besteZweitWunschVerteilungTeil = diese;
+					// erstelle eine verteilung für die aktuelle benutzten erst und zweitwuensche 
+					besteErstWunschVerteilungVerteilung = modify.clone();
+					for (Teilnehmer dieser : besteErstWunschVerteilungTeil) {
+						besteErstWunschVerteilungVerteilung.set(dieser.nummer(), dieser.erstWunsch());
+					}
+					for (Teilnehmer dieser : besteZweitWunschVerteilungTeil) {
+						besteErstWunschVerteilungVerteilung.set(dieser.nummer(), dieser.erstWunsch());
+					}
 				}
 			}
 		}
-		erg = wiederherrstellenDerBestenVariante(besteErstWunschVerteilungVerteilung, besteErstWunschVerteilungTeil, besteZweitWunschVerteilungTeil);
-		// Aus der besten Variante wird nun eine Gültige Verteilung generiert
-		
-		// Verteilen der Drittwünsche
+		erg = besteErstWunschVerteilungVerteilung;
+		verteileDrittWunsch(erg);		
+		verteilerPech(erg);
+		return erg;
+	}
+
+	private void verteilerPech(Verteilung erg) {
 		Set <Integer> nummern = new HashSet <Integer>();
 		for (int i = 1; i <= klasse.size(); i ++ ) {
 			nummern.add(i);
@@ -146,37 +156,29 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 			// Kann eigentlich nicht passieren
 			throw new RuntimeException("TooMuchElements!");
 		}
-		return erg;
 	}
-	
-	private Verteilung wiederherrstellenDerBestenVariante(Verteilung besteErstWunschVerteilungVerteilung, Set <Teilnehmer> besteErstWunschVerteilungTeil,
-			Set <Teilnehmer> besteZweitWunschVerteilungTeil) {
-		Verteilung erg;
-		erg = besteErstWunschVerteilungVerteilung;
-		for (Teilnehmer dieser : besteErstWunschVerteilungTeil) {
-			erg.set(dieser.nummer(), dieser.erstWunsch());
-		}
-		for (Teilnehmer dieser : besteZweitWunschVerteilungTeil) {
-			erg.set(dieser.nummer(), dieser.erstWunsch());
-		}
-		Set <Teilnehmer> rem = new HashSet <>();
-		Set <Integer> del = new HashSet <>();
+
+	private void verteileDrittWunsch(Verteilung erg) {
+		Set <Teilnehmer> beschenkteTeilnehmer = new HashSet <>();
+		Set <Integer> vergebenGeschenke = new HashSet <>();
 		for (Teilnehmer dieser : klasse) {
 			if (erg.get(dieser.nummer()) != 0) {
-				rem.add(dieser);
-				del.add(erg.get(dieser.nummer()));
+				beschenkteTeilnehmer.add(dieser);
+				vergebenGeschenke.add(erg.get(dieser.nummer()));
 			}
 		}
 		RestKlasse rest = RestKlasse.create(klasse);
-		rest.removeAll(rem);
+		rest.removeAll(beschenkteTeilnehmer);
 		rest = RestKlasse.create(rest);
 		for (Teilnehmer dieser : rest) {
-			if (del.contains(dieser.erstWunsch())) {
+			if (vergebenGeschenke.contains(dieser.erstWunsch())) {
 				dieser.deleteErstWunsch();
 			}
 		}
 		vorarbeiter.stelleFest(erg, rest);
-		return erg;
 	}
 	
+	
+
+		
 }

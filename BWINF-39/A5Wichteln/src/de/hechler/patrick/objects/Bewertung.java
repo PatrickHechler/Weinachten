@@ -71,5 +71,17 @@ public class Bewertung implements Comparable <Bewertung> {
 		}
 		return false;
 	}
+
+
+
+	public long getRichtigeErste() {
+		return richtigePlatzierungen[0];
+	}
+	public long getRichtigeZweite() {
+		return richtigePlatzierungen[1];
+	}
+	public long getRichtigeDritte() {
+		return richtigePlatzierungen[2];
+	}
 	
 }

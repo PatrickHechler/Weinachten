@@ -430,6 +430,9 @@ public class Klasse implements KlasseInterface {
 		StringBuilder result = new StringBuilder();
 		result.append(Integer.toString(size())).append("\n");
 		for (Teilnehmer t : teilnehmer) {
+			// ---------------------- TEST-START ------------------------------
+			result.append("[").append(Integer.toString(t.nummer())).append("] ");
+			// ---------------------- TEST-END   ------------------------------
 			result.append(Integer.toString(t.erstWunsch())).append(" ");
 			result.append(Integer.toString(t.zweitWunsch())).append(" ");
 			result.append(Integer.toString(t.drittWunsch())).append("\n");
