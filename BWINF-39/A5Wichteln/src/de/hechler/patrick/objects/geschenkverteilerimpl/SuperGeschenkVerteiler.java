@@ -186,7 +186,7 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 				erg.set(i, iter.next());
 			}
 		}
-		System.out.println(erg.toString());
+//		System.out.println(erg.toString());
 		if (iter.hasNext()) {
 			throw new RuntimeException("TooMuchElements!");
 		}

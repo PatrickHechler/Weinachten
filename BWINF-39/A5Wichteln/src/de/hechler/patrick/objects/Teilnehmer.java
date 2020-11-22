@@ -120,6 +120,18 @@ public class Teilnehmer implements Comparable <Teilnehmer> {
 		return false;
 	}
 	
+	@Override
+	public Teilnehmer clone() {
+		Teilnehmer erg;
+		try {
+			erg = (Teilnehmer) super.clone();
+		} catch (CloneNotSupportedException e) {
+			return new Teilnehmer(nummer, wunsch[0], wunsch[1], wunsch[2]);
+		}
+		erg.wunsch = wunsch.clone();
+		return erg; 
+	}
+	
 	/**
 	 * Gibt einen String zurück, welcher diesen {@link Teilnehmer} darstellt. <br>
 	 * 

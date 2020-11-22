@@ -18,7 +18,6 @@ public class UnmodifiableKlasse implements KlasseInterface {
 	
 	
 	
-	
 	public UnmodifiableKlasse(Teilnehmer[] teilnehmer) {
 		this.teilnehmer = teilnehmer.clone();
 	}
@@ -31,6 +30,12 @@ public class UnmodifiableKlasse implements KlasseInterface {
 	 */
 	private UnmodifiableKlasse(int size) {
 		teilnehmer = new Teilnehmer[size];
+	}
+	
+	/**
+	 * An empty Konstruktor: if something went wrong in the {@link #clone()} method by using {@code super.clone()} this Kunstruktor is used
+	 */
+	private UnmodifiableKlasse() {
 	}
 	
 	/**
@@ -437,6 +442,21 @@ public class UnmodifiableKlasse implements KlasseInterface {
 	}
 	
 	@Override
+	public UnmodifiableKlasse clone() {
+		UnmodifiableKlasse erg;
+		try {
+			erg = (UnmodifiableKlasse) super.clone();
+		} catch (CloneNotSupportedException e) {
+			erg = new UnmodifiableKlasse();
+		}
+		erg.teilnehmer = teilnehmer.clone();
+		for (int i = 0; i < teilnehmer.length; i ++ ) {
+			erg.teilnehmer[i] = teilnehmer[i].clone();
+		}
+		return erg;
+	}
+	
+	@Override
 	public Iterator <Teilnehmer> iterator() {
 		return new Iter();
 	}
@@ -465,5 +485,5 @@ public class UnmodifiableKlasse implements KlasseInterface {
 		
 		
 	}
-
+	
 }

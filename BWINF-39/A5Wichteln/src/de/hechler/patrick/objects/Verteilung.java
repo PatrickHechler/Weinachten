@@ -1,5 +1,6 @@
 package de.hechler.patrick.objects;
 
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
@@ -158,7 +159,7 @@ public class Verteilung {
 		return erg.toString();
 	}
 	
-	public void print() {
+	public void print(PrintStream out) {
 		int len = (geschenke.length + "").length();
 		for (int i = 0; i < geschenke.length; i ++ ) {
 			String teilnehmer = "" + (i + 1);
@@ -169,8 +170,12 @@ public class Verteilung {
 			while (geschenk.length() < len) {
 				geschenk += " ";
 			}
-			System.out.println("T[" + teilnehmer + "]" + " : G[" + geschenk + "]");
+			out.println("T[" + teilnehmer + "]" + " : G[" + geschenk + "]");
 		}
+	}
+	
+	public void print() {
+		print(System.out);
 	}
 	
 	@Override
