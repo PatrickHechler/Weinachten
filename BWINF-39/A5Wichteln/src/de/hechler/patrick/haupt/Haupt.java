@@ -21,10 +21,6 @@ public class Haupt {
 	private static List <PrintStream> savers;
 	
 	public static void main(String[] args) {
-		haupt(new String[] {"-f", "./beispieldaten/wichteln1.txt", "-s", "./solved/solve1.txt" });
-	}
-	
-	public static void haupt(String[] args) {
 		try {
 			config(args);
 		} catch (FileNotFoundException e) {

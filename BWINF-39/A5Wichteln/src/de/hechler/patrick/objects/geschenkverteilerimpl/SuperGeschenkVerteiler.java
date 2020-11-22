@@ -124,26 +124,9 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 					besteZweitWunschVerteilungTeil = diese;
 				}
 			}
-			// The new BigIter returns in this case an emtyList
-			// if (bi.isEmpty()) {
-			// Set <Integer> zweitWunsch = kls.zweitWunsch(Collections.emptySet(), ignoreGeschenke);
-			// int size = zweitWunsch.size();
-			// if (size > besteDrittWunschAnzahl) {
-			// besteDrittWunschAnzahl = size;
-			// besteErstWunschVerteilungVerteilung = modify;
-			// besteErstWunschVerteilungTeil = verteilung;
-			// besteZweitWunschVerteilungTeil = Collections.emptySet();
-			// }
-			// }
 		}
 		erg = wiederherrstellenDerBestenVariante(besteErstWunschVerteilungVerteilung, besteErstWunschVerteilungTeil, besteZweitWunschVerteilungTeil);
-		// Aus dem besten Ergebnis wird nun eine Gültige Verteilung generiert
-		
-		// RestKlasse rest = RestKlasse.create(klasse);
-		// rest.removeAll(besteErstWunschVerteilungTeil);
-		// rest = RestKlasse.create(rest);
-		// rest.removeAll(besteZweitWunschVerteilungTeil);
-		// vorarbeiter.stelleFest(erg, rest);
+		// Aus der besten Variante wird nun eine Gültige Verteilung generiert
 		
 		// Verteilen der Drittwünsche
 		Set <Integer> nummern = new HashSet <Integer>();
@@ -159,9 +142,8 @@ public class SuperGeschenkVerteiler extends GeschenkVerteiler {
 				erg.set(i, iter.next());
 			}
 		}
-//		System.out.println(erg.toString());
-		// Kann nicht passieren
 		if (iter.hasNext()) {
+			// Kann eigentlich nicht passieren
 			throw new RuntimeException("TooMuchElements!");
 		}
 		return erg;
